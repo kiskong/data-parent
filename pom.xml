@@ -21,17 +21,30 @@
             <id>public</id>
             <url>https://maven.aliyun.com/repository/public</url>
         </repository>
+        <repository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
     </repositories>
 
 
     <modules>
+        <!-- 公共 -->
+        <module>data-common</module>
+        <!-- 元数据 -->
+        <module>data-meta</module>
+        <!-- 指标 -->
+        <module>data-indicator</module>
+        <!-- 标准 -->
+        <module>data-standard</module>
+        <!-- 质量 -->
+        <module>data-quality</module>
+        <!-- 数据应用 -->
+        <module>data-app</module>
+        <!-- web端 -->
         <module>data-web</module>
-<!--        <module>data-meta</module>-->
-<!--        <module>data-common</module>-->
-<!--        <module>data-indicator</module>-->
-<!--        <module>data-standard</module>-->
-<!--        <module>data-quality</module>-->
-<!--        <module>data-standard</module>-->
+        <!-- 管理端 -->
+        <module>data-admin</module>
     </modules>
 
     <dependencyManagement>

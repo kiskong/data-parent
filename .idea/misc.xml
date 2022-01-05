@@ -9,9 +9,9 @@
         <option value="$PROJECT_DIR$/data-meta/pom.xml" />
         <option value="$PROJECT_DIR$/data-common/pom.xml" />
         <option value="$PROJECT_DIR$/data-app/pom.xml" />
-        <option value="$PROJECT_DIR$/data-quality/pom.xml" />
         <option value="$PROJECT_DIR$/data-standard/pom.xml" />
         <option value="$PROJECT_DIR$/data-indicator/pom.xml" />
+        <option value="$PROJECT_DIR$/data-admin/pom.xml" />
       </list>
     </option>
   </component>
