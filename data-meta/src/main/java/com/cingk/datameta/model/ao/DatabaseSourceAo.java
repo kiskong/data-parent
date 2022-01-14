@@ -1,27 +1,25 @@
 package com.cingk.datameta.model.ao;
 
-import java.time.Instant;
+import javax.validation.constraints.NotBlank;
 
 public class DatabaseSourceAo {
-    private Integer id;
 
     private String databaseName;
 
+    @NotBlank(message = "url不能为空")
     private String url;
 
+    @NotBlank(message = "username不能为空")
     private String username;
 
+    @NotBlank(message = "pazzword不能为空")
     private String pazzword;
-
-    private String driver;
 
     private String instruction;
 
-    private Instant createTime;
-
-    private Instant updateTime;
-
     private Integer status;
+
+    private DatabaseSourceAo(){}
 
     public Integer getStatus() {
         return status;
@@ -29,22 +27,6 @@ public class DatabaseSourceAo {
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    public Instant getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Instant updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public Instant getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Instant createTime) {
-        this.createTime = createTime;
     }
 
     public String getInstruction() {
@@ -55,13 +37,6 @@ public class DatabaseSourceAo {
         this.instruction = instruction;
     }
 
-    public String getDriver() {
-        return driver;
-    }
-
-    public void setDriver(String driver) {
-        this.driver = driver;
-    }
 
     public String getPazzword() {
         return pazzword;
@@ -95,11 +70,4 @@ public class DatabaseSourceAo {
         this.databaseName = databaseName;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 }

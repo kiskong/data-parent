@@ -2,7 +2,7 @@ package com.cingk.datameta.model.dto;
 
 import java.time.Instant;
 
-public class DatabaseSourceDto {
+public class DatabaseSourceDto implements IntfDto {
     private Integer id;
 
     private String databaseName;
