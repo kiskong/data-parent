@@ -2,11 +2,28 @@ package com.cingk.datameta.constant.enums;
 
 public enum ResponseEnum {
 
-    CODE_MESSAGE_F1000("F1000", "参数验证不通过"),
-    CODE_MESSAGE_F1001("F1001", "数据保存失败");
+    /**
+     * ResponseHead.Status
+     */
+    CODE_SUCCESS("1", "程序处理成功"),
+    CODE_FAIL("0", "程序处理出错"),
 
-    private String code;
-    private String message;
+    //ResponseBody.ResCode,ResMessage
+    /**
+     * F1000-F1100, 服务入参检查
+     */
+    CODE_MESSAGE_F1000("F1000", "参数验证不通过"),
+
+    /**
+     * F9000-F9999, 服务异常定义
+     */
+    CODE_MESSAGE_F9000("F9000", "保存数据出错"),
+    CODE_MESSAGE_F9001("F9001", "查询数据出错"),
+    CODE_MESSAGE_F9002("F9002", "修改数据出错"),
+    CODE_MESSAGE_F9003("F9003", "删除数据出错");
+
+    private final String code;
+    private final String message;
 
     ResponseEnum(String code, String message) {
         this.code = code;

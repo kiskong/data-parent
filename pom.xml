@@ -129,6 +129,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-core</artifactId>
+                <version>5.7.11</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
     <build>

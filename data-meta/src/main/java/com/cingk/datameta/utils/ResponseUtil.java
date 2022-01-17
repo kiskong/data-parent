@@ -1,5 +1,6 @@
 package com.cingk.datameta.utils;
 
+import cn.hutool.core.util.StrUtil;
 import com.cingk.datameta.constant.enums.ResponseEnum;
 import com.cingk.datameta.model.dto.IntfDto;
 import com.cingk.datameta.model.dto.ResponseBodyDto;
@@ -15,16 +16,10 @@ import java.util.stream.Collectors;
 @Component
 public class ResponseUtil {
 
-    private static final int STATUS_SUCCESS = 1;
-    private static final int STATUS_FAILURE = 0;
-    private static final String DEFAULT_FAILURE_MESSAGE = "程序处理出错";
-    private static final String DEFAULT_SUCCESS_MESSAGE = "程序处理成功";
-
-
     public ResponseBodyDto success(){
         ResponseBodyDto responseBodyDto = new ResponseBodyDto();
-        responseBodyDto.setDescription(DEFAULT_SUCCESS_MESSAGE);
-        responseBodyDto.setStatus(STATUS_SUCCESS);
+        responseBodyDto.setDescription(ResponseEnum.CODE_SUCCESS.getValue());
+        responseBodyDto.setStatus(ResponseEnum.CODE_SUCCESS.getCode());
         return responseBodyDto;
     }
     public ResponseBodyDto success(String resCode,String description){
@@ -72,8 +67,8 @@ public class ResponseUtil {
 
     public ResponseBodyDto failure(){
         ResponseBodyDto responseBodyDto = new ResponseBodyDto();
-        responseBodyDto.setDescription(DEFAULT_FAILURE_MESSAGE);
-        responseBodyDto.setStatus(STATUS_FAILURE);
+        responseBodyDto.setDescription(ResponseEnum.CODE_FAIL.getValue());
+        responseBodyDto.setStatus(ResponseEnum.CODE_FAIL.getCode());
         return responseBodyDto;
     }
 
@@ -130,11 +125,10 @@ public class ResponseUtil {
             return true;
         }
         List<ObjectError> errors = bindingResult.getAllErrors();
-        StringBuffer errorMsg = new StringBuffer("");
-        String errorStr =
-                errors.stream()
+        StringBuffer errorMsg = new StringBuffer();
+        String errorStr = errors.stream()
                         .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                        .collect(Collectors.joining(","));
+                        .collect(Collectors.joining(StrUtil.COMMA));
         errorMsg.append(errorStr);
         responseBodyDto.setDescription(errorMsg.toString());
         responseBodyDto.setResCode(ResponseEnum.CODE_MESSAGE_F1000.getCode());

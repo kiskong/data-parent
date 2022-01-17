@@ -1,11 +1,13 @@
 package com.cingk.datameta.model.dto;
 
-public class ResponseHeadDto {
+import java.io.Serializable;
+
+public class ResponseHeadDto implements Serializable {
 
     /**
      * 响应状态 0-失败,1-成功
      */
-    private int status;
+    private String status;
 
     /**
      * 响应描述，成功描述或出错描述
@@ -25,13 +27,13 @@ public class ResponseHeadDto {
     /**
      * 接口耗时,单位ms
      */
-    private int costTime;
+    private String costTime;
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -59,11 +61,11 @@ public class ResponseHeadDto {
         this.exceptionTrace = exceptionTrace;
     }
 
-    public int getCostTime() {
+    public String getCostTime() {
         return costTime;
     }
 
-    public void setCostTime(int costTime) {
+    public void setCostTime(String costTime) {
         this.costTime = costTime;
     }
 }

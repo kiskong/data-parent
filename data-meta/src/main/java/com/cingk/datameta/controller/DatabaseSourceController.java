@@ -33,7 +33,7 @@ public class DatabaseSourceController {
         databaseSourceDto.setDatabaseName(databaseName);
         DatabaseSourceEntity databaseSourceEntity = databaseSourceService.query(databaseSourceDto);
         if(ObjectUtils.NULL.equals(databaseSourceEntity) ){
-            responseBodyDto.setResCode(ResponseEnum.CODE_MESSAGE_F1001.getCode());
+            responseBodyDto.setResCode(ResponseEnum.CODE_MESSAGE_F9000.getCode());
             responseBodyDto.setDescription("保存数据源出错");
             return responseBodyDto;
         }
@@ -65,7 +65,7 @@ public class DatabaseSourceController {
 
         DatabaseSourceEntity databaseSourceEntity = databaseSourceService.save(databaseSourceAo);
         if(ObjectUtils.NULL.equals(databaseSourceEntity) ){
-            responseBodyDto.setResCode(ResponseEnum.CODE_MESSAGE_F1001.getCode());
+            responseBodyDto.setResCode(ResponseEnum.CODE_MESSAGE_F9000.getCode());
             responseBodyDto.setDescription("保存数据源出错");
             return responseBodyDto;
         }

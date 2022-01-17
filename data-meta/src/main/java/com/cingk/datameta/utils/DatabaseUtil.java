@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 public class DatabaseUtil {
 
     public String getDriverByUrl(String url){
-
         boolean isMysql = url.contains("mysql");
         if(isMysql) return DatabaseDriverEnum.MYSQL.getValue("mysql");
+
 
         return "";
     }

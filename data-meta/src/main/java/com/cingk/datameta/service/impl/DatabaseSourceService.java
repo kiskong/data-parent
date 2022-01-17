@@ -62,7 +62,8 @@ public class DatabaseSourceService implements IDatabaseSource {
     }
 
     public List<DatabaseSourceEntity> queryPage(String pageIndex, String pageSize) {
-        Pageable pageable = PageRequest.of(Integer.parseInt(pageIndex), Integer.parseInt(pageSize),Sort.unsorted());
+        Sort sort = Sort.by(Sort.Direction.DESC,"id");
+        Pageable pageable = PageRequest.of(Integer.parseInt(pageIndex), Integer.parseInt(pageSize),sort);
         Page<DatabaseSourceEntity> databaseSourceEntityPage =  iDatabaseSourceRepository.findAll(pageable);
         return databaseSourceEntityPage.stream().collect(Collectors.toList());
     }
