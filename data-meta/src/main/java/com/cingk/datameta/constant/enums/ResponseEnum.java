@@ -15,6 +15,14 @@ public enum ResponseEnum {
     CODE_MESSAGE_F1000("F1000", "参数验证不通过"),
 
     /**
+     * F1101-F1110,数据源操作
+     */
+    CODE_MESSAGE_F1101("F1101", "新增数据源出错"),
+    CODE_MESSAGE_F1102("F1102", "查询数据源出错"),
+    CODE_MESSAGE_F1103("F1103", "删除数据源出错"),
+    CODE_MESSAGE_F1104("F1104", "修改数据源出错"),
+
+    /**
      * F9000-F9999, 服务异常定义
      */
     CODE_MESSAGE_F9000("F9000", "保存数据出错"),

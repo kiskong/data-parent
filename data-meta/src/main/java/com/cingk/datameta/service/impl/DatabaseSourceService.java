@@ -1,6 +1,7 @@
 package com.cingk.datameta.service.impl;
 
 import com.cingk.datameta.mapper.IDatabaseSourceRepository;
+import com.cingk.datameta.model.InterfaceEntity;
 import com.cingk.datameta.model.ao.DatabaseSourceAo;
 import com.cingk.datameta.model.dto.DatabaseSourceDto;
 import com.cingk.datameta.model.entity.DatabaseSourceEntity;
@@ -29,34 +30,37 @@ public class DatabaseSourceService implements IDatabaseSource {
 
 
     @Override
-    public DatabaseSourceEntity save(DatabaseSourceDto databaseSourceDto) {
+    public DatabaseSourceEntity save(InterfaceEntity databaseSourceDto) {
         DatabaseSourceEntity databaseSourceEntity = new DatabaseSourceEntity();
         BeanUtils.copyProperties(databaseSourceDto, databaseSourceEntity);
         return iDatabaseSourceRepository.save(databaseSourceEntity);
     }
 
     @Override
-    public void delete(DatabaseSourceDto databaseSourceDto) {
+    public void delete(InterfaceEntity databaseSourceDto) {
         DatabaseSourceEntity databaseSourceEntity = new DatabaseSourceEntity();
         BeanUtils.copyProperties(databaseSourceDto, databaseSourceEntity);
         iDatabaseSourceRepository.delete(databaseSourceEntity);
     }
 
     @Override
-    public void modify(DatabaseSourceDto databaseSourceDto) {
+    public void deleteById(Integer id){
+        iDatabaseSourceRepository.deleteById(id);
+    }
+
+    @Override
+    public void modify(InterfaceEntity databaseSourceDto) {
         DatabaseSourceEntity databaseSourceEntity = new DatabaseSourceEntity();
         BeanUtils.copyProperties(databaseSourceDto, databaseSourceEntity);
     }
 
     @Override
-    public DatabaseSourceEntity query(DatabaseSourceDto databaseSourceDto) {
-        DatabaseSourceEntity databaseSourceEntity
-                = iDatabaseSourceRepository.findById(databaseSourceDto.getId()).orElse(null);
-        return databaseSourceEntity;
+    public DatabaseSourceEntity query(InterfaceEntity databaseSourceDto) {
+        return iDatabaseSourceRepository.findById(((DatabaseSourceDto)databaseSourceDto).getId()).orElse(null);
     }
 
     @Override
-    public List<DatabaseSourceEntity> queryAll() {
+    public List<InterfaceEntity> queryAll() {
         Iterable<DatabaseSourceEntity> databaseSourceEntityIterable = iDatabaseSourceRepository.findAll();
         return Lists.newArrayList(databaseSourceEntityIterable);
     }
@@ -68,10 +72,8 @@ public class DatabaseSourceService implements IDatabaseSource {
         return databaseSourceEntityPage.stream().collect(Collectors.toList());
     }
 
-
     /**
      * 保存数据源
-     * @param databaseSourceAo
      * @return
      */
     public DatabaseSourceEntity save(DatabaseSourceAo databaseSourceAo) {
@@ -85,6 +87,4 @@ public class DatabaseSourceService implements IDatabaseSource {
 
         return save(databaseSourceDto);
     }
-
-
 }

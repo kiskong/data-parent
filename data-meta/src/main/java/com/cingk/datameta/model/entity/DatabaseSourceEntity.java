@@ -1,11 +1,13 @@
 package com.cingk.datameta.model.entity;
 
+import com.cingk.datameta.model.InterfaceEntity;
+
 import javax.persistence.*;
 import java.time.Instant;
 
 @Entity
 @Table(name = "database_source")
-public class DatabaseSourceEntity {
+public class DatabaseSourceEntity implements InterfaceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

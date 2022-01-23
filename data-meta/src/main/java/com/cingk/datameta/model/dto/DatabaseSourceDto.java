@@ -1,8 +1,10 @@
 package com.cingk.datameta.model.dto;
 
+import com.cingk.datameta.model.InterfaceEntity;
+
 import java.time.Instant;
 
-public class DatabaseSourceDto implements IntfDto {
+public class DatabaseSourceDto implements InterfaceEntity {
     private Integer id;
 
     private String databaseName;

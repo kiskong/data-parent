@@ -2,7 +2,7 @@ package com.cingk.datameta.utils;
 
 import cn.hutool.core.util.StrUtil;
 import com.cingk.datameta.constant.enums.ResponseEnum;
-import com.cingk.datameta.model.dto.IntfDto;
+import com.cingk.datameta.model.InterfaceEntity;
 import com.cingk.datameta.model.dto.ResponseBodyDto;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Component;
@@ -20,6 +20,12 @@ public class ResponseUtil {
         ResponseBodyDto responseBodyDto = new ResponseBodyDto();
         responseBodyDto.setDescription(ResponseEnum.CODE_SUCCESS.getValue());
         responseBodyDto.setStatus(ResponseEnum.CODE_SUCCESS.getCode());
+        return responseBodyDto;
+    }
+
+    public ResponseBodyDto success(String description){
+        ResponseBodyDto responseBodyDto = success();
+        responseBodyDto.setDescription(description);
         return responseBodyDto;
     }
     public ResponseBodyDto success(String resCode,String description){
@@ -41,7 +47,7 @@ public class ResponseUtil {
         return responseBodyDto;
     }
 
-    public ResponseBodyDto success(IntfDto data){
+    public ResponseBodyDto success(InterfaceEntity data){
         ResponseBodyDto responseBodyDto = success();
         responseBodyDto.setData(data);
         return responseBodyDto;
@@ -59,7 +65,7 @@ public class ResponseUtil {
         return responseBodyDto;
     }
 
-    public ResponseBodyDto success(String resCode, String description, IntfDto data){
+    public ResponseBodyDto success(String resCode, String description, InterfaceEntity data){
         ResponseBodyDto responseBodyDto = success(resCode,description);
         responseBodyDto.setData(data);
         return responseBodyDto;
@@ -69,6 +75,12 @@ public class ResponseUtil {
         ResponseBodyDto responseBodyDto = new ResponseBodyDto();
         responseBodyDto.setDescription(ResponseEnum.CODE_FAIL.getValue());
         responseBodyDto.setStatus(ResponseEnum.CODE_FAIL.getCode());
+        return responseBodyDto;
+    }
+
+    public ResponseBodyDto failure(String description){
+        ResponseBodyDto responseBodyDto = failure();
+        responseBodyDto.setDescription(description);
         return responseBodyDto;
     }
 
@@ -90,7 +102,7 @@ public class ResponseUtil {
         responseBodyDto.setData(data);
         return responseBodyDto;
     }
-    public ResponseBodyDto failure(IntfDto data){
+    public ResponseBodyDto failure(InterfaceEntity data){
         ResponseBodyDto responseBodyDto = failure();
         responseBodyDto.setData(data);
         return responseBodyDto;
@@ -108,7 +120,7 @@ public class ResponseUtil {
         return responseBodyDto;
     }
 
-    public ResponseBodyDto failure(String resCode, String description, IntfDto data){
+    public ResponseBodyDto failure(String resCode, String description, InterfaceEntity data){
         ResponseBodyDto responseBodyDto = failure(resCode,description);
         responseBodyDto.setData(data);
         return responseBodyDto;

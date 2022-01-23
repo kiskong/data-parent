@@ -1,6 +1,7 @@
 package com.cingk.datameta.model.dto;
 
 import com.cingk.datameta.constant.enums.ResponseEnum;
+import com.cingk.datameta.model.InterfaceEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class ResponseBodyDto extends ResponseHeadDto {
         this.data.add(data);
     }
 
-    public void setData(IntfDto data){
+    public void setData(InterfaceEntity data){
         this.data = new ArrayList();
         this.data.add(data);
     }

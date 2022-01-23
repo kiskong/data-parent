@@ -1,6 +1,7 @@
 package com.cingk.datameta.controller;
 
 import com.cingk.datameta.constant.enums.ResponseEnum;
+import com.cingk.datameta.model.InterfaceEntity;
 import com.cingk.datameta.model.ao.DatabaseSourceAo;
 import com.cingk.datameta.model.dto.DatabaseSourceDto;
 import com.cingk.datameta.model.dto.ResponseBodyDto;
@@ -14,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
@@ -44,8 +46,7 @@ public class DatabaseSourceController {
 
     @GetMapping("getAllDatabaseSource")
     public ResponseBodyDto getAllDatabaseSource() {
-       List<DatabaseSourceEntity> databaseSourceEntities =  databaseSourceService.queryAll();
-       return responseUtil.success(databaseSourceEntities);
+       return responseUtil.success(databaseSourceService.queryAll());
     }
 
     @PostMapping("getPageDatabaseSource")
@@ -63,7 +64,7 @@ public class DatabaseSourceController {
             return responseBodyDto;
         }
 
-        DatabaseSourceEntity databaseSourceEntity = databaseSourceService.save(databaseSourceAo);
+        InterfaceEntity databaseSourceEntity = databaseSourceService.save(databaseSourceAo);
         if(ObjectUtils.NULL.equals(databaseSourceEntity) ){
             responseBodyDto.setResCode(ResponseEnum.CODE_MESSAGE_F9000.getCode());
             responseBodyDto.setDescription("保存数据源出错");
@@ -74,5 +75,13 @@ public class DatabaseSourceController {
         BeanUtils.copyProperties(databaseSourceEntity, databaseSourceDto);
 
         return responseUtil.success(databaseSourceDto);
+    }
+
+    @GetMapping("delDatabaseSource")
+    public ResponseBodyDto deleteDatabaseSource(@NotNull Integer id){
+        DatabaseSourceDto databaseSourceDto = new DatabaseSourceDto();
+        databaseSourceDto.setId(id);
+        databaseSourceService.delete(databaseSourceDto);
+        return responseUtil.success("删除成功");
     }
 }
