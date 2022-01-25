@@ -21,6 +21,9 @@ public class DatabaseTableEntity implements InterfaceEntity {
     @Column(name = "database_source_id")
     private Integer databaseSourceId;
 
+    @Column(name= "schemaName")
+    private String schemaName;
+
     @Lob
     @Column(name = "instruction")
     private String instruction;
@@ -90,5 +93,13 @@ public class DatabaseTableEntity implements InterfaceEntity {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getSchemaName() {
+        return schemaName;
+    }
+
+    public void setSchemaName(String schemaName) {
+        this.schemaName = schemaName;
     }
 }

@@ -1,0 +1,89 @@
+@startuml
+'https://plantuml.com/object-diagram
+
+object DatabaseSource {
+    db_id:  数据源ID <color red> PK
+    url: 连接地址
+    username: 连接用户名
+    password: 密码
+    driver: 驱动包
+    instruction:描述
+    create_time: 创建时间
+    log_id: 修改记录标识
+    status: 状态
+    group_id: 分组标识 <color blue> FK
+}
+object Table {
+    tab_id : 表ID <color red> PK
+    db_id: 数据源ID <color purple> UK <color blue> FK
+    table_name: 表名 <color purple> UK
+    alias_name: 别名
+    version: 版本信息
+    instruction:描述
+    create_time: 创建时间
+    log_id: 修改记录标识
+    status: 状态
+    group_id: 分组标识 <color blue> FK
+}
+object Column {
+    col_id : 字段ID <color red> PK
+    tab_id : 表ID <color purple> UK <color blue> FK
+    col_name: 字段名 <color purple> UK
+    col_type: 字段类型
+    col_length: 字段长度
+    col_decimal: 字段精度
+    instruction: 描述
+    create_time: 创建时间
+    log_id: 修改记录标识
+    status: 状态
+}
+object Group {
+    group_id: 分组标识 <color red> PK
+    group_name: 分组名称
+    parent_group_id: 父分组标志(根节点为-1)
+    instruction:描述
+    create_time: 创建时间
+    log_id: 修改记录标识
+    status: 状态
+
+}
+object DatabaseSourceGroup {
+    group_id: 分组标识 <color red> PK
+    group_name: 分组名称
+    parent_group_id: 父分组标志(根节点为-1)
+    instruction:描述
+    create_time: 创建时间
+    log_id: 修改记录标识
+    status: 状态
+}
+object TableGroup {
+    group_id: 分组标识 <color red> PK
+    group_name: 分组名称
+    parent_group_id: 父分组标志(根节点为-1)
+    instruction:描述
+    create_time: 创建时间
+    log_id: 修改记录标识
+    status: 状态
+}
+
+object Log {
+    log_id : 日志记录标识 <color red> PK
+    create_time: 记录时间
+    author: 修改人
+    content: 修改内容
+    ip: 请求地址
+}
+
+Table *-- DatabaseSource
+Table *-- Column
+DatabaseSource --> Log
+DatabaseSource --> DatabaseSourceGroup
+Column --> Log
+Table --> Log
+Table --> TableGroup
+DatabaseSourceGroup --> Log
+TableGroup --> Log
+
+DatabaseSourceGroup --|> Group
+TableGroup --|> Group
+@enduml

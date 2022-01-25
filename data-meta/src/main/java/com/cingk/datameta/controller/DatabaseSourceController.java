@@ -20,10 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/")
-public class DatabaseSourceController {
-
-    @Autowired
-    private ResponseUtil responseUtil;
+public class DatabaseSourceController extends BaseRequestController {
 
     @Autowired
     private DatabaseSourceService databaseSourceService;

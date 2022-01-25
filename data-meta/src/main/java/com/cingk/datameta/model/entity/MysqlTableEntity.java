@@ -1,30 +1,37 @@
 package com.cingk.datameta.model.entity;
 
+import com.cingk.datameta.model.IDataTableEntity;
 import com.cingk.datameta.model.InterfaceEntity;
 
+import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.time.Instant;
 
-public class MysqlTableEntity implements InterfaceEntity {
+public class MysqlTableEntity implements IDataTableEntity {
+
+    public MysqlTableEntity(){
+
+    }
 
     private String tableCatalog;
     private String tableSchema;
     private String tableName;
     private String tableType;
     private String engine;
-    private String version;
+    private Long version;
     private String rowFormat;
-    private Integer tableRows;
-    private Integer avgRowLength;
-    private Integer dataLenght;
-    private Integer maxDataLenght;
-    private Integer indexLength;
-    private Integer dataFree;
-    private Integer autoIncrement;
-    private Instant createTime;
-    private Instant updateTime;
-    private Instant checkTime;
+    private BigInteger tableRows;
+    private BigInteger avgRowLength;
+    private BigInteger dataLength;
+    private BigInteger maxDataLength;
+    private BigInteger indexLength;
+    private BigInteger dataFree;
+    private BigInteger autoIncrement;
+    private Timestamp createTime;
+    private Timestamp updateTime;
+    private Timestamp checkTime;
     private String tableCollation;
-    private Integer checksum;
+    private BigInteger checksum;
     private String createOptions;
     private String tableComment;
 
@@ -68,11 +75,11 @@ public class MysqlTableEntity implements InterfaceEntity {
         this.engine = engine;
     }
 
-    public String getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(String version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
@@ -84,83 +91,83 @@ public class MysqlTableEntity implements InterfaceEntity {
         this.rowFormat = rowFormat;
     }
 
-    public Integer getTableRows() {
+    public BigInteger getTableRows() {
         return tableRows;
     }
 
-    public void setTableRows(Integer tableRows) {
+    public void setTableRows(BigInteger tableRows) {
         this.tableRows = tableRows;
     }
 
-    public Integer getAvgRowLength() {
+    public BigInteger getAvgRowLength() {
         return avgRowLength;
     }
 
-    public void setAvgRowLength(Integer avgRowLength) {
+    public void setAvgRowLength(BigInteger avgRowLength) {
         this.avgRowLength = avgRowLength;
     }
 
-    public Integer getDataLenght() {
-        return dataLenght;
+    public BigInteger getDataLength() {
+        return dataLength;
     }
 
-    public void setDataLenght(Integer dataLenght) {
-        this.dataLenght = dataLenght;
+    public void setDataLength(BigInteger dataLength) {
+        this.dataLength = dataLength;
     }
 
-    public Integer getMaxDataLenght() {
-        return maxDataLenght;
+    public BigInteger getMaxDataLength() {
+        return maxDataLength;
     }
 
-    public void setMaxDataLenght(Integer maxDataLenght) {
-        this.maxDataLenght = maxDataLenght;
+    public void setMaxDataLength(BigInteger maxDataLength) {
+        this.maxDataLength = maxDataLength;
     }
 
-    public Integer getIndexLength() {
+    public BigInteger getIndexLength() {
         return indexLength;
     }
 
-    public void setIndexLength(Integer indexLength) {
+    public void setIndexLength(BigInteger indexLength) {
         this.indexLength = indexLength;
     }
 
-    public Integer getDataFree() {
+    public BigInteger getDataFree() {
         return dataFree;
     }
 
-    public void setDataFree(Integer dataFree) {
+    public void setDataFree(BigInteger dataFree) {
         this.dataFree = dataFree;
     }
 
-    public Integer getAutoIncrement() {
+    public BigInteger getAutoIncrement() {
         return autoIncrement;
     }
 
-    public void setAutoIncrement(Integer autoIncrement) {
+    public void setAutoIncrement(BigInteger autoIncrement) {
         this.autoIncrement = autoIncrement;
     }
 
-    public Instant getCreateTime() {
+    public Timestamp getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Instant createTime) {
+    public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
 
-    public Instant getUpdateTime() {
+    public Timestamp getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Instant updateTime) {
+    public void setUpdateTime(Timestamp updateTime) {
         this.updateTime = updateTime;
     }
 
-    public Instant getCheckTime() {
+    public Timestamp getCheckTime() {
         return checkTime;
     }
 
-    public void setCheckTime(Instant checkTime) {
+    public void setCheckTime(Timestamp checkTime) {
         this.checkTime = checkTime;
     }
 
@@ -172,11 +179,11 @@ public class MysqlTableEntity implements InterfaceEntity {
         this.tableCollation = tableCollation;
     }
 
-    public Integer getChecksum() {
+    public BigInteger getChecksum() {
         return checksum;
     }
 
-    public void setChecksum(Integer checksum) {
+    public void setChecksum(BigInteger checksum) {
         this.checksum = checksum;
     }
 
@@ -195,4 +202,5 @@ public class MysqlTableEntity implements InterfaceEntity {
     public void setTableComment(String tableComment) {
         this.tableComment = tableComment;
     }
+
 }

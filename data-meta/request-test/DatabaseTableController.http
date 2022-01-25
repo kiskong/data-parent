@@ -1,0 +1,6 @@
+
+### 获取数据源所有表名
+GET http://localhost:8081/getDatabaseTable?dataSourceId=2
+Accept: application/json
+
+###
