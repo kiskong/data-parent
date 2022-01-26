@@ -13,8 +13,8 @@ public interface ITableService {
     void delDatabaseTable(InterfaceEntity databaseTableDto);
     void updDatabaseTable(InterfaceEntity databaseTableDto);
     List<DatabaseTableEntity> getAllTables(InterfaceEntity databaseSourceDto) throws SQLException,
-            IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException;
+            IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException, ClassNotFoundException;
     List<DatabaseTableEntity> getAllTablesWithSchema(InterfaceEntity databaseSourceDto,String schema) throws SQLException,
-            IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException;
+            IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException, ClassNotFoundException;
 
 }

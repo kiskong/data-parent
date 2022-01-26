@@ -5,6 +5,7 @@ import com.cingk.datameta.constant.enums.DatabaseDriverEnum;
 import com.cingk.datameta.model.IDataTableEntity;
 import com.cingk.datameta.model.InterfaceEntity;
 import com.cingk.datameta.model.dto.DatabaseSourceDto;
+import com.cingk.datameta.model.entity.DatabaseTableEntity;
 import com.google.common.collect.Lists;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.stereotype.Component;
@@ -35,6 +36,28 @@ public class DatabaseUtil {
                 databaseSourceDto.getUsername(),
                 databaseSourceDto.getPazzword(),
                 true);
+    }
+
+    public List<DatabaseTableEntity> getDataTableEntityList(InterfaceEntity databaseSourceDto, String sql,String className) throws SQLException,
+            InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+        List<IDataTableEntity> dataTableEntityList =
+                getDataTableEntityList(databaseSourceDto, sql, Class.forName(className));
+        return getDataTableEntityList((DatabaseSourceDto) databaseSourceDto, dataTableEntityList);
+    }
+
+    public List<DatabaseTableEntity> getDataTableEntityList(DatabaseSourceDto databaseSourceDto, List<IDataTableEntity> dataTableEntityList) {
+        List<DatabaseTableEntity> databaseTableEntityList = Lists.newArrayList();
+        if (dataTableEntityList == null) {
+            return databaseTableEntityList;
+        }
+        dataTableEntityList.forEach(dataTableEntity -> {
+            DatabaseTableEntity databaseTableEntity = new DatabaseTableEntity();
+            databaseTableEntity.setTabName(dataTableEntity.getTabName());
+            databaseTableEntity.setSchemaName(dataTableEntity.getSchema());
+            databaseTableEntity.setDatabaseSourceId(databaseSourceDto.getId());
+            databaseTableEntityList.add(databaseTableEntity);
+        });
+        return databaseTableEntityList;
     }
 
     public List<IDataTableEntity> getDataTableEntityList(InterfaceEntity databaseSourceDto, String sql, Class clazz) throws SQLException,

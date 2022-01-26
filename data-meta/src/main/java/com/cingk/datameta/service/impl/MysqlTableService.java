@@ -45,33 +45,16 @@ public class MysqlTableService implements ITableService {
 
     @Override
     public List<DatabaseTableEntity> getAllTables(InterfaceEntity databaseSourceDto) throws SQLException,
-            IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
-        return getDataTableEntityList(databaseSourceDto,QUERY_ALL_TABLES);
+            IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException, ClassNotFoundException {
+        return databaseUtil.getDataTableEntityList(databaseSourceDto,QUERY_ALL_TABLES,MysqlTableEntity.class.getName());
     }
 
     @Override
     public List<DatabaseTableEntity> getAllTablesWithSchema(InterfaceEntity databaseSourceDto,String schema) throws SQLException,
-            IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
+            IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException, ClassNotFoundException {
         String sql = String.format(QUERY_TABLES_WITH_SCHEMA,schema);
-        return getDataTableEntityList(databaseSourceDto,sql);
+        return databaseUtil.getDataTableEntityList(databaseSourceDto,sql,MysqlTableEntity.class.getName());
     }
 
-    private List<DatabaseTableEntity> getDataTableEntityList(InterfaceEntity databaseSourceDto, String sql) throws SQLException,
-            InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException {
-        List<IDataTableEntity> dataTableEntityList =
-                databaseUtil.getDataTableEntityList(databaseSourceDto, sql, MysqlTableEntity.class);
-        List<DatabaseTableEntity> databaseTableEntityList = Lists.newArrayList();
-        if (dataTableEntityList == null) {
-            return databaseTableEntityList;
-        }
-        dataTableEntityList.forEach(dataTableEntity -> {
-            MysqlTableEntity mysqlTableEntity = (MysqlTableEntity) dataTableEntity;
-            DatabaseTableEntity databaseTableEntity = new DatabaseTableEntity();
-            databaseTableEntity.setTabName(mysqlTableEntity.getTableName());
-            databaseTableEntity.setSchemaName(mysqlTableEntity.getTableSchema());
-            databaseTableEntity.setDatabaseSourceId(((DatabaseSourceDto)databaseSourceDto).getId());
-            databaseTableEntityList.add(databaseTableEntity);
-        });
-        return databaseTableEntityList;
-    }
+
 }

@@ -47,7 +47,7 @@ public class DatabaseTableController extends BaseRequestController {
             List<DatabaseTableEntity> mysqlTableList = mysqlTableService.getAllTables(databaseSourceDto);
             return responseUtil.success(ResponseEnum.CODE_SUCCESS.getCode(), "查询数据成功", mysqlTableList);
         } catch (SQLException | IllegalAccessException | NoSuchMethodException | InvocationTargetException |
-                InstantiationException e) {
+                InstantiationException | ClassNotFoundException e) {
             LOGGER.error(e.getMessage(), e);
             ResponseBodyDto responseBodyDto = responseUtil.failure(ResponseEnum.CODE_FAIL.getCode());
             responseBodyDto.setExceptionTrace(e.toString());

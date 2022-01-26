@@ -55,36 +55,20 @@ public class OracleTableService implements ITableService {
 
     @Override
     public List<DatabaseTableEntity> getAllTables(InterfaceEntity databaseSourceDto) throws SQLException,
-            IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
+            IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException, ClassNotFoundException {
         String sql = String.format(QUERY_ALL_TABLES, QUERY_CONDITION);
-        return getDataTableEntityList(databaseSourceDto, sql);
+        return databaseUtil.getDataTableEntityList(databaseSourceDto, sql,OracleTableEntity.class.getName());
     }
 
 
     @Override
     public List<DatabaseTableEntity> getAllTablesWithSchema(InterfaceEntity databaseSourceDto, String schema)
             throws SQLException, IllegalAccessException, NoSuchMethodException, InvocationTargetException,
-            InstantiationException {
+            InstantiationException, ClassNotFoundException {
         String sql = String.format(QUERY_TABLES_WITH_SCHEMA, QUERY_CONDITION, schema);
-        return getDataTableEntityList(databaseSourceDto, sql);
+        return databaseUtil.getDataTableEntityList(databaseSourceDto, sql,OracleTableEntity.class.getName());
     }
 
-    private List<DatabaseTableEntity> getDataTableEntityList(InterfaceEntity databaseSourceDto, String sql) throws SQLException,
-            InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException {
-        List<IDataTableEntity> dataTableEntityList =
-                databaseUtil.getDataTableEntityList(databaseSourceDto, sql, OracleTableEntity.class);
-        List<DatabaseTableEntity> databaseTableEntityList = Lists.newArrayList();
-        if (dataTableEntityList == null) {
-            return databaseTableEntityList;
-        }
-        dataTableEntityList.forEach(dataTableEntity -> {
-            OracleTableEntity oracleTableEntity = (OracleTableEntity) dataTableEntity;
-            DatabaseTableEntity databaseTableEntity = new DatabaseTableEntity();
-            databaseTableEntity.setTabName(oracleTableEntity.getTableName());
-            databaseTableEntity.setSchemaName(oracleTableEntity.getOwner());
-            databaseTableEntity.setDatabaseSourceId(((DatabaseSourceDto)databaseSourceDto).getId());
-            databaseTableEntityList.add(databaseTableEntity);
-        });
-        return databaseTableEntityList;
-    }
+
+
 }

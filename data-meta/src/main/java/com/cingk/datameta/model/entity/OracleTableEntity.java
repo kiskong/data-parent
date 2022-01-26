@@ -501,4 +501,14 @@ public class OracleTableEntity  implements IDataTableEntity {
     public void setResultCache(String resultCache) {
         this.resultCache = resultCache;
     }
+
+    @Override
+    public String getSchema() {
+        return this.owner;
+    }
+
+    @Override
+    public String getTabName() {
+        return this.tableName;
+    }
 }

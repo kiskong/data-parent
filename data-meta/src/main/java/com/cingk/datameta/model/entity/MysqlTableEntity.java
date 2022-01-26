@@ -203,4 +203,14 @@ public class MysqlTableEntity implements IDataTableEntity {
         this.tableComment = tableComment;
     }
 
+
+    @Override
+    public String getSchema() {
+        return this.tableSchema;
+    }
+
+    @Override
+    public String getTabName() {
+        return this.tableName;
+    }
 }
