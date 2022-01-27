@@ -25,7 +25,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
     }
 
     @Override
-    public ServletOutputStream getOutputStream() throws IOException {
+    public ServletOutputStream getOutputStream() {
         return servletOutputStream;
     }
 

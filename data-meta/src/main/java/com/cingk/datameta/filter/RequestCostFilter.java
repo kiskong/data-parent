@@ -30,7 +30,6 @@ public class RequestCostFilter implements Filter {
         ResponseWrapper responseWrapper = new ResponseWrapper((HttpServletResponse)response);
         chain.doFilter(request,responseWrapper);
         stopWatch.stop();
-
         overwriteResponse(response,responseWrapper,stopWatch);
     }
 
@@ -42,7 +41,7 @@ public class RequestCostFilter implements Filter {
      * @throws IOException
      * @throws ServletException
      */
-    private void overwriteResponse(ServletResponse response,ResponseWrapper responseWrapper,StopWatch stopWatch) throws IOException, ServletException{
+    private void overwriteResponse(ServletResponse response,ResponseWrapper responseWrapper,StopWatch stopWatch) throws IOException{
         byte[] content = responseWrapper.getContent();
         JSONObject jsonObject = (JSONObject) JSONObject.parse(content);
         ResponseBodyDto responseBodyDto = jsonObject.toJavaObject(ResponseBodyDto.class);

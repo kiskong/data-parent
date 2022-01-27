@@ -21,14 +21,28 @@ import java.util.List;
 public class DatabaseUtil {
 
     private static final String METHOD_NAME_SET = "set%s";
+    private static final String MYSQL_TABLE_SERVICE = "MysqlTableService";
+    private static final String ORACLE_TABLE_SERVICE = "OracleTableService";
+    private static final String DB_TYPE_MYSQL = "mysql";
+    private static final String DB_TYPE_ORACLE = "oracle";
 
     public String getDriverByUrl(String url) {
-        boolean isMysql = url.contains("mysql");
-        if (isMysql) return DatabaseDriverEnum.MYSQL.getValue("mysql");
-
+        boolean isMysql = url.toLowerCase().contains(DB_TYPE_MYSQL);
+        if (isMysql) return DatabaseDriverEnum.MYSQL.getValue(DB_TYPE_MYSQL);
         return "";
     }
 
+    public String getClassNameByUrl(String url){
+        boolean isMysql = url.toLowerCase().contains(DB_TYPE_MYSQL);
+        if (isMysql) return MYSQL_TABLE_SERVICE;
+        boolean isOracle = url.toLowerCase().contains(DB_TYPE_ORACLE);
+        if (isOracle) return ORACLE_TABLE_SERVICE;
+        return "";
+    }
+
+    public String getClassNameByUrl(DatabaseSourceDto databaseSourceDto){
+        return getClassNameByUrl(databaseSourceDto.getUrl());
+    }
 
     public DataSource getDataSource(DatabaseSourceDto databaseSourceDto) {
         return new SingleConnectionDataSource(
@@ -37,6 +51,7 @@ public class DatabaseUtil {
                 databaseSourceDto.getPazzword(),
                 true);
     }
+
 
     public List<DatabaseTableEntity> getDataTableEntityList(InterfaceEntity databaseSourceDto, String sql,String className) throws SQLException,
             InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException, ClassNotFoundException {
@@ -126,5 +141,6 @@ public class DatabaseUtil {
     public String getCameNameUnderLineNot(String columnName) {
         return StrUtil.toCamelCase(columnName.toLowerCase());
     }
+
 
 }

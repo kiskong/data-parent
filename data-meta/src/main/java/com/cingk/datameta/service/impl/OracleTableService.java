@@ -1,23 +1,15 @@
 package com.cingk.datameta.service.impl;
 
 import cn.hutool.core.util.StrUtil;
-import com.cingk.datameta.model.IDataTableEntity;
-import com.cingk.datameta.model.InterfaceEntity;
 import com.cingk.datameta.model.dto.DatabaseSourceDto;
 import com.cingk.datameta.model.entity.DatabaseTableEntity;
-import com.cingk.datameta.model.entity.MysqlTableEntity;
 import com.cingk.datameta.model.entity.OracleTableEntity;
 import com.cingk.datameta.service.intf.ITableService;
 import com.cingk.datameta.utils.DatabaseUtil;
-import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.sql.DataSource;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -38,37 +30,43 @@ public class OracleTableService implements ITableService {
     private DatabaseUtil databaseUtil;
 
     @Override
-    public DatabaseTableEntity getDatabaseTable(InterfaceEntity databaseSourceDto, String tableName) {
+    public DatabaseTableEntity getDatabaseTable(DatabaseSourceDto databaseSourceDto, String tableName) {
         return null;
     }
 
 
     @Override
-    public void delDatabaseTable(InterfaceEntity databaseTableDto) {
+    public void delDatabaseTable(DatabaseSourceDto databaseTableDto) {
 
     }
 
     @Override
-    public void updDatabaseTable(InterfaceEntity databaseTableDto) {
+    public void updDatabaseTable(DatabaseSourceDto databaseTableDto) {
 
     }
 
     @Override
-    public List<DatabaseTableEntity> getAllTables(InterfaceEntity databaseSourceDto) throws SQLException,
-            IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException, ClassNotFoundException {
+    public List<DatabaseTableEntity> getAllTables(DatabaseSourceDto databaseSourceDto) {
         String sql = String.format(QUERY_ALL_TABLES, QUERY_CONDITION);
-        return databaseUtil.getDataTableEntityList(databaseSourceDto, sql,OracleTableEntity.class.getName());
+        try {
+            return databaseUtil.getDataTableEntityList(databaseSourceDto, sql, OracleTableEntity.class.getName());
+        } catch (SQLException | InvocationTargetException | NoSuchMethodException | IllegalAccessException
+                | InstantiationException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
     @Override
-    public List<DatabaseTableEntity> getAllTablesWithSchema(InterfaceEntity databaseSourceDto, String schema)
-            throws SQLException, IllegalAccessException, NoSuchMethodException, InvocationTargetException,
-            InstantiationException, ClassNotFoundException {
+    public List<DatabaseTableEntity> getAllTablesWithSchema(DatabaseSourceDto databaseSourceDto, String schema) {
         String sql = String.format(QUERY_TABLES_WITH_SCHEMA, QUERY_CONDITION, schema);
-        return databaseUtil.getDataTableEntityList(databaseSourceDto, sql,OracleTableEntity.class.getName());
+        try {
+            return databaseUtil.getDataTableEntityList(databaseSourceDto, sql, OracleTableEntity.class.getName());
+        } catch (SQLException | InvocationTargetException | NoSuchMethodException | IllegalAccessException
+                | InstantiationException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
-
 
 
 }
