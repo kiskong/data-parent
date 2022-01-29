@@ -1,21 +1,27 @@
 package com.cingk.datameta.utils;
 
+import com.google.common.collect.Lists;
+
+import java.util.List;
+
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
+import org.springframework.stereotype.Component;
+
 import cn.hutool.core.util.StrUtil;
 import com.cingk.datameta.constant.enums.DatabaseDriverEnum;
 import com.cingk.datameta.model.IDataTableEntity;
 import com.cingk.datameta.model.InterfaceEntity;
 import com.cingk.datameta.model.dto.DatabaseSourceDto;
 import com.cingk.datameta.model.entity.DatabaseTableEntity;
-import com.google.common.collect.Lists;
-import org.springframework.jdbc.datasource.SingleConnectionDataSource;
-import org.springframework.stereotype.Component;
-
-import javax.sql.DataSource;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.sql.*;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import javax.sql.DataSource;
 
 @Component
 public class DatabaseUtil {
@@ -32,6 +38,11 @@ public class DatabaseUtil {
         return "";
     }
 
+    /**
+     * 根据Url获取不同数据库对应的服务
+     * @param url database connect url
+     * @return database classic
+     */
     public String getClassNameByUrl(String url){
         boolean isMysql = url.toLowerCase().contains(DB_TYPE_MYSQL);
         if (isMysql) return MYSQL_TABLE_SERVICE;
@@ -40,10 +51,20 @@ public class DatabaseUtil {
         return "";
     }
 
+    /**
+     * 根据数据源信息获取不同数据库对应的服务
+     * @param databaseSourceDto 数据源连接信息对象
+     * @return database classic
+     */
     public String getClassNameByUrl(DatabaseSourceDto databaseSourceDto){
         return getClassNameByUrl(databaseSourceDto.getUrl());
     }
 
+    /**
+     * 构造数据源连接信息
+     * @param databaseSourceDto 数据源连接信息对象
+     * @return See also {@link org.springframework.jdbc.datasource.SingleConnectionDataSource}
+     */
     public DataSource getDataSource(DatabaseSourceDto databaseSourceDto) {
         return new SingleConnectionDataSource(
                 databaseSourceDto.getUrl(),

@@ -1,11 +1,11 @@
 package com.cingk.datameta.model.dto;
 
-import com.cingk.datameta.constant.enums.ResponseEnum;
-import com.cingk.datameta.model.InterfaceEntity;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import com.cingk.datameta.constant.enums.ResponseEnum;
+import com.cingk.datameta.model.InterfaceEntity;
 
 public class ResponseBodyDto extends ResponseHeadDto {
 
@@ -23,6 +23,11 @@ public class ResponseBodyDto extends ResponseHeadDto {
      * 响应编码
      */
     private String resCode;
+
+    /**
+     * 数据长度
+     */
+    private int dataSize;
 
     public List getData() {
         return data;
@@ -54,4 +59,9 @@ public class ResponseBodyDto extends ResponseHeadDto {
         this.resCode = resCode;
         this.resMessage = ResponseEnum.getValue(resCode);
     }
+
+    public int getDataSize() {
+        return data == null ? 0 : data.size();
+    }
+
 }

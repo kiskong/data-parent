@@ -1,12 +1,13 @@
-
 POST http://localhost:8081/addDatabaseSource
 Content-Type: application/json
 
 {
-  "databaseName": "10.60.69.21",
-  "url": "jdbc:oracle:thin:@//10.60.69.21:1521/kgdb",
-  "username": "kgrp",
-  "pazzword": "kgrp",
-  "instruction": "10.60.69.21",
+  "databaseName": "local_cingk_schema",
+  "url": "jdbc:mysql://localhost:3306/mysql",
+  "username": "cingk_mysql",
+  "pazzword": "Lv123qwe!",
+  "instruction": "mac docker mysql",
   "status": 0
 }
+
+###
