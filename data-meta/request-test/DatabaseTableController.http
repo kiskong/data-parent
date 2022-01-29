@@ -4,6 +4,10 @@
 GET http://localhost:8081/getDatabaseTable?dataSourceId=1
 Accept: application/json
 
+### oracle kgrp
+GET http://localhost:8081/getDatabaseTable?dataSourceId=14
+Accept: application/json
+
 ### empty dataSource
 GET http://localhost:8081/getDatabaseTable?dataSourceId=2
 Accept: application/json

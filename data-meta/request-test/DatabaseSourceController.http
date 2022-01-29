@@ -1,0 +1,12 @@
+
+POST http://localhost:8081/addDatabaseSource
+Content-Type: application/json
+
+{
+  "databaseName": "10.60.69.21",
+  "url": "jdbc:oracle:thin:@//10.60.69.21:1521/kgdb",
+  "username": "kgrp",
+  "pazzword": "kgrp",
+  "instruction": "10.60.69.21",
+  "status": 0
+}

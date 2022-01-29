@@ -21,8 +21,8 @@ import java.util.List;
 public class DatabaseUtil {
 
     private static final String METHOD_NAME_SET = "set%s";
-    private static final String MYSQL_TABLE_SERVICE = "MysqlTableService";
-    private static final String ORACLE_TABLE_SERVICE = "OracleTableService";
+    private static final String MYSQL_TABLE_SERVICE = "com.cingk.datameta.service.impl.MysqlTableService";
+    private static final String ORACLE_TABLE_SERVICE = "com.cingk.datameta.service.impl.OracleTableService";
     private static final String DB_TYPE_MYSQL = "mysql";
     private static final String DB_TYPE_ORACLE = "oracle";
 
