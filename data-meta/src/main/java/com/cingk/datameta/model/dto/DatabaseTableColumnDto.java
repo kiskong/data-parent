@@ -1,9 +1,9 @@
 package com.cingk.datameta.model.dto;
 
-import com.cingk.datameta.model.InterfaceEntity;
+import com.cingk.datameta.model.IDataTableColumnEntity;
 
 
-public class DatabaseTableColumnDto implements InterfaceEntity {
+public class DatabaseTableColumnDto implements IDataTableColumnEntity {
     private Integer id;
 
     private Integer tabId;
@@ -17,6 +17,10 @@ public class DatabaseTableColumnDto implements InterfaceEntity {
     private Integer colLength;
 
     private Integer colDecimal;
+
+    private DatabaseSourceDto databaseSourceDto;
+
+    private DatabaseTableDto databaseTableDto;
 
     public Integer getColDecimal() {
         return colDecimal;
@@ -72,5 +76,21 @@ public class DatabaseTableColumnDto implements InterfaceEntity {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public DatabaseSourceDto getDatabaseSourceDto() {
+        return databaseSourceDto;
+    }
+
+    public void setDatabaseSourceDto(DatabaseSourceDto databaseSourceDto) {
+        this.databaseSourceDto = databaseSourceDto;
+    }
+
+    public DatabaseTableDto getDatabaseTableDto() {
+        return databaseTableDto;
+    }
+
+    public void setDatabaseTableDto(DatabaseTableDto databaseTableDto) {
+        this.databaseTableDto = databaseTableDto;
     }
 }

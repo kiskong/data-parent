@@ -511,4 +511,9 @@ public class OracleTableEntity  implements IDataTableEntity {
     public String getTabName() {
         return this.tableName;
     }
+
+    @Override
+    public String getTabType(){
+        return "BASE TABLE";
+    }
 }

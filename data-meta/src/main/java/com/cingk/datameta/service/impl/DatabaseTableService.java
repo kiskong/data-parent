@@ -2,13 +2,16 @@ package com.cingk.datameta.service.impl;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cingk.datameta.mapper.IDatabaseTableRepository;
 import com.cingk.datameta.model.dto.DatabaseSourceDto;
+import com.cingk.datameta.model.dto.DatabaseTableDto;
 import com.cingk.datameta.model.entity.DatabaseTableEntity;
 import com.cingk.datameta.service.intf.ITableService;
-import com.cingk.datameta.utils.DatabaseUtil;
+import com.cingk.datameta.utils.DataTableUtil;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 
@@ -24,7 +27,10 @@ public class DatabaseTableService implements ITableService {
 	public static final String SINGLE_QUOTE = "'";
 
 	@Autowired
-	public DatabaseUtil databaseUtil;
+	public DataTableUtil dataTableUtil;
+
+	@Autowired
+	public IDatabaseTableRepository databaseTableRepository;
 
 	@Override
 	public DatabaseTableEntity getDatabaseTable(DatabaseSourceDto databaseSourceDto,
@@ -33,13 +39,24 @@ public class DatabaseTableService implements ITableService {
 	}
 
 	@Override
-	public void delDatabaseTable(DatabaseSourceDto databaseTableDto) {
-
+	public void delDatabaseTable(DatabaseTableDto databaseTableDto) {
+		DatabaseTableEntity databaseTableEntity = new DatabaseTableEntity();
+		BeanUtils.copyProperties(databaseTableDto,databaseTableEntity);
+		databaseTableRepository.delete(databaseTableEntity);
 	}
 
 	@Override
-	public void updDatabaseTable(DatabaseSourceDto databaseTableDto) {
+	public void updDatabaseTable(DatabaseTableDto databaseTableDto) {
+		DatabaseTableEntity databaseTableEntity = new DatabaseTableEntity();
+		BeanUtils.copyProperties(databaseTableDto,databaseTableEntity);
+		databaseTableRepository.save(databaseTableEntity);
+	}
 
+	@Override
+	public DatabaseTableEntity save(DatabaseTableDto databaseTableDto) {
+		DatabaseTableEntity databaseTableEntity = new DatabaseTableEntity();
+		BeanUtils.copyProperties(databaseTableDto,databaseTableEntity);
+		return databaseTableRepository.save(databaseTableEntity);
 	}
 
 	@Override
@@ -48,10 +65,15 @@ public class DatabaseTableService implements ITableService {
 	}
 
 	@Override
+	public List<DatabaseTableEntity> saveAllTables(List<DatabaseTableEntity> databaseTableEntityList) {
+		return (List<DatabaseTableEntity>)databaseTableRepository.saveAll(databaseTableEntityList);
+	}
+
+	@Override
 	public List<DatabaseTableEntity> getAllTables(DatabaseSourceDto databaseSourceDto, String sql,
 		String resultClassName) {
 		try {
-			return databaseUtil.getDataTableEntityList(databaseSourceDto, sql, resultClassName);
+			return dataTableUtil.getDataTableEntityList(databaseSourceDto, sql, resultClassName);
 		} catch (SQLException | InvocationTargetException | NoSuchMethodException | IllegalAccessException
 			| InstantiationException | ClassNotFoundException e) {
 			throw new RuntimeException(e);
@@ -68,7 +90,7 @@ public class DatabaseTableService implements ITableService {
 	public List<DatabaseTableEntity> getAllTablesWithSchema(DatabaseSourceDto databaseSourceDto,
 		String schema, String sql, String resultClassName) {
 		try {
-			return databaseUtil.getDataTableEntityList(databaseSourceDto, sql, resultClassName);
+			return dataTableUtil.getDataTableEntityList(databaseSourceDto, sql, resultClassName);
 		} catch (SQLException | InvocationTargetException | NoSuchMethodException | IllegalAccessException
 			| InstantiationException | ClassNotFoundException e) {
 			throw new RuntimeException(e);

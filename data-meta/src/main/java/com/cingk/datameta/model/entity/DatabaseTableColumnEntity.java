@@ -1,12 +1,17 @@
 package com.cingk.datameta.model.entity;
 
-import com.cingk.datameta.model.InterfaceEntity;
-
-import javax.persistence.*;
+import com.cingk.datameta.model.IDataTableColumnEntity;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "database_table_column")
-public class DatabaseTableColumnEntity implements InterfaceEntity {
+public class DatabaseTableColumnEntity implements IDataTableColumnEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

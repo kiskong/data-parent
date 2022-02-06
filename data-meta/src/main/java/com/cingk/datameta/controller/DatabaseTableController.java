@@ -1,23 +1,25 @@
 package com.cingk.datameta.controller;
 
-import com.cingk.datameta.constant.enums.ResponseEnum;
-import com.cingk.datameta.model.dto.DatabaseSourceDto;
-import com.cingk.datameta.model.dto.ResponseBodyDto;
-import com.cingk.datameta.model.entity.DatabaseSourceEntity;
-import com.cingk.datameta.model.entity.DatabaseTableEntity;
-import com.cingk.datameta.service.impl.DatabaseSourceService;
-import com.cingk.datameta.service.intf.ITableService;
-import com.cingk.datameta.utils.DatabaseUtil;
-import com.cingk.datameta.utils.SpringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.List;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.cingk.datameta.constant.enums.ResponseEnum;
+import com.cingk.datameta.model.dto.DatabaseSourceDto;
+import com.cingk.datameta.model.dto.ResponseBodyDto;
+import com.cingk.datameta.model.entity.DatabaseSourceEntity;
+import com.cingk.datameta.model.entity.DatabaseTableEntity;
+import com.cingk.datameta.service.impl.DatabaseSourceService;
+import com.cingk.datameta.service.impl.DatabaseTableService;
+import com.cingk.datameta.service.intf.ITableService;
+import com.cingk.datameta.utils.DataTableUtil;
+import com.cingk.datameta.utils.SpringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/")
@@ -26,9 +28,11 @@ public class DatabaseTableController extends BaseRequestController {
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseTableController.class);
 
     @Autowired
-    private DatabaseUtil databaseUtil;
+    private DataTableUtil dataTableUtil;
     @Autowired
     private DatabaseSourceService databaseSourceService;
+    @Autowired
+    private DatabaseTableService databaseTableService;
 
     @GetMapping("getDatabaseTable")
     public ResponseBodyDto getALLTables(Integer dataSourceId)  {
@@ -40,8 +44,7 @@ public class DatabaseTableController extends BaseRequestController {
         }
         BeanUtils.copyProperties(databaseSourceEntity, databaseSourceDto);
         //根据Url获取对应数据源的服务名
-        String tableServiceName = databaseUtil.getClassNameByUrl(databaseSourceDto);
-        //todo 用的mysql测试，待抽象
+        String tableServiceName = dataTableUtil.getServiceNameByUrl(databaseSourceDto);
         try {
             ITableService tableService = SpringUtil.getBean(tableServiceName);
             List<DatabaseTableEntity> tableList = tableService.getAllTables(databaseSourceDto);
@@ -52,6 +55,19 @@ public class DatabaseTableController extends BaseRequestController {
             responseBodyDto.setExceptionTrace(e.toString());
             return responseBodyDto;
         }
+    }
+
+
+    @GetMapping("saveAllTable")
+    public ResponseBodyDto addAllTable(Integer dataSourceId){
+        ResponseBodyDto responseBodyDto = getALLTables(dataSourceId);
+        boolean isFail = ResponseEnum.CODE_FAIL.getCode().equals(responseBodyDto.getStatus());
+        if (isFail) return responseBodyDto;
+        List<DatabaseTableEntity> databaseTableEntityList = responseBodyDto.getData();
+        databaseTableService.saveAllTables(databaseTableEntityList);
+        ResponseBodyDto saveResponseBodyDto = responseUtil.success(ResponseEnum.CODE_SUCCESS.getCode(), "保存数据成功");
+        saveResponseBodyDto.setDataSize(databaseTableEntityList.size());
+        return saveResponseBodyDto;
     }
 
 }

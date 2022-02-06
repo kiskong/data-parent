@@ -19,6 +19,20 @@ public class DatabaseTableDto implements InterfaceEntity {
 
     private Instant creatTime;
 
+    private String schemaName;
+
+    private DatabaseSourceDto databaseSourceDto;
+
+    public String getTabType() {
+        return tabType;
+    }
+
+    public void setTabType(String tabType) {
+        this.tabType = tabType;
+    }
+
+    private String tabType;
+
     public Instant getCreatTime() {
         return creatTime;
     }
@@ -73,5 +87,21 @@ public class DatabaseTableDto implements InterfaceEntity {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public DatabaseSourceDto getDatabaseSourceDto() {
+        return databaseSourceDto;
+    }
+
+    public void setDatabaseSourceDto(DatabaseSourceDto databaseSourceDto) {
+        this.databaseSourceDto = databaseSourceDto;
+    }
+
+    public String getSchemaName() {
+        return schemaName;
+    }
+
+    public void setSchemaName(String schemaName) {
+        this.schemaName = schemaName;
     }
 }

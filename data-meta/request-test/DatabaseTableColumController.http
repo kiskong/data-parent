@@ -1,0 +1,4 @@
+GET http://localhost:8081/getDataTableColumn?dataSourceId=1&schema=cingk_schema&tableName=database_source
+Accept: application/json
+
+###

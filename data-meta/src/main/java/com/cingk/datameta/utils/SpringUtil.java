@@ -20,11 +20,5 @@ public class SpringUtil implements ApplicationContextAware {
         return applicationContext.getBean(clazz);
     }
 
-    public static <T> T getBean(String className){
-        try {
-            return (T) applicationContext.getBean(Class.forName(className));
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    public static <T> T getBean(String className){ return (T) applicationContext.getBean(className);}
 }

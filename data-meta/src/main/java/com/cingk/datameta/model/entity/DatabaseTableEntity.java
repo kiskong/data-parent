@@ -1,10 +1,14 @@
 package com.cingk.datameta.model.entity;
 
 import com.cingk.datameta.model.InterfaceEntity;
-import com.cingk.datameta.service.intf.IBaseService;
-
-import javax.persistence.*;
 import java.time.Instant;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "database_table")
@@ -38,6 +42,9 @@ public class DatabaseTableEntity implements InterfaceEntity {
 
     @Column(name = "creat_time")
     private Instant creatTime;
+
+    @Column(name = "tab_type")
+    private String tabType;
 
     public Instant getCreatTime() {
         return creatTime;
@@ -101,5 +108,13 @@ public class DatabaseTableEntity implements InterfaceEntity {
 
     public void setSchemaName(String schemaName) {
         this.schemaName = schemaName;
+    }
+
+    public String getTabType() {
+        return tabType;
+    }
+
+    public void setTabType(String tabType) {
+        this.tabType = tabType;
     }
 }

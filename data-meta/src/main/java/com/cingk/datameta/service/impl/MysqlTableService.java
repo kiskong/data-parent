@@ -25,10 +25,12 @@ public class MysqlTableService extends DatabaseTableService {
     private static final String JDBC_RESULT_CLASS_NAME = MysqlTableEntity.class.getName();
 
 
+    @Override
     public List<DatabaseTableEntity> getAllTables(DatabaseSourceDto databaseSourceDto)  {
         String sql = String.format(QUERY_ALL_TAB_UNSYS, QUERY_CONDITION);
         return super.getAllTables(databaseSourceDto,sql,JDBC_RESULT_CLASS_NAME);
     }
+
 
     public List<DatabaseTableEntity> getAllTablesWithSchema(DatabaseSourceDto databaseSourceDto,String schema) {
         String sql = String.format(QUERY_TABLES_WITH_SCHEMA,QUERY_CONDITION,schema);

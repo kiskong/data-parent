@@ -4,4 +4,5 @@ public interface IDataTableEntity {
 
     public String getSchema();
     public String getTabName();
+    public String getTabType();
 }

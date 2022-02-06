@@ -1,11 +1,8 @@
 package com.cingk.datameta.model.entity;
 
 import com.cingk.datameta.model.IDataTableEntity;
-import com.cingk.datameta.model.InterfaceEntity;
-
 import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.time.Instant;
 
 public class MysqlTableEntity implements IDataTableEntity {
 
@@ -34,6 +31,7 @@ public class MysqlTableEntity implements IDataTableEntity {
     private BigInteger checksum;
     private String createOptions;
     private String tableComment;
+
 
     public String getTableCatalog() {
         return tableCatalog;
@@ -212,5 +210,10 @@ public class MysqlTableEntity implements IDataTableEntity {
     @Override
     public String getTabName() {
         return this.tableName;
+    }
+
+    @Override
+    public String getTabType(){
+        return this.tableType;
     }
 }

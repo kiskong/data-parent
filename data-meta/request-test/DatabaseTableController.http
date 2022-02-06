@@ -12,3 +12,8 @@ Accept: application/json
 GET http://localhost:8081/getDatabaseTable?dataSourceId=2
 Accept: application/json
 ###
+
+### 获取目标数据源的表，并保存
+GET http://localhost:8081/saveAllTable?dataSourceId=1
+Accept: application/json
+###
