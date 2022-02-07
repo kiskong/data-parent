@@ -2,6 +2,7 @@ package com.cingk.datameta.constant.enums;
 
 public enum ServiceEnum {
 
+	//value -> service bean
 	//table service
 	MYSQL_TAB_SERVICE("mysql_table", "mysqlTableService"),
 	ORACLE_TAB_SERVICE("oracle_table", "oracleTableService"),

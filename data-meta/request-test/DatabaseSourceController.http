@@ -1,4 +1,4 @@
-POST http://localhost:8081/addDatabaseSource
+POST http://localhost:8081/api/addDatabaseSource
 Content-Type: application/json
 
 {

@@ -56,13 +56,17 @@ public class DatabaseSourceService implements IDatabaseSource {
 
     @Override
     public DatabaseSourceEntity query(InterfaceEntity databaseSourceDto) {
-        return iDatabaseSourceRepository.findById(((DatabaseSourceDto)databaseSourceDto).getId()).orElse(null);
+        return iDatabaseSourceRepository.getByName(((DatabaseSourceDto)databaseSourceDto).getDatabaseName());
     }
 
     @Override
     public List<InterfaceEntity> queryAll() {
         Iterable<DatabaseSourceEntity> databaseSourceEntityIterable = iDatabaseSourceRepository.findAll();
         return Lists.newArrayList(databaseSourceEntityIterable);
+    }
+
+    public DatabaseSourceEntity queryById(Integer id){
+        return iDatabaseSourceRepository.findById(id).orElse(null);
     }
 
     public List<DatabaseSourceEntity> queryPage(String pageIndex, String pageSize) {

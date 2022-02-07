@@ -12,7 +12,7 @@ import com.cingk.datameta.constant.enums.ResponseEnum;
 import com.cingk.datameta.model.IDataTableColumnEntity;
 import com.cingk.datameta.model.dto.DatabaseSourceDto;
 import com.cingk.datameta.model.dto.DatabaseTableDto;
-import com.cingk.datameta.model.dto.ResponseBodyDto;
+import com.cingk.datameta.model.dto.ResponseDto;
 import com.cingk.datameta.model.entity.DatabaseSourceEntity;
 import com.cingk.datameta.service.impl.DatabaseSourceService;
 import com.cingk.datameta.service.intf.IColumnService;
@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * @date:2022-02-02
  */
 @RestController
-@RequestMapping("/")
+@RequestMapping("/api")
 public class DatabaseTableColumnController extends BaseRequestController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseTableColumnController.class);
@@ -40,7 +40,7 @@ public class DatabaseTableColumnController extends BaseRequestController {
 	private DatabaseSourceService databaseSourceService;
 
 	@GetMapping("getDataTableColumn")
-	public ResponseBodyDto getTabColumn(Integer dataSourceId, String schema, String tableName) {
+	public ResponseDto getTabColumn(Integer dataSourceId, String schema, String tableName) {
 		DatabaseSourceDto databaseSourceDto = new DatabaseSourceDto();
 		databaseSourceDto.setId(dataSourceId);
 		DatabaseSourceEntity databaseSourceEntity = databaseSourceService.query(databaseSourceDto);
@@ -59,9 +59,9 @@ public class DatabaseTableColumnController extends BaseRequestController {
 			return responseUtil.success(ResponseEnum.CODE_SUCCESS.getCode(), "查询数据成功", dataTableColumnEntityList);
 		} catch (RuntimeException e) {
 			LOGGER.error(e.getMessage(), e);
-			ResponseBodyDto responseBodyDto = responseUtil.failure(ResponseEnum.CODE_FAIL.getCode());
-			responseBodyDto.setExceptionTrace(e.toString());
-			return responseBodyDto;
+			ResponseDto responseDto = responseUtil.failure(ResponseEnum.CODE_FAIL.getCode());
+			responseDto.setExceptionTrace(e.toString());
+			return responseDto;
 		}
 	}
 }

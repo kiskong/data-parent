@@ -5,12 +5,13 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cingk.datameta.constant.enums.ResponseEnum;
 import com.cingk.datameta.model.dto.DatabaseSourceDto;
-import com.cingk.datameta.model.dto.ResponseBodyDto;
+import com.cingk.datameta.model.dto.ResponseDto;
 import com.cingk.datameta.model.entity.DatabaseSourceEntity;
 import com.cingk.datameta.model.entity.DatabaseTableEntity;
 import com.cingk.datameta.service.impl.DatabaseSourceService;
@@ -22,7 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/api")
 public class DatabaseTableController extends BaseRequestController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseTableController.class);
@@ -35,10 +36,10 @@ public class DatabaseTableController extends BaseRequestController {
     private DatabaseTableService databaseTableService;
 
     @GetMapping("getDatabaseTable")
-    public ResponseBodyDto getALLTables(Integer dataSourceId)  {
+    public ResponseDto getALLTables(Integer dataSourceId)  {
         DatabaseSourceDto databaseSourceDto = new DatabaseSourceDto();
         databaseSourceDto.setId(dataSourceId);
-        DatabaseSourceEntity databaseSourceEntity = databaseSourceService.query(databaseSourceDto);
+        DatabaseSourceEntity databaseSourceEntity = databaseSourceService.queryById(dataSourceId);
         if (databaseSourceEntity == null){
             return responseUtil.failure(ResponseEnum.CODE_FAIL.getCode(),"数据源不存在");
         }
@@ -51,23 +52,22 @@ public class DatabaseTableController extends BaseRequestController {
             return responseUtil.success(ResponseEnum.CODE_SUCCESS.getCode(), "查询数据成功", tableList);
         } catch (RuntimeException e) {
             LOGGER.error(e.getMessage(), e);
-            ResponseBodyDto responseBodyDto = responseUtil.failure(ResponseEnum.CODE_FAIL.getCode());
-            responseBodyDto.setExceptionTrace(e.toString());
-            return responseBodyDto;
+            ResponseDto responseDto = responseUtil.failure(ResponseEnum.CODE_FAIL.getCode());
+            responseDto.setExceptionTrace(e.toString());
+            return responseDto;
         }
     }
 
-
-    @GetMapping("saveAllTable")
-    public ResponseBodyDto addAllTable(Integer dataSourceId){
-        ResponseBodyDto responseBodyDto = getALLTables(dataSourceId);
-        boolean isFail = ResponseEnum.CODE_FAIL.getCode().equals(responseBodyDto.getStatus());
-        if (isFail) return responseBodyDto;
-        List<DatabaseTableEntity> databaseTableEntityList = responseBodyDto.getData();
+    @PutMapping("saveAllTable")
+    public ResponseDto addAllTable(Integer dataSourceId){
+        ResponseDto responseDto = getALLTables(dataSourceId);
+        boolean isFail = ResponseEnum.CODE_FAIL.getCode().equals(responseDto.getStatus());
+        if (isFail) return responseDto;
+        List<DatabaseTableEntity> databaseTableEntityList = responseDto.getData();
         databaseTableService.saveAllTables(databaseTableEntityList);
-        ResponseBodyDto saveResponseBodyDto = responseUtil.success(ResponseEnum.CODE_SUCCESS.getCode(), "保存数据成功");
-        saveResponseBodyDto.setDataSize(databaseTableEntityList.size());
-        return saveResponseBodyDto;
+        ResponseDto saveResponseDto = responseUtil.success(ResponseEnum.CODE_SUCCESS.getCode(), "保存数据成功");
+        saveResponseDto.setDataSize(databaseTableEntityList.size());
+        return saveResponseDto;
     }
 
 }
