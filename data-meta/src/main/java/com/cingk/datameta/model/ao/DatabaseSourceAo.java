@@ -2,7 +2,6 @@ package com.cingk.datameta.model.ao;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiParam;
 
 import javax.validation.constraints.NotBlank;
 

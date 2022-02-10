@@ -2,15 +2,13 @@ package com.cingk.datameta.controller;
 
 import java.util.List;
 
+import com.cingk.datameta.model.ao.DatabaseSourceAo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.cingk.datameta.constant.enums.ResponseEnum;
 import com.cingk.datameta.model.dto.DatabaseSourceDto;
@@ -62,9 +60,9 @@ public class DatabaseTableController extends BaseRequestController {
     }
 
     @ApiOperation(value = "提取指定数据源的所有表，并保存到数据库", notes = "")
-    @PutMapping("saveAllTable")
-    public ResponseDto saveAllTable(@ApiParam(value = "数据源标识") Integer dataSourceId){
-        ResponseDto responseDto = getALLTables(dataSourceId);
+    @PutMapping("saveAllTable/{id}")
+    public ResponseDto saveAllTable(@ApiParam(value = "数据源标识") @PathVariable(value = "id") Integer id){
+        ResponseDto responseDto = getALLTables(id);
         boolean isFail = ResponseEnum.CODE_FAIL.getCode().equals(responseDto.getStatus());
         if (isFail) return responseDto;
         List<DatabaseTableEntity> databaseTableEntityList = responseDto.getData();

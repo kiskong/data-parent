@@ -7,23 +7,36 @@ import java.util.Map;
 
 import com.cingk.datameta.constant.enums.ResponseEnum;
 import com.cingk.datameta.model.InterfaceEntity;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+
+/**
+ * 响应dto
+ *
+ * @author lvkc
+ * @date 2022/02/10
+ */
+@ApiModel(description = "响应dto")
 public class ResponseDto implements Serializable {
 
     /**
      * 具体数据
      *
      */
+    @ApiModelProperty(value = "业务响应的具体数据")
     private List data;
 
     /**
      * 响应信息,响应编码对应的描述,通过枚举自动映射
      */
+    @ApiModelProperty(value = "响应信息,响应编码对应的描述,通过枚举自动映射")
     private String resMessage;
 
     /**
      * 响应编码
      */
+    @ApiModelProperty(value = "响应编码")
     private String resCode;
 
     public void setDataSize(Integer dataSize) {
@@ -33,6 +46,7 @@ public class ResponseDto implements Serializable {
     /**
      * 数据长度
      */
+    @ApiModelProperty(value = "数据长度")
     private Integer dataSize;
 
     public List getData() {
@@ -79,26 +93,31 @@ public class ResponseDto implements Serializable {
     /**
      * 响应状态 0-失败,1-成功
      */
+    @ApiModelProperty(value = "响应状态 0-失败,1-成功")
     private String status;
 
     /**
      * 响应描述，成功描述或出错描述
      */
+    @ApiModelProperty(value = "响应描述，成功描述或出错描述")
     private String description;
 
     /**
      * 异常描述
      */
+    @ApiModelProperty(value = "异常描述")
     private String exceptionMessage;
 
     /**
      * 异常堆栈信息
      */
+    @ApiModelProperty(value = "异常堆栈信息")
     private String exceptionTrace;
 
     /**
      * 接口耗时,单位ms
      */
+    @ApiModelProperty(value = "接口耗时,单位ms")
     private String costTime;
 
     public String getStatus() {
