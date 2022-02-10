@@ -8,4 +8,7 @@ public interface IDatabaseSourceRepository extends IBaseCrudRepository<DatabaseS
     //面向对象的查询方式，必须使用实体对象操作
     @Query(value ="from DatabaseSourceEntity where databaseName=?1")
     DatabaseSourceEntity getByName(String databaseName);
+
+    @Query(value ="DELETE From DatabaseSourceEntity where databaseName=?1")
+    void deleteByName(String databaseName);
 }

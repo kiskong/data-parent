@@ -8,6 +8,7 @@ import com.cingk.datameta.model.dto.ResponseDto;
 import com.cingk.datameta.model.entity.DatabaseSourceEntity;
 import com.cingk.datameta.service.impl.DatabaseSourceService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -25,7 +26,7 @@ public class DatabaseSourceController extends BaseRequestController {
 
     @ApiOperation(value ="通过数据源名称获取数据源")
     @GetMapping("getDatabaseSourceByName")
-    public ResponseDto getDatabaseSourceByName(String databaseName) {
+    public ResponseDto getDatabaseSourceByName(@ApiParam(value = "数据源名称")String databaseName) {
         ResponseDto responseDto = responseUtil.failure();
         DatabaseSourceDto databaseSourceDto = new DatabaseSourceDto();
         databaseSourceDto.setDatabaseName(databaseName);
@@ -35,13 +36,13 @@ public class DatabaseSourceController extends BaseRequestController {
             responseDto.setDescription("保存数据源出错");
             return responseDto;
         }
-
         BeanUtils.copyProperties(databaseSourceEntity, databaseSourceDto);
         return responseUtil.success(databaseSourceDto);
     }
+
     @ApiOperation(value ="通过数据源标识获取数据源")
     @GetMapping("getDatabaseSourceById")
-    public ResponseDto getDatabaseSourceById(Integer id) {
+    public ResponseDto getDatabaseSourceById(@ApiParam(value = "数据源标识")Integer id) {
         ResponseDto responseDto = responseUtil.failure();
         DatabaseSourceEntity databaseSourceEntity = databaseSourceService.queryById(id);
         if (databaseSourceEntity == null) {
@@ -60,8 +61,9 @@ public class DatabaseSourceController extends BaseRequestController {
     }
 
     @PostMapping("getPageDatabaseSource")
-    public ResponseDto getPageDatabaseSource(@RequestParam(defaultValue = "1") String pageIndex,
-                                             @RequestParam(defaultValue = "10") String pageSize) {
+    public ResponseDto getPageDatabaseSource(
+            @RequestParam(defaultValue = "1") @ApiParam(value ="页码") String pageIndex,
+            @RequestParam(defaultValue = "10") @ApiParam(value ="每页数量") String pageSize) {
         return responseUtil.success(databaseSourceService.queryPage(pageIndex, pageSize));
     }
 
@@ -87,11 +89,20 @@ public class DatabaseSourceController extends BaseRequestController {
         return responseUtil.success(databaseSourceDto);
     }
 
-    @DeleteMapping("delDatabaseSource")
-    public ResponseDto deleteDatabaseSource(@NotNull @RequestParam(value = "id") Integer id) {
+    @DeleteMapping("delDatabaseSourceById")
+    public ResponseDto deleteDatabaseSourceById(
+            @NotNull @RequestParam(value = "id") @ApiParam(value = "数据源标识") Integer id) {
         DatabaseSourceDto databaseSourceDto = new DatabaseSourceDto();
         databaseSourceDto.setId(id);
         databaseSourceService.delete(databaseSourceDto);
+        return responseUtil.success("删除成功");
+    }
+
+
+    @DeleteMapping("delDatabaseSourceByName")
+    public ResponseDto deleteDatabaseSourceByName(
+            @NotNull @RequestParam(value = "name") @ApiParam(value = "数据源名称") String name) {
+        databaseSourceService.deleteByName(name);
         return responseUtil.success("删除成功");
     }
 }

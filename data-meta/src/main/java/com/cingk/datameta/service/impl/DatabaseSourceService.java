@@ -91,4 +91,9 @@ public class DatabaseSourceService implements IDatabaseSource {
 
         return save(databaseSourceDto);
     }
+
+    @Override
+    public void deleteByName(String name) {
+        iDatabaseSourceRepository.deleteByName(name);
+    }
 }

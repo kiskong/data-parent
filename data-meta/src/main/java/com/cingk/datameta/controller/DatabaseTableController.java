@@ -2,6 +2,9 @@ package com.cingk.datameta.controller;
 
 import java.util.List;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,8 +38,8 @@ public class DatabaseTableController extends BaseRequestController {
     @Autowired
     private DatabaseTableService databaseTableService;
 
-    @GetMapping("getDatabaseTable")
-    public ResponseDto getALLTables(Integer dataSourceId)  {
+    @GetMapping("getAllDatabaseTable")
+    public ResponseDto getALLTables(@ApiParam(value = "数据源标识") Integer dataSourceId)  {
         DatabaseSourceDto databaseSourceDto = new DatabaseSourceDto();
         databaseSourceDto.setId(dataSourceId);
         DatabaseSourceEntity databaseSourceEntity = databaseSourceService.queryById(dataSourceId);
@@ -53,13 +56,14 @@ public class DatabaseTableController extends BaseRequestController {
         } catch (RuntimeException e) {
             LOGGER.error(e.getMessage(), e);
             ResponseDto responseDto = responseUtil.failure(ResponseEnum.CODE_FAIL.getCode());
-            responseDto.setExceptionTrace(e.toString());
+            responseDto.setExceptionTrace(ExceptionUtils.getStackTrace(e));
             return responseDto;
         }
     }
 
+    @ApiOperation(value = "提取指定数据源的所有表，并保存到数据库", notes = "")
     @PutMapping("saveAllTable")
-    public ResponseDto addAllTable(Integer dataSourceId){
+    public ResponseDto saveAllTable(@ApiParam(value = "数据源标识") Integer dataSourceId){
         ResponseDto responseDto = getALLTables(dataSourceId);
         boolean isFail = ResponseEnum.CODE_FAIL.getCode().equals(responseDto.getStatus());
         if (isFail) return responseDto;

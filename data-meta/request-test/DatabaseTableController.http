@@ -1,15 +1,15 @@
 
 ### 获取数据源所有表名
 ### local_mysql db_example
-GET http://localhost:8081/getDatabaseTable?dataSourceId=1
+GET http://localhost:8081/api/getAllDatabaseTable?dataSourceId=1
 Accept: application/json
 
 ### oracle kgrp
-GET http://localhost:8081/getDatabaseTable?dataSourceId=14
+GET http://localhost:8081/api/getAllDatabaseTable?dataSourceId=14
 Accept: application/json
 
 ### empty dataSource
-GET http://localhost:8081/getDatabaseTable?dataSourceId=2
+GET http://localhost:8081/api/getAllDatabaseTable?dataSourceId=2
 Accept: application/json
 ###
 

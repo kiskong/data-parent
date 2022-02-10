@@ -12,6 +12,7 @@ public class ResponseDto implements Serializable {
 
     /**
      * 具体数据
+     *
      */
     private List data;
 

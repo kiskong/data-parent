@@ -1,10 +1,15 @@
 package com.cingk.datameta.model.dto;
 
 import com.cingk.datameta.model.InterfaceEntity;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiParam;
 
 import java.time.Instant;
 
+@ApiModel(description = "数据源")
 public class DatabaseSourceDto implements InterfaceEntity {
+
+    @ApiParam(value = "数据源标识")
     private Integer id;
 
     private String databaseName;
