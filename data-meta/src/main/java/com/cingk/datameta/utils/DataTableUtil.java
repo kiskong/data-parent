@@ -1,12 +1,13 @@
 package com.cingk.datameta.utils;
 
+import com.cingk.datameta.service.impl.MysqlDataTableService;
+import com.cingk.datameta.service.impl.OracleDataTableService;
 import com.google.common.collect.Lists;
 
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.cingk.datameta.constant.enums.ServiceEnum;
 import com.cingk.datameta.model.IDataTableEntity;
 import com.cingk.datameta.model.dto.DataSourceDto;
 import com.cingk.datameta.model.entity.DataTableEntity;
@@ -30,9 +31,9 @@ public class DataTableUtil extends DatabaseUtil {
 	 */
 	public String getServiceNameByUrl(String url){
 		boolean isMysql = url.toLowerCase().contains(DB_TYPE_MYSQL);
-		if (isMysql) return ServiceEnum.MYSQL_TAB_SERVICE.getValue();
+		if (isMysql) return MysqlDataTableService.class.getName();
 		boolean isOracle = url.toLowerCase().contains(DB_TYPE_ORACLE);
-		if (isOracle) return ServiceEnum.ORACLE_TAB_SERVICE.getValue();
+		if (isOracle) return OracleDataTableService.class.getName();
 		return "";
 	}
 
@@ -74,5 +75,9 @@ public class DataTableUtil extends DatabaseUtil {
 		});
 
 		return dataTableEntityList;
+	}
+
+	public Integer getTotalDataTableCount(DataSourceDto dataSourceDto, String sql) throws SQLException{
+		return super.getRowCount(dataSourceDto,sql);
 	}
 }

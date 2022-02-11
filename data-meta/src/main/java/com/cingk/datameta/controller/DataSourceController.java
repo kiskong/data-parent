@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -27,31 +28,18 @@ public class DataSourceController extends BaseRequestController {
     @ApiOperation(value ="通过数据源名称获取数据源")
     @GetMapping("getDatabaseSourceByName")
     public ResponseDto getDatabaseSourceByName(@ApiParam(value = "数据源名称")String databaseName) {
-        ResponseDto responseDto = responseUtil.failure();
         DataSourceDto dataSourceDto = new DataSourceDto();
-        dataSourceDto.setDatabaseName(databaseName);
-        DataSourceEntity dataSourceEntity = dataSourceService.query(dataSourceDto);
-        if (dataSourceEntity == null) {
-            responseDto.setResCode(ResponseEnum.CODE_MESSAGE_F9000.getCode());
-            responseDto.setDescription("保存数据源出错");
-            return responseDto;
-        }
-        BeanUtils.copyProperties(dataSourceEntity, dataSourceDto);
+        ResponseDto responseDto = dataSourceService.getDataSourceByName(databaseName,dataSourceDto);
+        if (!responseDto.successed()) return responseDto;
         return responseUtil.success(dataSourceDto);
     }
 
     @ApiOperation(value ="通过数据源标识获取数据源")
     @GetMapping("getDatabaseSourceById")
     public ResponseDto getDatabaseSourceById(@ApiParam(value = "数据源标识")Integer id) {
-        ResponseDto responseDto = responseUtil.failure();
-        DataSourceEntity dataSourceEntity = dataSourceService.queryById(id);
-        if (dataSourceEntity == null) {
-            responseDto.setResCode(ResponseEnum.CODE_MESSAGE_F9000.getCode());
-            responseDto.setDescription("保存数据源出错");
-            return responseDto;
-        }
         DataSourceDto dataSourceDto = new DataSourceDto();
-        BeanUtils.copyProperties(dataSourceEntity, dataSourceDto);
+        ResponseDto responseDto = dataSourceService.getDataSourceById(id,dataSourceDto);
+        if (!responseDto.successed()) return responseDto;
         return responseUtil.success(dataSourceDto);
     }
 
@@ -67,6 +55,7 @@ public class DataSourceController extends BaseRequestController {
         return responseUtil.success(dataSourceService.queryPage(pageIndex, pageSize));
     }
 
+    @Transactional()
     @PostMapping("addDatabaseSource")
     public ResponseDto addDatabaseSource(
             @RequestBody @Validated DataSourceAo dataSourceAo, BindingResult bindingResult) {
@@ -75,20 +64,17 @@ public class DataSourceController extends BaseRequestController {
         if (!responseUtil.validateParamFailure(responseDto, bindingResult)) {
             return responseDto;
         }
-
         InterfaceEntity databaseSourceEntity = dataSourceService.save(dataSourceAo);
         if (databaseSourceEntity == null) {
-            responseDto.setResCode(ResponseEnum.CODE_MESSAGE_F9000.getCode());
-            responseDto.setDescription("保存数据源出错");
-            return responseDto;
+            return responseUtil.failure(ResponseEnum.CODE_MESSAGE_F9000.getCode(),"保存数据源出错");
         }
 
         DataSourceDto dataSourceDto = new DataSourceDto();
         BeanUtils.copyProperties(databaseSourceEntity, dataSourceDto);
-
         return responseUtil.success(dataSourceDto);
     }
 
+    @Transactional()
     @DeleteMapping("delDatabaseSourceById")
     public ResponseDto deleteDatabaseSourceById(
             @NotNull @RequestParam(value = "id") @ApiParam(value = "数据源标识") Integer id) {
@@ -98,7 +84,7 @@ public class DataSourceController extends BaseRequestController {
         return responseUtil.success("删除成功");
     }
 
-
+    @Transactional()
     @DeleteMapping("delDatabaseSourceByName")
     public ResponseDto deleteDatabaseSourceByName(
             @NotNull @RequestParam(value = "name") @ApiParam(value = "数据源名称") String name) {

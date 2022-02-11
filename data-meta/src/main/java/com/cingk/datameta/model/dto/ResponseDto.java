@@ -164,4 +164,8 @@ public class ResponseDto implements Serializable {
         this.costTime = costTime;
     }
 
+    public boolean successed(){
+        return ResponseEnum.CODE_SUCCESS.getCode().equals(this.status);
+    }
+
 }

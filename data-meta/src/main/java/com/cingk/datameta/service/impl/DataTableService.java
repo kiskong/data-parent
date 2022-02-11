@@ -2,6 +2,9 @@ package com.cingk.datameta.service.impl;
 
 import java.util.List;
 
+import com.cingk.datameta.constant.enums.ResponseEnum;
+import com.cingk.datameta.model.entity.DataSourceEntity;
+import com.cingk.datameta.service.intf.IDataSource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,10 +37,10 @@ public class DataTableService implements IDataTable {
     public IDataTableRepository dataTableRepository;
 
     @Override
-    public DataTableEntity getDatabaseTable(DataSourceDto dataSourceDto,
-                                            String tableName) {
+    public DataTableEntity getDatabaseTable(DataSourceDto dataSourceDto, String tableName) {
         return null;
     }
+
 
     @Override
     public void delDatabaseTable(DataTableDto dataTableDto) {
@@ -71,7 +74,7 @@ public class DataTableService implements IDataTable {
     }
 
     @Override
-    public List<DataTableEntity> getAllTables(DataSourceDto dataSourceDto, String sql,String resultClassName) {
+    public List<DataTableEntity> getAllTables(DataSourceDto dataSourceDto, String sql, String resultClassName) {
         try {
             return dataTableUtil.getDataTableEntityList(dataSourceDto, sql, resultClassName);
         } catch (SQLException | InvocationTargetException | NoSuchMethodException | IllegalAccessException
@@ -81,7 +84,7 @@ public class DataTableService implements IDataTable {
     }
 
     @Override
-    public List<DataTableEntity> getAllTablesWithSchema(DataSourceDto dataSourceDto,String schema) {
+    public List<DataTableEntity> getAllTablesWithSchema(DataSourceDto dataSourceDto, String schema) {
         return null;
     }
 
@@ -92,6 +95,15 @@ public class DataTableService implements IDataTable {
             return dataTableUtil.getDataTableEntityList(dataSourceDto, sql, resultClassName);
         } catch (SQLException | InvocationTargetException | NoSuchMethodException | IllegalAccessException
                 | InstantiationException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Integer getTotalDataTableCount(DataSourceDto dataSourceDto, String sql) {
+        try {
+            return dataTableUtil.getTotalDataTableCount(dataSourceDto,sql);
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

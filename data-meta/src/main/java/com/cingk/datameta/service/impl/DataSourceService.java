@@ -1,12 +1,15 @@
 package com.cingk.datameta.service.impl;
 
+import com.cingk.datameta.constant.enums.ResponseEnum;
 import com.cingk.datameta.mapper.IDataSourceRepository;
 import com.cingk.datameta.model.InterfaceEntity;
 import com.cingk.datameta.model.ao.DataSourceAo;
 import com.cingk.datameta.model.dto.DataSourceDto;
+import com.cingk.datameta.model.dto.ResponseDto;
 import com.cingk.datameta.model.entity.DataSourceEntity;
 import com.cingk.datameta.service.intf.IDataSource;
 import com.cingk.datameta.utils.DatabaseUtil;
+import com.cingk.datameta.utils.ResponseUtil;
 import com.google.common.collect.Lists;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,38 +28,59 @@ public class DataSourceService implements IDataSource {
 
     @Autowired
     private DatabaseUtil databaseUtil;
+
     @Autowired
     private IDataSourceRepository iDataSourceRepository;
 
+    @Autowired
+    private ResponseUtil responseUtil;
+
 
     @Override
-    public DataSourceEntity save(InterfaceEntity databaseSourceDto) {
+    public DataSourceDto getDataSourceDtoById(Integer dataSourceId,DataSourceDto dataSourceDto) {
+        DataSourceEntity dataSourceEntity = queryById(dataSourceId);
+        if (dataSourceEntity == null) return null;
+        BeanUtils.copyProperties(dataSourceEntity, dataSourceDto);
+        return dataSourceDto;
+    }
+
+    @Override
+    public DataSourceDto getDataSourceDtoByName(String databaseName,DataSourceDto dataSourceDto) {
+        DataSourceEntity dataSourceEntity = queryByName(databaseName);
+        if (dataSourceEntity == null) return null;
+        BeanUtils.copyProperties(dataSourceEntity, dataSourceDto);
+        return dataSourceDto;
+    }
+
+
+    @Override
+    public DataSourceEntity save(InterfaceEntity dataSourceDto) {
         DataSourceEntity dataSourceEntity = new DataSourceEntity();
-        BeanUtils.copyProperties(databaseSourceDto, dataSourceEntity);
+        BeanUtils.copyProperties(dataSourceDto, dataSourceEntity);
         return iDataSourceRepository.save(dataSourceEntity);
     }
 
     @Override
-    public void delete(InterfaceEntity databaseSourceDto) {
+    public void delete(InterfaceEntity dataSourceDto) {
         DataSourceEntity dataSourceEntity = new DataSourceEntity();
-        BeanUtils.copyProperties(databaseSourceDto, dataSourceEntity);
+        BeanUtils.copyProperties(dataSourceDto, dataSourceEntity);
         iDataSourceRepository.delete(dataSourceEntity);
     }
 
     @Override
-    public void deleteById(Integer id){
+    public void deleteById(Integer id) {
         iDataSourceRepository.deleteById(id);
     }
 
     @Override
-    public void modify(InterfaceEntity databaseSourceDto) {
+    public void modify(InterfaceEntity dataSourceDto) {
         DataSourceEntity dataSourceEntity = new DataSourceEntity();
-        BeanUtils.copyProperties(databaseSourceDto, dataSourceEntity);
+        BeanUtils.copyProperties(dataSourceDto, dataSourceEntity);
     }
 
     @Override
-    public DataSourceEntity query(InterfaceEntity databaseSourceDto) {
-        return iDataSourceRepository.getByName(((DataSourceDto)databaseSourceDto).getDatabaseName());
+    public DataSourceEntity query(InterfaceEntity dataSourceDto) {
+        return iDataSourceRepository.getByName(((DataSourceDto) dataSourceDto).getDatabaseName());
     }
 
     @Override
@@ -66,8 +90,13 @@ public class DataSourceService implements IDataSource {
     }
 
     @Override
-    public DataSourceEntity queryById(Integer id){
+    public DataSourceEntity queryById(Integer id) {
         return iDataSourceRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public DataSourceEntity queryByName(String databaseName) {
+        return iDataSourceRepository.getByName(databaseName);
     }
 
     /**
@@ -77,14 +106,15 @@ public class DataSourceService implements IDataSource {
      */
     @Override
     public List<DataSourceEntity> queryPage(String pageIndex, String pageSize) {
-        Sort sort = Sort.by(Sort.Direction.DESC,"id");
-        Pageable pageable = PageRequest.of(Integer.parseInt(pageIndex), Integer.parseInt(pageSize),sort);
-        Page<DataSourceEntity> databaseSourceEntityPage =  iDataSourceRepository.findAll(pageable);
+        Sort sort = Sort.by(Sort.Direction.DESC, "id");
+        Pageable pageable = PageRequest.of(Integer.parseInt(pageIndex), Integer.parseInt(pageSize), sort);
+        Page<DataSourceEntity> databaseSourceEntityPage = iDataSourceRepository.findAll(pageable);
         return databaseSourceEntityPage.stream().collect(Collectors.toList());
     }
 
     /**
      * 保存数据源
+     *
      * @return
      */
     @Override
@@ -98,7 +128,31 @@ public class DataSourceService implements IDataSource {
     }
 
     @Override
+    public DataSourceEntity query(DataSourceDto dataSourceDto) {
+        return queryById(dataSourceDto.getId());
+    }
+
+
+    @Override
     public void deleteByName(String name) {
         iDataSourceRepository.deleteByName(name);
+    }
+
+    @Override
+    public ResponseDto getDataSourceById(Integer dataSourceId, DataSourceDto dataSourceDto) {
+        dataSourceDto = getDataSourceDtoById(dataSourceId,dataSourceDto);
+        if (dataSourceDto != null) {
+            return responseUtil.success("获取数据源成功");
+        }
+        return responseUtil.failure( "数据源不存在");
+    }
+
+    @Override
+    public ResponseDto getDataSourceByName(String dataSourceName, DataSourceDto dataSourceDto) {
+        dataSourceDto = getDataSourceDtoByName(dataSourceName,dataSourceDto);
+        if (dataSourceDto != null) {
+            return responseUtil.success("获取数据源成功");
+        }
+        return responseUtil.failure("数据源不存在");
     }
 }

@@ -24,6 +24,9 @@ public class MysqlDataTableService extends DataTableService {
     //查询Sql结果存储对象
     private static final String JDBC_RESULT_CLASS_NAME = MysqlTableEntity.class.getName();
 
+    private static final String QUERY_TABLE_COUNT = "select count(1) from information_schema.tables";
+    private static final String QUERY_TABLE_COUNT_WITH_SCHEMA = QUERY_TABLE_COUNT + " where table_schema='%s'";
+
 
     @Override
     public List<DataTableEntity> getAllTables(DataSourceDto dataSourceDto)  {
@@ -35,5 +38,10 @@ public class MysqlDataTableService extends DataTableService {
     public List<DataTableEntity> getAllTablesWithSchema(DataSourceDto dataSourceDto, String schema) {
         String sql = String.format(QUERY_TABLES_WITH_SCHEMA,QUERY_CONDITION,schema);
         return super.getAllTablesWithSchema(dataSourceDto,schema,sql,JDBC_RESULT_CLASS_NAME);
+    }
+
+    public Integer getTotalDataTableCount(DataSourceDto dataSource,String schema){
+        String sql = String.format(QUERY_TABLE_COUNT_WITH_SCHEMA,schema);
+        return super.getTotalDataTableCount(dataSource, sql);
     }
 }

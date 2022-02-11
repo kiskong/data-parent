@@ -118,6 +118,19 @@ public class DatabaseUtil {
         return instanceClass;
     }
 
+    private Integer getRowCount(Connection connection, String sql) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        if (!rs.next()) return null;
+        return rs.getObject(1,Integer.class);
+    }
+
+    public Integer getRowCount(DataSourceDto dataSourceDto, String sql) throws SQLException{
+        DataSource dataSource = getDataSource(dataSourceDto);
+        try (Connection connection = dataSource.getConnection()) {
+            return getRowCount(connection, sql);
+        }
+    }
 
 
     /**

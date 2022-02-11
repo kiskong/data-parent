@@ -19,7 +19,11 @@ public interface IDataTable {
     List<DataTableEntity> saveAllTables(List<DataTableEntity> dataTableEntityList) ;
     List<DataTableEntity> getAllTables(DataSourceDto dataSourceDto, String sql, String resultClassName) ;
     List<DataTableEntity> getAllTablesWithSchema(DataSourceDto dataSourceDto, String schema) ;
-    List<DataTableEntity> getAllTablesWithSchema(DataSourceDto dataSourceDto, String schema, String sql, String resultClassName) ;
+    List<DataTableEntity> getAllTablesWithSchema(DataSourceDto dataSourceDto, String schema, String sql, String resultClassName);
+
+    Integer getTotalDataTableCount(DataSourceDto dataSourceDto, String schema);
+//    Integer getTotalDataTableCount(Integer dataSourceId, String schema);
+//    Integer getTotalDataTableCount(String dataSourceName, String schema);
 
 
 }
