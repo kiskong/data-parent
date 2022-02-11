@@ -1,26 +1,41 @@
-package com.cingk.datameta.model.dto;
+package com.cingk.datameta.model.entity;
 
 import com.cingk.datameta.model.IDataTableColumnEntity;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
 
-
-public class DatabaseTableColumnDto implements IDataTableColumnEntity {
+@Entity
+@Table(name = "database_table_column")
+public class DataTableColumnEntity implements IDataTableColumnEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Integer id;
 
+    @Column(name = "tab_id")
     private Integer tabId;
 
+    @Column(name = "col_id")
     private Integer colId;
 
+    @Lob
+    @Column(name = "col_name")
     private String colName;
 
+    @Lob
+    @Column(name = "col_type")
     private String colType;
 
+    @Column(name = "col_length")
     private Integer colLength;
 
+    @Column(name = "col_decimal")
     private Integer colDecimal;
-
-    private DatabaseSourceDto databaseSourceDto;
-
-    private DatabaseTableDto databaseTableDto;
 
     public Integer getColDecimal() {
         return colDecimal;
@@ -76,21 +91,5 @@ public class DatabaseTableColumnDto implements IDataTableColumnEntity {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public DatabaseSourceDto getDatabaseSourceDto() {
-        return databaseSourceDto;
-    }
-
-    public void setDatabaseSourceDto(DatabaseSourceDto databaseSourceDto) {
-        this.databaseSourceDto = databaseSourceDto;
-    }
-
-    public DatabaseTableDto getDatabaseTableDto() {
-        return databaseTableDto;
-    }
-
-    public void setDatabaseTableDto(DatabaseTableDto databaseTableDto) {
-        this.databaseTableDto = databaseTableDto;
     }
 }

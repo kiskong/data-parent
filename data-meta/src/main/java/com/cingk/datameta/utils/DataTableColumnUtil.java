@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 
 import com.cingk.datameta.constant.enums.ServiceEnum;
 import com.cingk.datameta.model.IDataTableColumnEntity;
-import com.cingk.datameta.model.dto.DatabaseSourceDto;
-import com.cingk.datameta.model.dto.DatabaseTableColumnDto;
-import com.cingk.datameta.model.dto.DatabaseTableDto;
+import com.cingk.datameta.model.dto.DataSourceDto;
+import com.cingk.datameta.model.dto.DataTableColumnDto;
+import com.cingk.datameta.model.dto.DataTableDto;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 
@@ -40,19 +40,19 @@ public class DataTableColumnUtil extends DatabaseUtil {
 
 	/**
 	 * 根据数据源信息获取不同数据库对应的服务
-	 * @param databaseSourceDto 数据源连接信息对象
+	 * @param dataSourceDto 数据源连接信息对象
 	 * @return database classic
 	 */
-	public String getServiceNameByUrl(DatabaseSourceDto databaseSourceDto){
-		return getServiceNameByUrl(databaseSourceDto.getUrl());
+	public String getServiceNameByUrl(DataSourceDto dataSourceDto){
+		return getServiceNameByUrl(dataSourceDto.getUrl());
 	}
 	/**
 	 * 根据数据源信息获取不同数据库对应的服务
-	 * @param databaseTableDto 数据表源对象
+	 * @param dataTableDto 数据表源对象
 	 * @return database classic
 	 */
-	public String getServiceNameByUrl(DatabaseTableDto databaseTableDto){
-		return getServiceNameByUrl(databaseTableDto.getDatabaseSourceDto());
+	public String getServiceNameByUrl(DataTableDto dataTableDto){
+		return getServiceNameByUrl(dataTableDto.getDatabaseSourceDto());
 	}
 
 
@@ -61,37 +61,37 @@ public class DataTableColumnUtil extends DatabaseUtil {
 	/**
 	 * 依据目标数据源获取数据库中表信息
 	 *
-	 * @param databaseTableDto 目标数据表信息
+	 * @param dataTableDto 目标数据表信息
 	 * @param sql 查询SQL
 	 * @param className sql查询结果存储对象类名
 	 * @return List<IDataTableColumnEntity> {@link com.cingk.datameta.model.IDataTableColumnEntity}
 	 */
-	public List<IDataTableColumnEntity> getTableColumnEntityList(DatabaseTableDto databaseTableDto, String sql, String className)
+	public List<IDataTableColumnEntity> getTableColumnEntityList(DataTableDto dataTableDto, String sql, String className)
 		throws SQLException,
 		InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-		return getTableColumnEntityList(databaseTableDto, sql, Class.forName(className));
+		return getTableColumnEntityList(dataTableDto, sql, Class.forName(className));
 	}
 
 	/**
 	 * 依据目标数据源获取数据库中表信息
 	 *
-	 * @param databaseTableDto 目标数据表信息
+	 * @param dataTableDto 目标数据表信息
 	 * @param sql 查询SQL
 	 * @param classzz sql查询结果存储对象类描述
 	 * @return List<IDataTableColumnEntity> {@link com.cingk.datameta.model.IDataTableColumnEntity}
 	 */
-	public List<IDataTableColumnEntity> getTableColumnEntityList(DatabaseTableDto databaseTableDto, String sql, Class classzz)
+	public List<IDataTableColumnEntity> getTableColumnEntityList(DataTableDto dataTableDto, String sql, Class classzz)
 		throws SQLException,
 		InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 
-		DatabaseSourceDto databaseSourceDto = databaseTableDto.getDatabaseSourceDto();
-		List<IDataTableColumnEntity> targetDataTableColumnEntityList = getTableColumnEntityList(databaseSourceDto, sql, classzz);
+		DataSourceDto dataSourceDto = dataTableDto.getDatabaseSourceDto();
+		List<IDataTableColumnEntity> targetDataTableColumnEntityList = getTableColumnEntityList(dataSourceDto, sql, classzz);
 		List<IDataTableColumnEntity> localDataTableColumnEntityList = Lists.newArrayList();
 		for (IDataTableColumnEntity iDatabaseTableEntity : targetDataTableColumnEntityList) {
-			DatabaseTableColumnDto databaseTableColumnDto = new DatabaseTableColumnDto();
-			BeanUtils.copyProperties(iDatabaseTableEntity, databaseTableColumnDto);
-			databaseTableColumnDto.setDatabaseTableDto(databaseTableDto);
-			localDataTableColumnEntityList.add(databaseTableColumnDto);
+			DataTableColumnDto dataTableColumnDto = new DataTableColumnDto();
+			BeanUtils.copyProperties(iDatabaseTableEntity, dataTableColumnDto);
+			dataTableColumnDto.setDatabaseTableDto(dataTableDto);
+			localDataTableColumnEntityList.add(dataTableColumnDto);
 		}
 		return localDataTableColumnEntityList;
 	}
@@ -99,15 +99,15 @@ public class DataTableColumnUtil extends DatabaseUtil {
 	/**
 	 * 依据目标数据源获取数据库中表信息
 	 *
-	 * @param databaseSourceDto 目标数据源信息
+	 * @param dataSourceDto 目标数据源信息
 	 * @param sql 查询SQL
 	 * @param clazz sql查询结果存储对象描述
 	 * @return List<IDataTableColumnEntity> {@link com.cingk.datameta.model.IDataTableColumnEntity}
 	 */
-	public List<IDataTableColumnEntity> getTableColumnEntityList(DatabaseSourceDto databaseSourceDto, String sql, Class clazz)
+	public List<IDataTableColumnEntity> getTableColumnEntityList(DataSourceDto dataSourceDto, String sql, Class clazz)
 		throws SQLException,
 		InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException {
-		List<Object> resultList = super.getResultSet(databaseSourceDto, sql, clazz);
+		List<Object> resultList = super.getResultSet(dataSourceDto, sql, clazz);
 		List<IDataTableColumnEntity> dataTableColumnEntityList = Lists.newArrayList();
 		if (resultList == null) {
 			return dataTableColumnEntityList;
@@ -119,15 +119,15 @@ public class DataTableColumnUtil extends DatabaseUtil {
 	/**
 	 * 依据目标数据源获取数据库中表信息
 	 *
-	 * @param databaseSourceDto 目标数据源信息
+	 * @param dataSourceDto 目标数据源信息
 	 * @param sql 查询SQL
 	 * @param className sql查询结果存储对象类名
 	 * @return List<IDataTableColumnEntity> {@link com.cingk.datameta.model.IDataTableColumnEntity}
 	 */
-	public List<IDataTableColumnEntity> getTableColumnEntityList(DatabaseSourceDto databaseSourceDto, String sql, String className)
+	public List<IDataTableColumnEntity> getTableColumnEntityList(DataSourceDto dataSourceDto, String sql, String className)
 		throws SQLException,
 		InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-		return getTableColumnEntityList(databaseSourceDto,sql,Class.forName(className));
+		return getTableColumnEntityList(dataSourceDto,sql,Class.forName(className));
 	}
 
 }

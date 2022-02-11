@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cingk.datameta.model.IDataTableColumnEntity;
-import com.cingk.datameta.model.dto.DatabaseSourceDto;
-import com.cingk.datameta.model.dto.DatabaseTableDto;
-import com.cingk.datameta.service.intf.IColumnService;
+import com.cingk.datameta.model.dto.DataSourceDto;
+import com.cingk.datameta.model.dto.DataTableDto;
+import com.cingk.datameta.service.intf.IDataTableColumn;
 import com.cingk.datameta.utils.DataTableColumnUtil;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
@@ -20,21 +20,20 @@ import java.sql.SQLException;
  * @date:2022-01-30
  */
 @Service
-public class DatabaseTableColumnService implements IColumnService {
+public class DataTableColumnService implements IDataTableColumn {
 
 	@Autowired
 	public DataTableColumnUtil dataTableColumnUtil;
 
 	@Override
-	public List<IDataTableColumnEntity> getTableColumn(DatabaseSourceDto databaseSourceDto, String sql, Class resultClass) {
+	public List<IDataTableColumnEntity> getTableColumn(DataSourceDto dataSourceDto, String sql, Class resultClass) {
 		return null;
 	}
 
 	@Override
-	public List<IDataTableColumnEntity> getTableColumn(DatabaseTableDto databaseTableDto, String sql, Class resultClass) {
+	public List<IDataTableColumnEntity> getTableColumn(DataTableDto dataTableDto, String sql, Class resultClass) {
 		try {
-
-			return dataTableColumnUtil.getTableColumnEntityList(databaseTableDto, sql, resultClass);
+			return dataTableColumnUtil.getTableColumnEntityList(dataTableDto, sql, resultClass);
 		} catch (SQLException | InvocationTargetException
 			| NoSuchMethodException | IllegalAccessException
 			| InstantiationException | ClassNotFoundException e) {
@@ -43,7 +42,7 @@ public class DatabaseTableColumnService implements IColumnService {
 	}
 
 	@Override
-	public List<IDataTableColumnEntity> getTableColumn(DatabaseTableDto databaseTableDto) {
+	public List<IDataTableColumnEntity> getTableColumn(DataTableDto dataTableDto) {
 		return null;
 	}
 }

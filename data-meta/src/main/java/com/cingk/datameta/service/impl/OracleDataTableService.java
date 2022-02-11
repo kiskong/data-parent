@@ -5,12 +5,12 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import cn.hutool.core.util.StrUtil;
-import com.cingk.datameta.model.dto.DatabaseSourceDto;
-import com.cingk.datameta.model.entity.DatabaseTableEntity;
+import com.cingk.datameta.model.dto.DataSourceDto;
+import com.cingk.datameta.model.entity.DataTableEntity;
 import com.cingk.datameta.model.entity.OracleTableEntity;
 
 @Service
-public class OracleTableService extends DatabaseTableService {
+public class OracleDataTableService extends DataTableService {
 
     private static final String[] DB_SYS_SCHEMA = {"ORDSYS", "SYSMAN", "APPQOSSYS", "XDB", "ORDDATA",
             "SYS", "WMSYS", "SYSTEM", "MDSYS", "OUTLN",
@@ -27,14 +27,14 @@ public class OracleTableService extends DatabaseTableService {
     //查询Sql结果存储对象
     private static final String JDBC_RESULT_CLASS_NAME = OracleTableEntity.class.getName();
 
-    public List<DatabaseTableEntity> getAllTables(DatabaseSourceDto databaseSourceDto) {
+    public List<DataTableEntity> getAllTables(DataSourceDto dataSourceDto) {
         String sql = String.format(QUERY_ALL_TAB_UNSYS, QUERY_CONDITION);
-        return super.getAllTables(databaseSourceDto,sql,JDBC_RESULT_CLASS_NAME);
+        return super.getAllTables(dataSourceDto,sql,JDBC_RESULT_CLASS_NAME);
     }
 
-    public List<DatabaseTableEntity> getAllTablesWithSchema(DatabaseSourceDto databaseSourceDto, String schema) {
+    public List<DataTableEntity> getAllTablesWithSchema(DataSourceDto dataSourceDto, String schema) {
         String sql = String.format(QUERY_TABLES_WITH_SCHEMA, QUERY_CONDITION, schema);
-        return super.getAllTablesWithSchema(databaseSourceDto,schema,sql,JDBC_RESULT_CLASS_NAME);
+        return super.getAllTablesWithSchema(dataSourceDto,schema,sql,JDBC_RESULT_CLASS_NAME);
     }
 
 }

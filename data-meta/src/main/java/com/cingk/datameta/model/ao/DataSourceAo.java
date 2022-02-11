@@ -1,32 +1,59 @@
-package com.cingk.datameta.model.dto;
+package com.cingk.datameta.model.ao;
 
-import com.cingk.datameta.model.InterfaceEntity;
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiModelProperty;
 
-import java.time.Instant;
+import javax.validation.constraints.NotBlank;
 
-public class DatabaseSourceDto implements InterfaceEntity {
+@ApiModel(description = "数据源")
+public class DataSourceAo {
 
-    private Integer id;
-
+    /**
+     * 数据源名称
+     *
+     */
+    @ApiModelProperty(value = "数据源名称")
     private String databaseName;
 
+    /**
+     * 数据源连接
+     *
+     */
+    @ApiModelProperty(value = "数据源连接")
+    @NotBlank(message = "url不能为空")
     private String url;
 
+    /**
+     * 数据源访问用户
+     *
+     */
+    @ApiModelProperty(value = "数据源访问用户")
+    @NotBlank(message = "username不能为空")
     private String username;
 
+    /**
+     * 数据源访问用户密码
+     *
+     */
+    @ApiModelProperty(value = "数据源访问用户密码")
+    @NotBlank(message = "pazzword不能为空")
     private String pazzword;
 
-    private String driver;
-
+    /**
+     * 备注
+     *
+     */
+    @ApiModelProperty(value = "备注")
     private String instruction;
 
-    private Instant createTime;
-
-    private Instant updateTime;
-
+    /**
+     * 状态:0-停用;1-启用
+     *
+     */
+    @ApiModelProperty(value = "状态:0-停用;1-启用")
     private Integer status;
+
+    private DataSourceAo(){}
 
     public Integer getStatus() {
         return status;
@@ -34,22 +61,6 @@ public class DatabaseSourceDto implements InterfaceEntity {
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    public Instant getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Instant updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public Instant getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Instant createTime) {
-        this.createTime = createTime;
     }
 
     public String getInstruction() {
@@ -60,13 +71,6 @@ public class DatabaseSourceDto implements InterfaceEntity {
         this.instruction = instruction;
     }
 
-    public String getDriver() {
-        return driver;
-    }
-
-    public void setDriver(String driver) {
-        this.driver = driver;
-    }
 
     public String getPazzword() {
         return pazzword;
@@ -100,11 +104,4 @@ public class DatabaseSourceDto implements InterfaceEntity {
         this.databaseName = databaseName;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 }

@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cingk.datameta.constant.enums.ResponseEnum;
 import com.cingk.datameta.model.IDataTableColumnEntity;
-import com.cingk.datameta.model.dto.DatabaseSourceDto;
-import com.cingk.datameta.model.dto.DatabaseTableDto;
+import com.cingk.datameta.model.dto.DataSourceDto;
+import com.cingk.datameta.model.dto.DataTableDto;
 import com.cingk.datameta.model.dto.ResponseDto;
-import com.cingk.datameta.model.entity.DatabaseSourceEntity;
-import com.cingk.datameta.service.impl.DatabaseSourceService;
-import com.cingk.datameta.service.intf.IColumnService;
+import com.cingk.datameta.model.entity.DataSourceEntity;
+import com.cingk.datameta.service.impl.DataSourceService;
+import com.cingk.datameta.service.intf.IDataTableColumn;
 import com.cingk.datameta.utils.DataTableColumnUtil;
 import com.cingk.datameta.utils.SpringUtil;
 import org.slf4j.Logger;
@@ -29,33 +29,32 @@ import org.slf4j.LoggerFactory;
  */
 @RestController
 @RequestMapping("/api")
-public class DatabaseTableColumnController extends BaseRequestController {
+public class DataTableColumnController extends BaseRequestController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseTableColumnController.class);
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(DataTableColumnController.class);
 
 	@Autowired
 	private DataTableColumnUtil dataTableColumnUtil;
 	@Autowired
-	private DatabaseSourceService databaseSourceService;
+	private DataSourceService dataSourceService;
 
 	@GetMapping("getDataTableColumn")
 	public ResponseDto getTabColumn(Integer dataSourceId, String schema, String tableName) {
-		DatabaseSourceDto databaseSourceDto = new DatabaseSourceDto();
-		databaseSourceDto.setId(dataSourceId);
-		DatabaseSourceEntity databaseSourceEntity = databaseSourceService.query(databaseSourceDto);
-		if (databaseSourceEntity == null) {
+		DataSourceDto dataSourceDto = new DataSourceDto();
+		dataSourceDto.setId(dataSourceId);
+		DataSourceEntity dataSourceEntity = dataSourceService.query(dataSourceDto);
+		if (dataSourceEntity == null) {
 			return responseUtil.failure(ResponseEnum.CODE_FAIL.getCode(), "数据源不存在");
 		}
-		BeanUtils.copyProperties(databaseSourceEntity, databaseSourceDto);
-		DatabaseTableDto databaseTableDto = new DatabaseTableDto();
-		databaseTableDto.setSchemaName(schema);
-		databaseTableDto.setTabName(tableName);
-		databaseTableDto.setDatabaseSourceDto(databaseSourceDto);
-		String tableColumnServiceName = dataTableColumnUtil.getServiceNameByUrl(databaseTableDto);
-		IColumnService columnService = SpringUtil.getBean(tableColumnServiceName);
+		BeanUtils.copyProperties(dataSourceEntity, dataSourceDto);
+		DataTableDto dataTableDto = new DataTableDto();
+		dataTableDto.setSchemaName(schema);
+		dataTableDto.setTabName(tableName);
+		dataTableDto.setDatabaseSourceDto(dataSourceDto);
+		String tableColumnServiceName = dataTableColumnUtil.getServiceNameByUrl(dataTableDto);
+		IDataTableColumn columnService = SpringUtil.getBean(tableColumnServiceName);
 		try {
-			List<IDataTableColumnEntity> dataTableColumnEntityList = columnService.getTableColumn(databaseTableDto);
+			List<IDataTableColumnEntity> dataTableColumnEntityList = columnService.getTableColumn(dataTableDto);
 			return responseUtil.success(ResponseEnum.CODE_SUCCESS.getCode(), "查询数据成功", dataTableColumnEntityList);
 		} catch (RuntimeException e) {
 			LOGGER.error(e.getMessage(), e);

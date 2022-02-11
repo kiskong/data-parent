@@ -1,36 +1,49 @@
-package com.cingk.datameta.model.dto;
+package com.cingk.datameta.model.entity;
 
 import com.cingk.datameta.model.InterfaceEntity;
-
 import java.time.Instant;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
 
-public class DatabaseTableDto implements InterfaceEntity {
+@Entity
+@Table(name = "database_table")
+public class DataTableEntity implements InterfaceEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "tab_id", nullable = false)
     private Integer id;
 
+    @Lob
+    @Column(name = "tab_name")
     private String tabName;
 
+    @Column(name = "database_source_id")
     private Integer databaseSourceId;
 
-    private String instruction;
-
-    private String aliasName;
-
-    private String version;
-
-    private Instant creatTime;
-
+    @Column(name= "schemaName")
     private String schemaName;
 
-    private DatabaseSourceDto databaseSourceDto;
+    @Lob
+    @Column(name = "instruction")
+    private String instruction;
 
-    public String getTabType() {
-        return tabType;
-    }
+    @Lob
+    @Column(name = "alias_name")
+    private String aliasName;
 
-    public void setTabType(String tabType) {
-        this.tabType = tabType;
-    }
+    @Lob
+    @Column(name = "version")
+    private String version;
 
+    @Column(name = "creat_time")
+    private Instant creatTime;
+
+    @Column(name = "tab_type")
     private String tabType;
 
     public Instant getCreatTime() {
@@ -89,19 +102,19 @@ public class DatabaseTableDto implements InterfaceEntity {
         this.id = id;
     }
 
-    public DatabaseSourceDto getDatabaseSourceDto() {
-        return databaseSourceDto;
-    }
-
-    public void setDatabaseSourceDto(DatabaseSourceDto databaseSourceDto) {
-        this.databaseSourceDto = databaseSourceDto;
-    }
-
     public String getSchemaName() {
         return schemaName;
     }
 
     public void setSchemaName(String schemaName) {
         this.schemaName = schemaName;
+    }
+
+    public String getTabType() {
+        return tabType;
+    }
+
+    public void setTabType(String tabType) {
+        this.tabType = tabType;
     }
 }

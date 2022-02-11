@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.cingk.datameta.constant.enums.ResponseEnum;
 import com.cingk.datameta.model.InterfaceEntity;
+import com.google.common.collect.Lists;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -25,7 +26,8 @@ public class ResponseDto implements Serializable {
      *
      */
     @ApiModelProperty(value = "业务响应的具体数据")
-    private List data;
+    @SuppressWarnings("unchecked")
+    private List<Object> data;
 
     /**
      * 响应信息,响应编码对应的描述,通过枚举自动映射
@@ -49,11 +51,11 @@ public class ResponseDto implements Serializable {
     @ApiModelProperty(value = "数据长度")
     private Integer dataSize;
 
-    public List getData() {
-        return data;
-    }
+    @SuppressWarnings("unchecked")
+    public List getData() {return data;}
 
-    public void setData(List data) {
+    @SuppressWarnings("unchecked")
+    public void setData(List<Object> data) {
         this.data = data;
     }
 
@@ -61,13 +63,15 @@ public class ResponseDto implements Serializable {
         return resMessage;
     }
 
-    public void setData(Map data) {
-        this.data = new ArrayList();
+    @SuppressWarnings("unchecked")
+    public void setData(Map<String,Object> data) {
+        this.data = Lists.newArrayList();
         this.data.add(data);
     }
 
+    @SuppressWarnings("unchecked")
     public void setData(InterfaceEntity data) {
-        this.data = new ArrayList();
+        this.data = Lists.newArrayList();
         this.data.add(data);
     }
 

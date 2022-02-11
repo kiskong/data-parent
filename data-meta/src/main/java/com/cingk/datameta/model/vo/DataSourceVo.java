@@ -1,59 +1,28 @@
-package com.cingk.datameta.model.ao;
+package com.cingk.datameta.model.vo;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import javax.persistence.*;
+import java.time.Instant;
 
-import javax.validation.constraints.NotBlank;
+public class DataSourceVo {
+    private Integer id;
 
-@ApiModel(description = "数据源")
-public class DatabaseSourceAo {
-
-    /**
-     * 数据源名称
-     *
-     */
-    @ApiModelProperty(value = "数据源名称")
     private String databaseName;
 
-    /**
-     * 数据源连接
-     *
-     */
-    @ApiModelProperty(value = "数据源连接")
-    @NotBlank(message = "url不能为空")
     private String url;
 
-    /**
-     * 数据源访问用户
-     *
-     */
-    @ApiModelProperty(value = "数据源访问用户")
-    @NotBlank(message = "username不能为空")
     private String username;
 
-    /**
-     * 数据源访问用户密码
-     *
-     */
-    @ApiModelProperty(value = "数据源访问用户密码")
-    @NotBlank(message = "pazzword不能为空")
     private String pazzword;
 
-    /**
-     * 备注
-     *
-     */
-    @ApiModelProperty(value = "备注")
+    private String driver;
+
     private String instruction;
 
-    /**
-     * 状态:0-停用;1-启用
-     *
-     */
-    @ApiModelProperty(value = "状态:0-停用;1-启用")
-    private Integer status;
+    private Instant createTime;
 
-    private DatabaseSourceAo(){}
+    private Instant updateTime;
+
+    private Integer status;
 
     public Integer getStatus() {
         return status;
@@ -61,6 +30,22 @@ public class DatabaseSourceAo {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Instant getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Instant updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public Instant getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Instant createTime) {
+        this.createTime = createTime;
     }
 
     public String getInstruction() {
@@ -71,6 +56,13 @@ public class DatabaseSourceAo {
         this.instruction = instruction;
     }
 
+    public String getDriver() {
+        return driver;
+    }
+
+    public void setDriver(String driver) {
+        this.driver = driver;
+    }
 
     public String getPazzword() {
         return pazzword;
@@ -104,4 +96,11 @@ public class DatabaseSourceAo {
         this.databaseName = databaseName;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }

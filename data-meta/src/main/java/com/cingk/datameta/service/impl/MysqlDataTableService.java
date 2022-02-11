@@ -5,12 +5,12 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import cn.hutool.core.util.StrUtil;
-import com.cingk.datameta.model.dto.DatabaseSourceDto;
-import com.cingk.datameta.model.entity.DatabaseTableEntity;
+import com.cingk.datameta.model.dto.DataSourceDto;
+import com.cingk.datameta.model.entity.DataTableEntity;
 import com.cingk.datameta.model.entity.MysqlTableEntity;
 
 @Service
-public class MysqlTableService extends DatabaseTableService {
+public class MysqlDataTableService extends DataTableService {
 
     private static final String[] DB_SYS_SCHEMA = {"information_schema", "mysql", "performance_schema", "sys"};
     private static final String QUERY_CONDITION = StrUtil.join(StrUtil.COMMA,
@@ -26,14 +26,14 @@ public class MysqlTableService extends DatabaseTableService {
 
 
     @Override
-    public List<DatabaseTableEntity> getAllTables(DatabaseSourceDto databaseSourceDto)  {
+    public List<DataTableEntity> getAllTables(DataSourceDto dataSourceDto)  {
         String sql = String.format(QUERY_ALL_TAB_UNSYS, QUERY_CONDITION);
-        return super.getAllTables(databaseSourceDto,sql,JDBC_RESULT_CLASS_NAME);
+        return super.getAllTables(dataSourceDto,sql,JDBC_RESULT_CLASS_NAME);
     }
 
 
-    public List<DatabaseTableEntity> getAllTablesWithSchema(DatabaseSourceDto databaseSourceDto,String schema) {
+    public List<DataTableEntity> getAllTablesWithSchema(DataSourceDto dataSourceDto, String schema) {
         String sql = String.format(QUERY_TABLES_WITH_SCHEMA,QUERY_CONDITION,schema);
-        return super.getAllTablesWithSchema(databaseSourceDto,schema,sql,JDBC_RESULT_CLASS_NAME);
+        return super.getAllTablesWithSchema(dataSourceDto,schema,sql,JDBC_RESULT_CLASS_NAME);
     }
 }

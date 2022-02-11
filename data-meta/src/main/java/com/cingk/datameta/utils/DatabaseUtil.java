@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import cn.hutool.core.util.StrUtil;
 import com.cingk.datameta.constant.enums.DatabaseDriverEnum;
-import com.cingk.datameta.model.dto.DatabaseSourceDto;
+import com.cingk.datameta.model.dto.DataSourceDto;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -36,20 +36,20 @@ public class DatabaseUtil {
 
     /**
      * 构造数据源连接信息
-     * @param databaseSourceDto 数据源连接信息对象
+     * @param dataSourceDto 数据源连接信息对象
      * @return See also {@link org.springframework.jdbc.datasource.SingleConnectionDataSource}
      */
-    public DataSource getDataSource(DatabaseSourceDto databaseSourceDto) {
+    public DataSource getDataSource(DataSourceDto dataSourceDto) {
         return new SingleConnectionDataSource(
-                databaseSourceDto.getUrl(),
-                databaseSourceDto.getUsername(),
-                databaseSourceDto.getPazzword(),
+                dataSourceDto.getUrl(),
+                dataSourceDto.getUsername(),
+                dataSourceDto.getPazzword(),
                 true);
     }
 
     /**
      * 获取sql查询结果
-     * @param databaseSourceDto 数据源信息
+     * @param dataSourceDto 数据源信息
      * @param sql 查询sql
      * @param resultEntity 指定返回实体类名
      * @return List<Object> 与resultEntity类型一致
@@ -59,9 +59,9 @@ public class DatabaseUtil {
      * @throws IllegalAccessException
      * @throws InstantiationException
      */
-    public List<Object> getResultSet(DatabaseSourceDto databaseSourceDto,String sql,Class resultEntity)
+    public List<Object> getResultSet(DataSourceDto dataSourceDto, String sql, Class resultEntity)
         throws SQLException, InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException {
-        DataSource dataSource = getDataSource(databaseSourceDto);
+        DataSource dataSource = getDataSource(dataSourceDto);
         try (Connection connection = dataSource.getConnection()) {
             return getResultSet(connection, sql, resultEntity);
         }

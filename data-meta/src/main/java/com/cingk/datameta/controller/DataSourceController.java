@@ -2,11 +2,11 @@ package com.cingk.datameta.controller;
 
 import com.cingk.datameta.constant.enums.ResponseEnum;
 import com.cingk.datameta.model.InterfaceEntity;
-import com.cingk.datameta.model.ao.DatabaseSourceAo;
-import com.cingk.datameta.model.dto.DatabaseSourceDto;
+import com.cingk.datameta.model.ao.DataSourceAo;
+import com.cingk.datameta.model.dto.DataSourceDto;
 import com.cingk.datameta.model.dto.ResponseDto;
-import com.cingk.datameta.model.entity.DatabaseSourceEntity;
-import com.cingk.datameta.service.impl.DatabaseSourceService;
+import com.cingk.datameta.model.entity.DataSourceEntity;
+import com.cingk.datameta.service.impl.DataSourceService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.BeanUtils;
@@ -19,82 +19,82 @@ import javax.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping("/api")
-public class DatabaseSourceController extends BaseRequestController {
+public class DataSourceController extends BaseRequestController {
 
     @Autowired
-    private DatabaseSourceService databaseSourceService;
+    private DataSourceService dataSourceService;
 
     @ApiOperation(value ="通过数据源名称获取数据源")
     @GetMapping("getDatabaseSourceByName")
     public ResponseDto getDatabaseSourceByName(@ApiParam(value = "数据源名称")String databaseName) {
         ResponseDto responseDto = responseUtil.failure();
-        DatabaseSourceDto databaseSourceDto = new DatabaseSourceDto();
-        databaseSourceDto.setDatabaseName(databaseName);
-        DatabaseSourceEntity databaseSourceEntity = databaseSourceService.query(databaseSourceDto);
-        if (databaseSourceEntity == null) {
+        DataSourceDto dataSourceDto = new DataSourceDto();
+        dataSourceDto.setDatabaseName(databaseName);
+        DataSourceEntity dataSourceEntity = dataSourceService.query(dataSourceDto);
+        if (dataSourceEntity == null) {
             responseDto.setResCode(ResponseEnum.CODE_MESSAGE_F9000.getCode());
             responseDto.setDescription("保存数据源出错");
             return responseDto;
         }
-        BeanUtils.copyProperties(databaseSourceEntity, databaseSourceDto);
-        return responseUtil.success(databaseSourceDto);
+        BeanUtils.copyProperties(dataSourceEntity, dataSourceDto);
+        return responseUtil.success(dataSourceDto);
     }
 
     @ApiOperation(value ="通过数据源标识获取数据源")
     @GetMapping("getDatabaseSourceById")
     public ResponseDto getDatabaseSourceById(@ApiParam(value = "数据源标识")Integer id) {
         ResponseDto responseDto = responseUtil.failure();
-        DatabaseSourceEntity databaseSourceEntity = databaseSourceService.queryById(id);
-        if (databaseSourceEntity == null) {
+        DataSourceEntity dataSourceEntity = dataSourceService.queryById(id);
+        if (dataSourceEntity == null) {
             responseDto.setResCode(ResponseEnum.CODE_MESSAGE_F9000.getCode());
             responseDto.setDescription("保存数据源出错");
             return responseDto;
         }
-        DatabaseSourceDto databaseSourceDto = new DatabaseSourceDto();
-        BeanUtils.copyProperties(databaseSourceEntity, databaseSourceDto);
-        return responseUtil.success(databaseSourceDto);
+        DataSourceDto dataSourceDto = new DataSourceDto();
+        BeanUtils.copyProperties(dataSourceEntity, dataSourceDto);
+        return responseUtil.success(dataSourceDto);
     }
 
     @GetMapping("getAllDatabaseSource")
     public ResponseDto getAllDatabaseSource() {
-        return responseUtil.success(databaseSourceService.queryAll());
+        return responseUtil.success(dataSourceService.queryAll());
     }
 
     @PostMapping("getPageDatabaseSource")
     public ResponseDto getPageDatabaseSource(
             @RequestParam(defaultValue = "1") @ApiParam(value ="页码") String pageIndex,
             @RequestParam(defaultValue = "10") @ApiParam(value ="每页数量") String pageSize) {
-        return responseUtil.success(databaseSourceService.queryPage(pageIndex, pageSize));
+        return responseUtil.success(dataSourceService.queryPage(pageIndex, pageSize));
     }
 
     @PostMapping("addDatabaseSource")
     public ResponseDto addDatabaseSource(
-            @RequestBody @Validated DatabaseSourceAo databaseSourceAo, BindingResult bindingResult) {
+            @RequestBody @Validated DataSourceAo dataSourceAo, BindingResult bindingResult) {
 
         ResponseDto responseDto = responseUtil.failure();
         if (!responseUtil.validateParamFailure(responseDto, bindingResult)) {
             return responseDto;
         }
 
-        InterfaceEntity databaseSourceEntity = databaseSourceService.save(databaseSourceAo);
+        InterfaceEntity databaseSourceEntity = dataSourceService.save(dataSourceAo);
         if (databaseSourceEntity == null) {
             responseDto.setResCode(ResponseEnum.CODE_MESSAGE_F9000.getCode());
             responseDto.setDescription("保存数据源出错");
             return responseDto;
         }
 
-        DatabaseSourceDto databaseSourceDto = new DatabaseSourceDto();
-        BeanUtils.copyProperties(databaseSourceEntity, databaseSourceDto);
+        DataSourceDto dataSourceDto = new DataSourceDto();
+        BeanUtils.copyProperties(databaseSourceEntity, dataSourceDto);
 
-        return responseUtil.success(databaseSourceDto);
+        return responseUtil.success(dataSourceDto);
     }
 
     @DeleteMapping("delDatabaseSourceById")
     public ResponseDto deleteDatabaseSourceById(
             @NotNull @RequestParam(value = "id") @ApiParam(value = "数据源标识") Integer id) {
-        DatabaseSourceDto databaseSourceDto = new DatabaseSourceDto();
-        databaseSourceDto.setId(id);
-        databaseSourceService.delete(databaseSourceDto);
+        DataSourceDto dataSourceDto = new DataSourceDto();
+        dataSourceDto.setId(id);
+        dataSourceService.delete(dataSourceDto);
         return responseUtil.success("删除成功");
     }
 
@@ -102,7 +102,7 @@ public class DatabaseSourceController extends BaseRequestController {
     @DeleteMapping("delDatabaseSourceByName")
     public ResponseDto deleteDatabaseSourceByName(
             @NotNull @RequestParam(value = "name") @ApiParam(value = "数据源名称") String name) {
-        databaseSourceService.deleteByName(name);
+        dataSourceService.deleteByName(name);
         return responseUtil.success("删除成功");
     }
 }

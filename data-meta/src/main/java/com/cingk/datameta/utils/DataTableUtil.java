@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 
 import com.cingk.datameta.constant.enums.ServiceEnum;
 import com.cingk.datameta.model.IDataTableEntity;
-import com.cingk.datameta.model.dto.DatabaseSourceDto;
-import com.cingk.datameta.model.entity.DatabaseTableEntity;
+import com.cingk.datameta.model.dto.DataSourceDto;
+import com.cingk.datameta.model.entity.DataTableEntity;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 
@@ -38,41 +38,41 @@ public class DataTableUtil extends DatabaseUtil {
 
 	/**
 	 * 根据数据源信息获取不同数据库对应的服务
-	 * @param databaseSourceDto 数据源连接信息对象
+	 * @param dataSourceDto 数据源连接信息对象
 	 * @return database classic
 	 */
-	public String getServiceNameByUrl(DatabaseSourceDto databaseSourceDto){
-		return getServiceNameByUrl(databaseSourceDto.getUrl());
+	public String getServiceNameByUrl(DataSourceDto dataSourceDto){
+		return getServiceNameByUrl(dataSourceDto.getUrl());
 	}
 
 	/**
 	 * 依据目标数据源获取数据库中表信息
 	 *
-	 * @param databaseSourceDto 目标数据源信息
+	 * @param dataSourceDto 目标数据源信息
 	 * @param sql 查询SQL
 	 * @param className sql查询结果存储对象类名
-	 * @return List<DatabaseTableEntity> {@link com.cingk.datameta.model.entity.DatabaseTableEntity}
+	 * @return List<DatabaseTableEntity> {@link DataTableEntity}
 	 */
-	public List<DatabaseTableEntity> getDataTableEntityList(DatabaseSourceDto databaseSourceDto, String sql, String className)
+	public List<DataTableEntity> getDataTableEntityList(DataSourceDto dataSourceDto, String sql, String className)
 		throws SQLException,
 		InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 
-		Integer databaseSourceId =  databaseSourceDto.getId();
-		List<Object> resultList = super.getResultSet(databaseSourceDto, sql, Class.forName(className));
-		List<DatabaseTableEntity> databaseTableEntityList = Lists.newArrayList();
+		Integer databaseSourceId =  dataSourceDto.getId();
+		List<Object> resultList = super.getResultSet(dataSourceDto, sql, Class.forName(className));
+		List<DataTableEntity> dataTableEntityList = Lists.newArrayList();
 		if (resultList == null) {
-			return databaseTableEntityList;
+			return dataTableEntityList;
 		}
 		resultList.forEach(object -> {
 			IDataTableEntity dataTableEntity = (IDataTableEntity) object;
-			DatabaseTableEntity databaseTableEntity = new DatabaseTableEntity();
+			DataTableEntity databaseTableEntity = new DataTableEntity();
 			databaseTableEntity.setTabName(dataTableEntity.getTabName());
 			databaseTableEntity.setSchemaName(dataTableEntity.getSchema());
 			databaseTableEntity.setDatabaseSourceId(databaseSourceId);
 			databaseTableEntity.setTabType(dataTableEntity.getTabType());
-			databaseTableEntityList.add(databaseTableEntity);
+			dataTableEntityList.add(databaseTableEntity);
 		});
 
-		return databaseTableEntityList;
+		return dataTableEntityList;
 	}
 }
