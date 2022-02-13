@@ -1,0 +1,88 @@
+server:
+  port: 8081
+  tomcat:
+    uri-encoding: UTF-8
+    max-connections: 8192
+    threads:
+      max: 500
+      min-spare: 10
+    accept-count: 300
+    accesslog:
+      encoding: UTF-8
+      enabled: true
+    max-http-form-post-size: 20
+    max-swallow-size: 10
+
+spring:
+  application:
+    name: data-meta
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    name: localhost_mysql
+    password: Lv123qwe!
+    url: jdbc:mysql://localhost:3306/cingk_schema?serverTimezone=UTC
+    username: cingk_mysql
+    #druid连接池配置，see:https://github.com/alibaba/druid/wiki/DruidDataSource%E9%85%8D%E7%BD%AE%E5%B1%9E%E6%80%A7%E5%88%97%E8%A1%A8
+    druid:
+      #初始物理连接个数（物理连接个数）
+      initial-size: 10
+      #最大连接池数量
+      max-active: 300
+      #最小连接池数量
+      min-idle: 20
+
+      #获取连接最大等待时间，单位：毫秒
+      max-wait: 100
+      # 是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。
+      pool-prepared-statements: false
+      # 要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。在Druid中，不会存在Oracle下PSCache占用内存过多的问题，可以把这个数值配置大一些，比如说100
+      max-open-prepared-statements: -1
+
+      #<!-- 用来检测连接是否有效的sql，要求是一个查询语句，常用select 'x'。如果validationQuery为null，testOnBorrow、testOnReturn、testWhileIdle都不会起作用。 -->
+      validation-query: select 1
+      #检测连接是否有效的超时时间，单位：秒
+      validation-query-timeout: 100
+      test-on-borrow: true
+      test-on-return: true
+      test-while-idle: true
+
+      filter:
+        slf4j:
+          enabled: true
+          statement-log-enabled: true
+          connection-log-enabled: true
+          result-set-log-enabled: true
+
+        stat:
+          log-slow-sql: true
+          enabled: true
+          slow-sql-millis: 2000
+
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        use_sql_comments: true
+        jdbc:
+          batch_size: 1000
+          batch_versioned_data: true
+          order_inserts: true
+    open-in-view: false
+
+
+logging:
+  level:
+    web: DEBUG
+
+#swagger
+springfox:
+  documentation:
+    enabled: true
+    auto-startup: true
+    open-api:
+      enabled: true
+    swagger-ui:
+      enabled: true
+    swagger:
+      v2:
+        enabled: true
