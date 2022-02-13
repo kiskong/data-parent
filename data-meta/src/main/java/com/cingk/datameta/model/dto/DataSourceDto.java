@@ -1,8 +1,6 @@
 package com.cingk.datameta.model.dto;
 
 import com.cingk.datameta.model.InterfaceEntity;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiParam;
 
 import java.time.Instant;
 

@@ -1,0 +1,70 @@
+#https://logging.apache.org/log4j/2.x/log4j-users-guide.pdf
+Configuration:
+  status: debug
+
+  Properties: # 定义全局变量
+    Property: # 缺省配置（用于开发环境）。其他环境需要在VM参数中指定，如下：
+      #测试：-Dlog.level.console=warn -Dlog.level.xjj=trace
+      #生产：-Dlog.level.console=warn -Dlog.level.xjj=info
+      - name: log.level.console
+        value: trace
+      - name: log.level.cingk
+        value: trace
+      - name: log.path
+        value: /Users/lvkongchao/logs/data-parent/data-meta
+      - name: project.name
+        value: data-meta
+
+  Appenders:
+    #输出到控制台
+    Console:
+      name: CONSOLE
+      target: SYSTEM_OUT
+      ThresholdFilter:
+        # “sys:”表示：如果VM参数中没指定这个变量值，则使用本文件中定义的缺省全局变量值
+        level: ${sys:log.level.console}
+        onMatch: ACCEPT
+        onMismatch: DENY
+      PatternLayout:
+        pattern: "%d{yyyy-MM-dd HH:mm:ss,SSS} %highlight{%5level} %style{%pid}{red} - [%style{%20t}{Cyan}] %66c{1.} : %m%n"
+
+    # 输出到文件，超过128MB归档
+    RollingFile:
+      - name: ROLLING_FILE
+        ignoreExceptions: false
+        fileName: ${log.path}/${project.name}.log
+        filePattern: "${log.path}/$${date:yyyy-MM}/${project.name}-%d{yyyy-MM-dd}-%i.log.gz"
+        PatternLayout:
+          pattern: "%d{yyyy-MM-dd HH:mm:ss,SSS} %highlight{%5level} %pid - [%20t] %66c{1.} : %m%n"
+        Policies:
+          SizeBasedTriggeringPolicy:
+            size: "128 MB"
+        DefaultRolloverStrategy:
+          max: 1000
+
+  Loggers:
+    Root:
+      level: info
+      AppenderRef:
+        - ref: CONSOLE
+        - ref: ROLLING_FILE
+    Logger:
+      # 为com.cingk包配置特殊的Log级别，方便调试
+      - name: com.cingk
+        additivity: false
+        level: ${sys:log.level.cingk}
+        AppenderRef:
+          - ref: CONSOLE
+          - ref: ROLLING_FILE
+      - name: org.apache.logging
+        additivity: false
+        level: error
+        AppenderRef:
+          - ref: CONSOLE
+          - ref: ROLLING_FILE
+#      - name: org.spring.
+#          additivity: false
+#          level: error
+#          AppenderRef:
+#            - ref: CONSOLE
+#            - ref: ROLLING_FILE

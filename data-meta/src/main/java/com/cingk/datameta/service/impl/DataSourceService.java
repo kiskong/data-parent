@@ -1,6 +1,18 @@
 package com.cingk.datameta.service.impl;
 
-import com.cingk.datameta.constant.enums.ResponseEnum;
+import com.google.common.collect.Lists;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
 import com.cingk.datameta.mapper.IDataSourceRepository;
 import com.cingk.datameta.model.InterfaceEntity;
 import com.cingk.datameta.model.ao.DataSourceAo;
@@ -10,18 +22,7 @@ import com.cingk.datameta.model.entity.DataSourceEntity;
 import com.cingk.datameta.service.intf.IDataSource;
 import com.cingk.datameta.utils.DatabaseUtil;
 import com.cingk.datameta.utils.ResponseUtil;
-import com.google.common.collect.Lists;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-
 import java.time.Instant;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class DataSourceService implements IDataSource {
@@ -37,7 +38,8 @@ public class DataSourceService implements IDataSource {
 
 
     @Override
-    public DataSourceDto getDataSourceDtoById(Integer dataSourceId,DataSourceDto dataSourceDto) {
+    public DataSourceDto getDataSourceDtoById(Integer dataSourceId) {
+        DataSourceDto dataSourceDto = new DataSourceDto();
         DataSourceEntity dataSourceEntity = queryById(dataSourceId);
         if (dataSourceEntity == null) return null;
         BeanUtils.copyProperties(dataSourceEntity, dataSourceDto);
@@ -45,7 +47,8 @@ public class DataSourceService implements IDataSource {
     }
 
     @Override
-    public DataSourceDto getDataSourceDtoByName(String databaseName,DataSourceDto dataSourceDto) {
+    public DataSourceDto getDataSourceDtoByName(String databaseName) {
+        DataSourceDto dataSourceDto = new DataSourceDto();
         DataSourceEntity dataSourceEntity = queryByName(databaseName);
         if (dataSourceEntity == null) return null;
         BeanUtils.copyProperties(dataSourceEntity, dataSourceDto);
@@ -139,19 +142,19 @@ public class DataSourceService implements IDataSource {
     }
 
     @Override
-    public ResponseDto getDataSourceById(Integer dataSourceId, DataSourceDto dataSourceDto) {
-        dataSourceDto = getDataSourceDtoById(dataSourceId,dataSourceDto);
+    public ResponseDto getDataSourceById(Integer dataSourceId) {
+        DataSourceDto dataSourceDto = getDataSourceDtoById(dataSourceId);
         if (dataSourceDto != null) {
-            return responseUtil.success("获取数据源成功");
+            return responseUtil.success("获取数据源成功",dataSourceDto);
         }
         return responseUtil.failure( "数据源不存在");
     }
 
     @Override
-    public ResponseDto getDataSourceByName(String dataSourceName, DataSourceDto dataSourceDto) {
-        dataSourceDto = getDataSourceDtoByName(dataSourceName,dataSourceDto);
+    public ResponseDto getDataSourceByName(String dataSourceName) {
+        DataSourceDto dataSourceDto = getDataSourceDtoByName(dataSourceName);
         if (dataSourceDto != null) {
-            return responseUtil.success("获取数据源成功");
+            return responseUtil.success("获取数据源成功",dataSourceDto);
         }
         return responseUtil.failure("数据源不存在");
     }

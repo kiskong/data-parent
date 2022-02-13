@@ -1,12 +1,12 @@
 package com.cingk.datameta.service.intf;
 
 
+import java.util.List;
+
 import com.cingk.datameta.model.ao.DataSourceAo;
 import com.cingk.datameta.model.dto.DataSourceDto;
 import com.cingk.datameta.model.dto.ResponseDto;
 import com.cingk.datameta.model.entity.DataSourceEntity;
-
-import java.util.List;
 
 public interface IDataSource extends IBaseService {
 
@@ -17,11 +17,11 @@ public interface IDataSource extends IBaseService {
     DataSourceEntity save(DataSourceAo dataSourceAo);
     DataSourceEntity query(DataSourceDto dataSourceDto);
 
-    DataSourceDto getDataSourceDtoById(Integer dataSourceId,DataSourceDto dataSourceDto);
-    DataSourceDto getDataSourceDtoByName(String databaseName,DataSourceDto dataSourceDto);
+    DataSourceDto getDataSourceDtoById(Integer dataSourceId);
+    DataSourceDto getDataSourceDtoByName(String databaseName);
 
-    ResponseDto getDataSourceById(Integer dataSourceId, DataSourceDto dataSourceDto);
-    ResponseDto getDataSourceByName(String databaseName, DataSourceDto dataSourceDto);
+    ResponseDto getDataSourceById(Integer dataSourceId);
+    ResponseDto getDataSourceByName(String databaseName);
 
 
 }

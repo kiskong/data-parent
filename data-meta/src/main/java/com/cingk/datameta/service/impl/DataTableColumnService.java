@@ -1,18 +1,18 @@
 package com.cingk.datameta.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-import com.cingk.datameta.mapper.IDataTableColumnRepository;
-import com.cingk.datameta.model.entity.DataTableColumnEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cingk.datameta.mapper.IDataTableColumnRepository;
 import com.cingk.datameta.model.IDataTableColumnEntity;
 import com.cingk.datameta.model.dto.DataSourceDto;
 import com.cingk.datameta.model.dto.DataTableDto;
+import com.cingk.datameta.model.entity.DataTableColumnEntity;
 import com.cingk.datameta.service.intf.IDataTableColumn;
 import com.cingk.datameta.utils.DataTableColumnUtil;
-
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 
@@ -25,42 +25,48 @@ import java.sql.SQLException;
 @Service
 public class DataTableColumnService implements IDataTableColumn {
 
-    @Autowired
-    public DataTableColumnUtil dataTableColumnUtil;
+	@Autowired
+	public DataTableColumnUtil dataTableColumnUtil;
 
-    @Autowired
-    public IDataTableColumnRepository dataTableColumnRepository;
+	@Autowired
+	public IDataTableColumnRepository dataTableColumnRepository;
 
-    @Override
-    public List<IDataTableColumnEntity> getTableColumn(DataSourceDto dataSourceDto, String sql, Class resultClass) {
-        return null;
-    }
+	@Override
+	public List<IDataTableColumnEntity> getTableColumn(DataSourceDto dataSourceDto, String sql, Class resultClass) {
+		return null;
+	}
 
-    @Override
-    public List<IDataTableColumnEntity> getTableColumn(DataTableDto dataTableDto, String sql, Class resultClass) {
-        try {
-            return dataTableColumnUtil.getTableColumnEntityList(dataTableDto, sql, resultClass);
-        } catch (SQLException | InvocationTargetException
-                | NoSuchMethodException | IllegalAccessException
-                | InstantiationException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
+	@Override
+	public List<IDataTableColumnEntity> getTableColumn(DataTableDto dataTableDto, String sql, Class resultClass) {
+		try {
+			return dataTableColumnUtil.getTableColumnEntityList(dataTableDto, sql, resultClass);
+		} catch (SQLException | InvocationTargetException
+			| NoSuchMethodException | IllegalAccessException
+			| InstantiationException | ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-    @Override
-    public List<IDataTableColumnEntity> getTableColumn(DataTableDto dataTableDto) {
-        return null;
-    }
+	@Override
+	public List<IDataTableColumnEntity> getTableColumn(DataTableDto dataTableDto) {
+		return null;
+	}
 
-    @Override
-    public List<IDataTableColumnEntity> getTableColumn(DataSourceDto dataSourceDto, String schemaName, String tableName) {
-        return null;
-    }
+	@Override
+	public List<IDataTableColumnEntity> getTableColumn(DataSourceDto dataSourceDto, String schemaName, String tableName) {
+		return null;
+	}
 
-    @Override
-    public List<DataTableColumnEntity> saveAllTableColumn(List<DataTableColumnEntity> dataTableColumnEntityList) {
-        return (List<DataTableColumnEntity>)dataTableColumnRepository.saveAll(dataTableColumnEntityList);
-    }
+	@Override
+	public List<DataTableColumnEntity> saveAllTableColumn(List<DataTableColumnEntity> dataTableColumnEntityList) {
+		return (List<DataTableColumnEntity>) dataTableColumnRepository.saveAll(dataTableColumnEntityList);
+	}
+
+	@Override
+	public List<DataTableColumnEntity> getLocalTableColumn(List<DataTableColumnEntity> dataTableColumnEntityList) {
+		List<Integer> tabIds = dataTableColumnEntityList.stream().map(DataTableColumnEntity::getTabId).collect(Collectors.toList());
+		return dataTableColumnRepository.getLocalTableColumn(tabIds);
+	}
 
 
 }

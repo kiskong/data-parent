@@ -2,10 +2,12 @@ package com.cingk.datameta;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+
+import springfox.documentation.oas.annotations.EnableOpenApi;
+
 
 @SpringBootApplication
-@ComponentScan("com.cingk")
+@EnableOpenApi
 public class DataMetaApplication {
 
     public static void main(String[] args) {

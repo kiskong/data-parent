@@ -1,23 +1,29 @@
 package com.cingk.datameta.controller;
 
-import com.cingk.datameta.constant.enums.ResponseEnum;
-import com.cingk.datameta.model.InterfaceEntity;
-import com.cingk.datameta.model.ao.DataSourceAo;
-import com.cingk.datameta.model.dto.DataSourceDto;
-import com.cingk.datameta.model.dto.ResponseDto;
-import com.cingk.datameta.model.entity.DataSourceEntity;
-import com.cingk.datameta.service.impl.DataSourceService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.cingk.datameta.constant.enums.ResponseEnum;
+import com.cingk.datameta.model.InterfaceEntity;
+import com.cingk.datameta.model.ao.DataSourceAo;
+import com.cingk.datameta.model.dto.DataSourceDto;
+import com.cingk.datameta.model.dto.ResponseDto;
+import com.cingk.datameta.service.impl.DataSourceService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import javax.validation.constraints.NotNull;
 
+//@Tag(name="数据源操作")
 @RestController
 @RequestMapping("/api")
 public class DataSourceController extends BaseRequestController {
@@ -25,21 +31,22 @@ public class DataSourceController extends BaseRequestController {
     @Autowired
     private DataSourceService dataSourceService;
 
-    @ApiOperation(value ="通过数据源名称获取数据源")
+    @Operation(summary ="通过数据源名称获取数据源")
     @GetMapping("getDatabaseSourceByName")
-    public ResponseDto getDatabaseSourceByName(@ApiParam(value = "数据源名称")String databaseName) {
-        DataSourceDto dataSourceDto = new DataSourceDto();
-        ResponseDto responseDto = dataSourceService.getDataSourceByName(databaseName,dataSourceDto);
+    public ResponseDto getDatabaseSourceByName(@Parameter(description = "数据源名称")String databaseName) {
+        ResponseDto responseDto = dataSourceService.getDataSourceByName(databaseName);
         if (!responseDto.successed()) return responseDto;
+        DataSourceDto dataSourceDto =  (DataSourceDto)responseDto.getData().get(0);
         return responseUtil.success(dataSourceDto);
     }
 
-    @ApiOperation(value ="通过数据源标识获取数据源")
+    @Operation(summary ="通过数据源标识获取数据源")
     @GetMapping("getDatabaseSourceById")
-    public ResponseDto getDatabaseSourceById(@ApiParam(value = "数据源标识")Integer id) {
-        DataSourceDto dataSourceDto = new DataSourceDto();
-        ResponseDto responseDto = dataSourceService.getDataSourceById(id,dataSourceDto);
+    public ResponseDto getDatabaseSourceById(@Parameter(description = "数据源标识")Integer id) {
+
+        ResponseDto responseDto = dataSourceService.getDataSourceById(id);
         if (!responseDto.successed()) return responseDto;
+        DataSourceDto dataSourceDto =  (DataSourceDto)responseDto.getData().get(0);
         return responseUtil.success(dataSourceDto);
     }
 
@@ -50,8 +57,8 @@ public class DataSourceController extends BaseRequestController {
 
     @PostMapping("getPageDatabaseSource")
     public ResponseDto getPageDatabaseSource(
-            @RequestParam(defaultValue = "1") @ApiParam(value ="页码") String pageIndex,
-            @RequestParam(defaultValue = "10") @ApiParam(value ="每页数量") String pageSize) {
+            @RequestParam(defaultValue = "1") @Parameter(description ="页码") String pageIndex,
+            @RequestParam(defaultValue = "10") @Parameter(description ="每页数量") String pageSize) {
         return responseUtil.success(dataSourceService.queryPage(pageIndex, pageSize));
     }
 
@@ -77,7 +84,7 @@ public class DataSourceController extends BaseRequestController {
     @Transactional()
     @DeleteMapping("delDatabaseSourceById")
     public ResponseDto deleteDatabaseSourceById(
-            @NotNull @RequestParam(value = "id") @ApiParam(value = "数据源标识") Integer id) {
+            @NotNull @RequestParam(value = "id") @Parameter(description = "数据源标识") Integer id) {
         DataSourceDto dataSourceDto = new DataSourceDto();
         dataSourceDto.setId(id);
         dataSourceService.delete(dataSourceDto);
@@ -87,7 +94,7 @@ public class DataSourceController extends BaseRequestController {
     @Transactional()
     @DeleteMapping("delDatabaseSourceByName")
     public ResponseDto deleteDatabaseSourceByName(
-            @NotNull @RequestParam(value = "name") @ApiParam(value = "数据源名称") String name) {
+            @NotNull @RequestParam(value = "name") @Parameter(description = "数据源名称") String name) {
         dataSourceService.deleteByName(name);
         return responseUtil.success("删除成功");
     }

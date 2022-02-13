@@ -27,14 +27,16 @@ public class OracleDataTableService extends DataTableService {
     //查询Sql结果存储对象
     private static final String JDBC_RESULT_CLASS_NAME = OracleTableEntity.class.getName();
 
-    public List<DataTableEntity> getAllTables(DataSourceDto dataSourceDto) {
+    @Override
+    public List<DataTableEntity> getSrcAllTables(DataSourceDto dataSourceDto) {
         String sql = String.format(QUERY_ALL_TAB_UNSYS, QUERY_CONDITION);
-        return super.getAllTables(dataSourceDto,sql,JDBC_RESULT_CLASS_NAME);
+        return super.getSrcAllTables(dataSourceDto,sql,JDBC_RESULT_CLASS_NAME);
     }
 
-    public List<DataTableEntity> getAllTablesWithSchema(DataSourceDto dataSourceDto, String schema) {
-        String sql = String.format(QUERY_TABLES_WITH_SCHEMA, QUERY_CONDITION, schema);
-        return super.getAllTablesWithSchema(dataSourceDto,schema,sql,JDBC_RESULT_CLASS_NAME);
+    @Override
+    public List<DataTableEntity> getSrcAllTablesWithSchema(DataSourceDto dataSourceDto, String schema) {
+        String sql = String.format(QUERY_TABLES_WITH_SCHEMA, schema);
+        return super.getSrcAllTablesWithSchema(dataSourceDto,schema,sql,JDBC_RESULT_CLASS_NAME);
     }
 
 }
