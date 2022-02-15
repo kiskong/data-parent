@@ -27,12 +27,12 @@ spring:
       #初始物理连接个数（物理连接个数）
       initial-size: 10
       #最大连接池数量
-      max-active: 300
+      max-active: 50
       #最小连接池数量
-      min-idle: 20
+      min-idle: 10
 
       #获取连接最大等待时间，单位：毫秒
-      max-wait: 100
+      max-wait: 3000
       # 是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。
       pool-prepared-statements: false
       # 要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。在Druid中，不会存在Oracle下PSCache占用内存过多的问题，可以把这个数值配置大一些，比如说100
@@ -42,21 +42,33 @@ spring:
       validation-query: select 1
       #检测连接是否有效的超时时间，单位：秒
       validation-query-timeout: 100
-      test-on-borrow: true
-      test-on-return: true
+      test-on-borrow: false
+      test-on-return: false
       test-while-idle: true
 
-      filter:
-        slf4j:
-          enabled: true
-          statement-log-enabled: true
-          connection-log-enabled: true
-          result-set-log-enabled: true
 
+      web-stat-filter:
+        enabled: true
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        reset-enable: false
+        login-username: guest
+        login-password: guest
+        allow: *
+
+
+#      aop-patterns: com.cingk.datameta.service.*
+
+      filter:
+        log4j2:
+          enabled: true
         stat:
           log-slow-sql: true
           enabled: true
           slow-sql-millis: 2000
+
+      filters: stat,wall,log4j2
 
   jpa:
     properties:
