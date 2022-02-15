@@ -53,12 +53,9 @@ spring:
         enabled: true
         url-pattern: /druid/*
         reset-enable: false
-        login-username: guest
-        login-password: guest
-        allow: *
-
-
-#      aop-patterns: com.cingk.datameta.service.*
+#        login-username: guest
+#        login-password: guest
+      aop-patterns: com.cingk.datameta.service.*
 
       filter:
         log4j2:
