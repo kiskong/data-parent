@@ -1,7 +1,5 @@
 package com.cingk.datameta.utils;
 
-import com.cingk.datameta.service.impl.MysqlDataTableService;
-import com.cingk.datameta.service.impl.OracleDataTableService;
 import com.google.common.collect.Lists;
 
 import java.util.List;
@@ -10,7 +8,11 @@ import org.springframework.stereotype.Component;
 
 import com.cingk.datameta.model.IDataTableEntity;
 import com.cingk.datameta.model.dto.DataSourceDto;
+import com.cingk.datameta.model.dto.ResponseDto;
 import com.cingk.datameta.model.entity.DataTableEntity;
+import com.cingk.datameta.service.impl.MysqlDataTableService;
+import com.cingk.datameta.service.impl.OracleDataTableService;
+import com.cingk.datameta.service.intf.IDataTable;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 
@@ -23,26 +25,31 @@ import java.sql.SQLException;
 @Component
 public class DataTableUtil extends DatabaseUtil {
 
-
 	/**
 	 * 根据Url获取不同数据库对应的服务
+	 *
 	 * @param url database connect url
 	 * @return database classic
 	 */
-	public String getServiceNameByUrl(String url){
+	public String getServiceNameByUrl(String url) {
 		boolean isMysql = url.toLowerCase().contains(DB_TYPE_MYSQL);
-		if (isMysql) return MysqlDataTableService.class.getName();
+		if (isMysql) {
+			return MysqlDataTableService.class.getName();
+		}
 		boolean isOracle = url.toLowerCase().contains(DB_TYPE_ORACLE);
-		if (isOracle) return OracleDataTableService.class.getName();
+		if (isOracle) {
+			return OracleDataTableService.class.getName();
+		}
 		return "";
 	}
 
 	/**
 	 * 根据数据源信息获取不同数据库对应的服务
+	 *
 	 * @param dataSourceDto 数据源连接信息对象
 	 * @return database classic
 	 */
-	public String getServiceNameByUrl(DataSourceDto dataSourceDto){
+	public String getServiceNameByUrl(DataSourceDto dataSourceDto) {
 		return getServiceNameByUrl(dataSourceDto.getUrl());
 	}
 
@@ -58,7 +65,7 @@ public class DataTableUtil extends DatabaseUtil {
 		throws SQLException,
 		InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 
-		Integer databaseSourceId =  dataSourceDto.getId();
+		Integer databaseSourceId = dataSourceDto.getId();
 		List<Object> resultList = super.getResultSet(dataSourceDto, sql, Class.forName(className));
 		List<DataTableEntity> dataTableEntityList = Lists.newArrayList();
 		if (resultList == null) {
@@ -77,7 +84,34 @@ public class DataTableUtil extends DatabaseUtil {
 		return dataTableEntityList;
 	}
 
-	public Integer getTotalDataTableCount(DataSourceDto dataSourceDto, String sql) throws SQLException{
-		return super.getRowCount(dataSourceDto,sql);
+	/**
+	 * 统计表数量
+	 *
+	 * @param dataSourceDto 数据源
+	 * @param sql 统计SQL
+	 * @return Integer 数量
+	 */
+	public Integer getTotalDataTableCount(DataSourceDto dataSourceDto, String sql) throws SQLException {
+		return super.getRowCount(dataSourceDto, sql);
+	}
+
+	/**
+	 * 具体数据源的表服务实现类
+	 *
+	 * @param responseDto 响应体
+	 * @return IDataTable 表服务接口
+	 */
+	public IDataTable getDataTableService(ResponseDto responseDto) {
+		return getDataTableService((DataSourceDto) responseDto.getData().get(0));
+	}
+
+	/**
+	 * 具体数据源的表服务实现类
+	 *
+	 * @param dataSourceDto 数据源
+	 * @return 表服务接口
+	 */
+	public IDataTable getDataTableService(DataSourceDto dataSourceDto) {
+		return SpringUtil.getBean(getServiceNameByUrl(dataSourceDto));
 	}
 }

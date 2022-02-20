@@ -25,10 +25,7 @@ import java.sql.SQLException;
 @Service
 public class DataTableColumnService implements IDataTableColumn {
 
-	@Autowired
 	public DataTableColumnUtil dataTableColumnUtil;
-
-	@Autowired
 	public IDataTableColumnRepository dataTableColumnRepository;
 
 	@Override
@@ -58,8 +55,18 @@ public class DataTableColumnService implements IDataTableColumn {
 	}
 
 	@Override
+	public List<IDataTableColumnEntity> getTableColumn(DataSourceDto dataSourceDto, String schemaName, String[] tableNames) {
+		return null;
+	}
+
+	@Override
 	public List<DataTableColumnEntity> saveAllTableColumn(List<DataTableColumnEntity> dataTableColumnEntityList) {
 		return (List<DataTableColumnEntity>) dataTableColumnRepository.saveAll(dataTableColumnEntityList);
+	}
+
+	@Override
+	public List<DataTableColumnEntity> saveAllTableColumnNotExists(List<DataTableColumnEntity> dataTableEntityList) {
+		return null;
 	}
 
 	@Override
@@ -68,5 +75,13 @@ public class DataTableColumnService implements IDataTableColumn {
 		return dataTableColumnRepository.getLocalTableColumn(tabIds);
 	}
 
+	@Autowired
+	public void setDataTableColumnUtil(DataTableColumnUtil dataTableColumnUtil) {
+		this.dataTableColumnUtil = dataTableColumnUtil;
+	}
 
+	@Autowired
+	public void setDataTableColumnRepository(IDataTableColumnRepository dataTableColumnRepository) {
+		this.dataTableColumnRepository = dataTableColumnRepository;
+	}
 }

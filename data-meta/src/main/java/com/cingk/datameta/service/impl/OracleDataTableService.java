@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import cn.hutool.core.util.StrUtil;
 import com.cingk.datameta.model.dto.DataSourceDto;
 import com.cingk.datameta.model.entity.DataTableEntity;
 import com.cingk.datameta.model.entity.OracleTableEntity;
+import com.cingk.datameta.utils.StrUtil;
 
 @Service
 public class OracleDataTableService extends DataTableService {
@@ -17,7 +17,7 @@ public class OracleDataTableService extends DataTableService {
             "CTXSYS", "OLAPSYS", "OWBSYS", "EXFSYS", "APEX_030200",
             "SCOTT", "DBSNMP", "FLOWS_FILES"};
     private static final String QUERY_CONDITION = StrUtil.join(StrUtil.COMMA,
-        StrUtil.wrapAllWithPair(SINGLE_QUOTE, DB_SYS_SCHEMA));
+        StrUtil.wrapAllWithPair(StrUtil.SINGLE_QUOTE, DB_SYS_SCHEMA));
     //查询所有表
     private static final String QUERY_ALL_TABLES = "select * from ALL_TABLES";
     //查询非系统表

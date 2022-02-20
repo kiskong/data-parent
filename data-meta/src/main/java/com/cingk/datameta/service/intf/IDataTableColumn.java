@@ -8,13 +8,22 @@ import com.cingk.datameta.model.dto.DataTableDto;
 import com.cingk.datameta.model.entity.DataTableColumnEntity;
 
 public interface IDataTableColumn {
-    List<IDataTableColumnEntity> getTableColumn(DataSourceDto dataSourceDto, String sql, Class resultClass);
-    List<IDataTableColumnEntity> getTableColumn(DataTableDto dataTableDto, String sql, Class resultClass);
-    List<IDataTableColumnEntity> getTableColumn(DataTableDto dataTableDto);
-    List<IDataTableColumnEntity> getTableColumn(DataSourceDto dataSourceDto,String schemaName, String tableName);
 
-    List<DataTableColumnEntity> saveAllTableColumn(List<DataTableColumnEntity> dataTableEntityList) ;
+	List<IDataTableColumnEntity> getTableColumn(DataSourceDto dataSourceDto, String sql, Class resultClass);
 
-    List<DataTableColumnEntity> getLocalTableColumn(List<DataTableColumnEntity> dataTableColumnEntityList);
+	List<IDataTableColumnEntity> getTableColumn(DataTableDto dataTableDto, String sql, Class resultClass);
+
+	List<IDataTableColumnEntity> getTableColumn(DataTableDto dataTableDto);
+
+	List<IDataTableColumnEntity> getTableColumn(DataSourceDto dataSourceDto, String schemaName, String tableName);
+
+	List<IDataTableColumnEntity> getTableColumn(DataSourceDto dataSourceDto, String schemaName, String[] tableNames);
+
+	List<DataTableColumnEntity> saveAllTableColumn(List<DataTableColumnEntity> dataTableEntityList);
+
+	List<DataTableColumnEntity> saveAllTableColumnNotExists(List<DataTableColumnEntity> dataTableEntityList);
+
+
+	List<DataTableColumnEntity> getLocalTableColumn(List<DataTableColumnEntity> dataTableColumnEntityList);
 
 }

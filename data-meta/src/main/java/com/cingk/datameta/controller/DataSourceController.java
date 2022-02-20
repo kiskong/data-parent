@@ -28,7 +28,6 @@ import javax.validation.constraints.NotNull;
 @RequestMapping("/api")
 public class DataSourceController extends BaseRequestController {
 
-    @Autowired
     private DataSourceService dataSourceService;
 
     @Operation(summary ="通过数据源名称获取数据源")
@@ -97,5 +96,10 @@ public class DataSourceController extends BaseRequestController {
             @NotNull @RequestParam(value = "name") @Parameter(description = "数据源名称") String name) {
         dataSourceService.deleteByName(name);
         return responseUtil.success("删除成功");
+    }
+
+    @Autowired
+    public void setDataSourceService(DataSourceService dataSourceService) {
+        this.dataSourceService = dataSourceService;
     }
 }

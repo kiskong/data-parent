@@ -28,11 +28,8 @@ import org.slf4j.LoggerFactory;
 @RequestMapping("/api")
 public class DataTableController extends BaseRequestController {
     private static final Logger LOGGER = LoggerFactory.getLogger(DataTableController.class);
-    @Autowired
     private DataTableUtil dataTableUtil;
-    @Autowired
     private IDataSource dataSourceService;
-    @Autowired
     private IDataTable dataTableService;
 
     @Operation(summary = "提取指定数据源的所有表")
@@ -71,4 +68,18 @@ public class DataTableController extends BaseRequestController {
         return saveResponseDto;
     }
 
+    @Autowired
+    public void setDataTableUtil(DataTableUtil dataTableUtil) {
+        this.dataTableUtil = dataTableUtil;
+    }
+
+    @Autowired
+    public void setDataSourceService(IDataSource dataSourceService) {
+        this.dataSourceService = dataSourceService;
+    }
+
+    @Autowired
+    public void setDataTableService(IDataTable dataTableService) {
+        this.dataTableService = dataTableService;
+    }
 }

@@ -4,17 +4,17 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import cn.hutool.core.util.StrUtil;
 import com.cingk.datameta.model.dto.DataSourceDto;
 import com.cingk.datameta.model.entity.DataTableEntity;
 import com.cingk.datameta.model.entity.MysqlTableEntity;
+import com.cingk.datameta.utils.StrUtil;
 
 @Service
 public class MysqlDataTableService extends DataTableService {
 
 	private static final String[] DB_SYS_SCHEMA = {"information_schema", "mysql", "performance_schema", "sys"};
 	private static final String QUERY_CONDITION = StrUtil.join(StrUtil.COMMA,
-		StrUtil.wrapAllWithPair(SINGLE_QUOTE, DB_SYS_SCHEMA));
+		StrUtil.wrapAllWithPair(StrUtil.SINGLE_QUOTE, DB_SYS_SCHEMA));
 	//查询所有表
 	private static final String QUERY_ALL_TABLES = "select * from information_schema.tables";
 	//查询非系统表

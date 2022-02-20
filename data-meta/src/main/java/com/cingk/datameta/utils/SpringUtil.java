@@ -8,31 +8,28 @@ import org.springframework.stereotype.Component;
 @Component
 public class SpringUtil implements ApplicationContextAware {
 
-    private static ApplicationContext applicationContext;
+	private static ApplicationContext applicationContext;
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
+	}
 
+	public static <T> T getBean(Class<T> clazz) {
+		return applicationContext.getBean(clazz);
+	}
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
+	public static <T> T getBean(String className) {
+		try {
+			return (T) applicationContext.getBean(className);
+		} catch (BeansException e) {
+			return getBeanWithClass(className);
+		}
+	}
 
-    public static <T> T getBean(Class<T> clazz) {
-        return applicationContext.getBean(clazz);
-    }
-
-    public static <T> T getBean(String className) {
-        try {
-            return (T) applicationContext.getBean(className);
-        }catch (BeansException e){
-            return getBeanWithClass(className);
-        }
-    }
-
-    public static <T> T getBeanWithClass(String className) {
-        try {
-            return (T) applicationContext.getBean(Class.forName(className));
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
+	public static <T> T getBeanWithClass(String className) {
+		try {
+			return (T) applicationContext.getBean(Class.forName(className));
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }

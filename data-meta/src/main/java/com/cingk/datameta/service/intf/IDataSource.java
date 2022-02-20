@@ -10,18 +10,25 @@ import com.cingk.datameta.model.entity.DataSourceEntity;
 
 public interface IDataSource extends IBaseService {
 
-    void deleteByName(String name);
-    DataSourceEntity queryById(Integer dataSourceId);
-    DataSourceEntity queryByName(String databaseName);
-    List<DataSourceEntity> queryPage(String pageIndex, String pageSize);
-    DataSourceEntity save(DataSourceAo dataSourceAo);
-    DataSourceEntity query(DataSourceDto dataSourceDto);
+	void deleteByName(String name);
 
-    DataSourceDto getDataSourceDtoById(Integer dataSourceId);
-    DataSourceDto getDataSourceDtoByName(String databaseName);
+	DataSourceEntity queryById(Integer dataSourceId);
 
-    ResponseDto getDataSourceById(Integer dataSourceId);
-    ResponseDto getDataSourceByName(String databaseName);
+	DataSourceEntity queryByName(String databaseName);
+
+	List<DataSourceEntity> queryPage(String pageIndex, String pageSize);
+
+	DataSourceEntity save(DataSourceAo dataSourceAo);
+
+	DataSourceEntity query(DataSourceDto dataSourceDto);
+
+	DataSourceDto getDataSourceDtoById(Integer dataSourceId);
+
+	DataSourceDto getDataSourceDtoByName(String databaseName);
+
+	ResponseDto getDataSourceById(Integer dataSourceId);
+
+	ResponseDto getDataSourceByName(String databaseName);
 
 
 }

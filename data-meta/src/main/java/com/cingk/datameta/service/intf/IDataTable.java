@@ -25,7 +25,11 @@ public interface IDataTable {
 
 	List<DataTableEntity> getLocalAllTables(Integer dataSourceId, String schemaName, String[] tableNames);
 
+	List<DataTableEntity> getLocalAllTables(Integer dataSourceId, String schemaName);
+
 	List<DataTableEntity> saveAllTables(List<DataTableEntity> dataTableEntityList);
+
+	List<DataTableEntity> saveAllTablesNotExists(Integer dataSourceId, String schemaName, List<DataTableEntity> dataTableEntityList);
 
 	List<DataTableEntity> getSrcAllTables(DataSourceDto dataSourceDto, String sql, String resultClassName);
 

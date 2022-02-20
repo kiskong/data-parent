@@ -2,12 +2,13 @@ package com.cingk.datameta.service.impl;
 
 import java.util.List;
 
-import com.cingk.datameta.model.dto.DataSourceDto;
 import org.springframework.stereotype.Service;
 
 import com.cingk.datameta.model.IDataTableColumnEntity;
+import com.cingk.datameta.model.dto.DataSourceDto;
 import com.cingk.datameta.model.dto.DataTableDto;
 import com.cingk.datameta.model.entity.MysqlColumnEntity;
+import com.cingk.datameta.utils.StrUtil;
 
 /**
  * @author: create by lvkc
@@ -19,6 +20,7 @@ import com.cingk.datameta.model.entity.MysqlColumnEntity;
 public class MysqlTableColumnService extends DataTableColumnService {
 
     public static final String QUERY_COLUMN = "select * from information_schema.columns where table_schema='%s' and table_name='%s'";
+    public static final String BATCH_QUERY_COLUMN = "select * from information_schema.columns where table_schema='%s' and table_name in ('%s')";
 
     /**
      * 根据schema，tableName，datasource 获取对应表字段
@@ -41,5 +43,18 @@ public class MysqlTableColumnService extends DataTableColumnService {
         dataTableDto.setSchemaName(schemaName);
         dataTableDto.setDatabaseSourceDto(dataSourceDto);
         return this.getTableColumn(dataTableDto);
+    }
+
+    @Override
+    public List<IDataTableColumnEntity> getTableColumn(DataSourceDto dataSourceDto, String schemaName, String[] tableNames) {
+        //','
+        String delimiter = StrUtil.SINGLE_QUOTE + StrUtil.COMMA + StrUtil.SINGLE_QUOTE;
+        String condition = String.join(delimiter,tableNames);
+        String sql = String.format(BATCH_QUERY_COLUMN,condition);
+
+        DataTableDto dataTableDto = new DataTableDto();
+        dataTableDto.setSchemaName(schemaName);
+        dataTableDto.setDatabaseSourceDto(dataSourceDto);
+        return super.getTableColumn(dataTableDto, sql, MysqlColumnEntity.class);
     }
 }

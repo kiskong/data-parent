@@ -27,13 +27,8 @@ import java.time.Instant;
 @Service
 public class DataSourceService implements IDataSource {
 
-    @Autowired
     private DatabaseUtil databaseUtil;
-
-    @Autowired
     private IDataSourceRepository iDataSourceRepository;
-
-    @Autowired
     private ResponseUtil responseUtil;
 
 
@@ -157,5 +152,18 @@ public class DataSourceService implements IDataSource {
             return responseUtil.success("获取数据源成功",dataSourceDto);
         }
         return responseUtil.failure("数据源不存在");
+    }
+
+    @Autowired
+    public void setDatabaseUtil(DatabaseUtil databaseUtil) {
+        this.databaseUtil = databaseUtil;
+    }
+    @Autowired
+    public void setiDataSourceRepository(IDataSourceRepository iDataSourceRepository) {
+        this.iDataSourceRepository = iDataSourceRepository;
+    }
+    @Autowired
+    public void setResponseUtil(ResponseUtil responseUtil) {
+        this.responseUtil = responseUtil;
     }
 }
