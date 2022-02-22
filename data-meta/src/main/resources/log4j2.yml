@@ -62,9 +62,9 @@ Configuration:
         AppenderRef:
           - ref: CONSOLE
           - ref: ROLLING_FILE
-#      - name: org.spring.
-#          additivity: false
-#          level: error
-#          AppenderRef:
-#            - ref: CONSOLE
-#            - ref: ROLLING_FILE
+      - name: org.spring
+        additivity: false
+        level: error
+        AppenderRef:
+          - ref: CONSOLE
+          - ref: ROLLING_FILE

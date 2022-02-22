@@ -103,9 +103,12 @@ public class DataTableService implements IDataTable {
 
 		List<DataTableEntity> dataTableEntityList = Lists.newArrayList();
 		List<String> tableNameList = Arrays.asList(tableNames);
-		List<List<String>> splitList = ListUtil.split(tableNameList, 999);
+		int listSize = tableNameList.size();
+		int limit = listSize > 999 ? 999 : listSize;
+
+		List<List<String>> splitList = ListUtil.split(tableNameList, limit);
 		splitList.forEach(tables ->
-			dataTableEntityList.addAll(dataTableRepository.queryAll(dataSourceId, schemaName, (String[]) tables.toArray()))
+			dataTableEntityList.addAll(dataTableRepository.queryAll(dataSourceId, schemaName, tables.toArray(new String[tables.size()])))
 		);
 		return dataTableEntityList;
 	}

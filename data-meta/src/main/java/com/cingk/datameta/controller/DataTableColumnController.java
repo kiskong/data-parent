@@ -54,8 +54,8 @@ public class DataTableColumnController extends BaseRequestController {
 	private IDataTableColumn dataTableColumnService;
 
 	@Operation(summary = "查看目标数据源指定模式名下的表字段信息", description = "查看目标数据源指定模式名下的表字段信息")
-	@GetMapping("getSrcDataTableColumn")
-	public ResponseDto getSrcDataTableColumn(
+	@GetMapping("getSrcDataTableColumnByTableName")
+	public ResponseDto getSrcDataTableColumnByTableName(
 		@Parameter(description = "数据源标识", required = true) @NotNull Integer dataSourceId,
 		@Parameter(description = "模式名称", required = true) @NotNull String schema,
 		@Parameter(description = "数据表名", required = true) @NotNull String tableName) {
@@ -75,8 +75,8 @@ public class DataTableColumnController extends BaseRequestController {
 	}
 
 	@Operation(summary = "查看目标数据源指定模式名下的表字段信息", description = "查看目标数据源指定模式名下的表字段信息")
-	@GetMapping("getSrcDataTableColumn")
-	public ResponseDto getSrcDataTableColumn(
+	@GetMapping("getSrcDataTableColumnByTableNames")
+	public ResponseDto getSrcDataTableColumnByTableNames(
 		@Parameter(description = "数据源标识", required = true) @NotNull Integer dataSourceId,
 		@Parameter(description = "模式名称", required = true) @NotNull String schema,
 		@Parameter(description = "数据表名", required = true) @NotNull String[] tableNames) {
@@ -104,8 +104,8 @@ public class DataTableColumnController extends BaseRequestController {
 	 * @return ResponseDto 响应体
 	 */
 	@Operation(summary = "查看本地服务存储的数据库表字段信息")
-	@GetMapping("/getLocalDataTableColumn")
-	public ResponseDto getLocalDataTableColumn(
+	@GetMapping("/getLocalDataTableColumnByTableName")
+	public ResponseDto getLocalDataTableColumnByTableName(
 		@Parameter(description = "数据源标识", required = true) @NotNull Integer dataSourceId,
 		@Parameter(description = "模式名称", required = true) @NotNull String schemaName,
 		@Parameter(description = "数据表名", required = true) @NotNull String tableName) {
@@ -122,8 +122,8 @@ public class DataTableColumnController extends BaseRequestController {
 	 * @return ResponseDto 响应体
 	 */
 	@Operation(summary = "查看本地服务存储的数据库表字段信息")
-	@GetMapping("/getLocalDataTableColumn")
-	public ResponseDto getLocalDataTableColumn(
+	@GetMapping("/getLocalDataTableColumnByTableNames")
+	public ResponseDto getLocalDataTableColumnByTableNames(
 		@Parameter(description = "数据源标识", required = true) @NotNull Integer dataSourceId,
 		@Parameter(description = "模式名称", required = true) @NotNull String schemaName,
 		@Parameter(description = "数据表名", required = true) @NotNull String[] tableNames) {

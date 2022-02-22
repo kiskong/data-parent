@@ -45,8 +45,7 @@ spring:
       test-on-borrow: false
       test-on-return: false
       test-while-idle: true
-
-
+      filters: stat,wall,log4j2
       web-stat-filter:
         enabled: true
       stat-view-servlet:
@@ -58,30 +57,35 @@ spring:
       aop-patterns: com.cingk.datameta.service.*
 
       filter:
-        log4j2:
+        slf4j:
           enabled: true
-        stat:
-          log-slow-sql: true
-          enabled: true
-          slow-sql-millis: 2000
+          statement-prepare-after-log-enabled: false
+          statement-close-after-log-enabled: false
+          statement-create-after-log-enabled: false
 
-      filters: stat,wall,log4j2
+  #        stat:
+#          log-slow-sql: true
+#          enabled: true
+#          slow-sql-millis: 2000
+
+
 
   jpa:
     properties:
       hibernate:
-        show_sql: true
+#        show_sql: true
         use_sql_comments: true
         jdbc:
           batch_size: 1000
           batch_versioned_data: true
           order_inserts: true
+
     open-in-view: false
 
 
 logging:
   level:
-    web: DEBUG
+    web: warn
 
 #swagger
 springfox:
