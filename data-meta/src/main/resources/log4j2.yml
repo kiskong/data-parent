@@ -68,3 +68,9 @@ Configuration:
         AppenderRef:
           - ref: CONSOLE
           - ref: ROLLING_FILE
+      - name: org.hibernate.type.descriptor.sql
+        additivity: false
+        level: trace
+        AppenderRef:
+          - ref: CONSOLE
+          - ref: ROLLING_FILE
