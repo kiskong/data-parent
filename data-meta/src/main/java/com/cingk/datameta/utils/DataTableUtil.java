@@ -102,7 +102,7 @@ public class DataTableUtil extends DatabaseUtil {
 	 * @return IDataTable 表服务接口
 	 */
 	public IDataTable getDataTableService(ResponseDto responseDto) {
-		return getDataTableService((DataSourceDto) responseDto.getData().get(0));
+		return getDataTableService((DataSourceDto) responseDto.getData());
 	}
 
 	/**

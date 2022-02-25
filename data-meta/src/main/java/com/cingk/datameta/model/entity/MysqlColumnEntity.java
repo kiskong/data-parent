@@ -265,5 +265,10 @@ public class MysqlColumnEntity implements IDataTableColumnEntity {
 	public Integer getColDecimal() {
 		return numericScale == null ? null : numericScale.intValue();
 	}
+
+	@Override
+	public String getTabName() {
+		return this.tableName;
+	}
 }
 

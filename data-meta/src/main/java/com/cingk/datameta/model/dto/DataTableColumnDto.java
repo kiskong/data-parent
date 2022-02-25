@@ -22,6 +22,8 @@ public class DataTableColumnDto implements IDataTableColumnEntity {
 
     private DataTableDto dataTableDto;
 
+    private String tabName;
+
     public Integer getColDecimal() {
         return colDecimal;
     }
@@ -92,5 +94,14 @@ public class DataTableColumnDto implements IDataTableColumnEntity {
 
     public void setDatabaseTableDto(DataTableDto dataTableDto) {
         this.dataTableDto = dataTableDto;
+    }
+
+    @Override
+    public String getTabName() {
+        return tabName;
+    }
+
+    public void setTabName(String tabName) {
+        this.tabName = tabName;
     }
 }

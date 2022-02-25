@@ -3,6 +3,7 @@ package com.cingk.datameta.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.cingk.datameta.model.entity.DataTableEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,13 +36,7 @@ public class DataTableColumnService implements IDataTableColumn {
 
 	@Override
 	public List<IDataTableColumnEntity> getTableColumn(DataTableDto dataTableDto, String sql, Class resultClass) {
-		try {
-			return dataTableColumnUtil.getTableColumnEntityList(dataTableDto, sql, resultClass);
-		} catch (SQLException | InvocationTargetException
-			| NoSuchMethodException | IllegalAccessException
-			| InstantiationException | ClassNotFoundException e) {
-			throw new RuntimeException(e);
-		}
+		return dataTableColumnUtil.getTableColumnEntityList(dataTableDto, sql, resultClass);
 	}
 
 	@Override
@@ -56,6 +51,12 @@ public class DataTableColumnService implements IDataTableColumn {
 
 	@Override
 	public List<IDataTableColumnEntity> getTableColumn(DataSourceDto dataSourceDto, String schemaName, String[] tableNames) {
+		return null;
+	}
+
+
+	@Override
+	public List<IDataTableColumnEntity> getTableColumn(DataSourceDto dataSourceDto, String schemaName, List<DataTableEntity> tableNames) {
 		return null;
 	}
 

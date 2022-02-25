@@ -11,7 +11,7 @@ Configuration:
       - name: log.level.cingk
         value: trace
       - name: log.path
-        value: /Users/lvkongchao/logs/data-parent/data-meta
+        value: C:/lvkc/temp/log/logs/data-parent/data-meta
       - name: project.name
         value: data-meta
 
@@ -44,7 +44,7 @@ Configuration:
 
   Loggers:
     Root:
-      level: info
+      level: warn
       AppenderRef:
         - ref: CONSOLE
         - ref: ROLLING_FILE
@@ -70,7 +70,42 @@ Configuration:
           - ref: ROLLING_FILE
       - name: org.hibernate.type.descriptor.sql
         additivity: false
-        level: trace
+        level: error
+        AppenderRef:
+          - ref: CONSOLE
+          - ref: ROLLING_FILE
+
+      - name: jdbc.sqlonly
+        additivity: false
+        level: debug
+        AppenderRef:
+          - ref: CONSOLE
+          - ref: ROLLING_FILE
+
+      - name: jdbc.sqltiming
+        additivity: false
+        level: error
+        AppenderRef:
+          - ref: CONSOLE
+          - ref: ROLLING_FILE
+
+      - name: jdbc.audit
+        additivity: false
+        level: error
+        AppenderRef:
+          - ref: CONSOLE
+          - ref: ROLLING_FILE
+
+      - name: jdbc.resultset
+        additivity: false
+        level: error
+        AppenderRef:
+          - ref: CONSOLE
+          - ref: ROLLING_FILE
+
+      - name: jdbc.connection
+        additivity: false
+        level: error
         AppenderRef:
           - ref: CONSOLE
           - ref: ROLLING_FILE

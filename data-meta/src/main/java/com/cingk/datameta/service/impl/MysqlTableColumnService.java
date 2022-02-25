@@ -1,7 +1,13 @@
 package com.cingk.datameta.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import cn.hutool.core.collection.ListUtil;
+import com.cingk.datameta.model.entity.DataTableColumnEntity;
+import com.cingk.datameta.model.entity.DataTableEntity;
+import com.google.common.collect.Lists;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import com.cingk.datameta.model.IDataTableColumnEntity;
@@ -47,14 +53,34 @@ public class MysqlTableColumnService extends DataTableColumnService {
 
     @Override
     public List<IDataTableColumnEntity> getTableColumn(DataSourceDto dataSourceDto, String schemaName, String[] tableNames) {
-        //','
-        String delimiter = StrUtil.SINGLE_QUOTE + StrUtil.COMMA + StrUtil.SINGLE_QUOTE;
-        String condition = String.join(delimiter,tableNames);
+        String condition = String.join(StrUtil.SQL_COL_QUOTE,tableNames);
         String sql = String.format(BATCH_QUERY_COLUMN,condition);
-
         DataTableDto dataTableDto = new DataTableDto();
         dataTableDto.setSchemaName(schemaName);
         dataTableDto.setDatabaseSourceDto(dataSourceDto);
         return super.getTableColumn(dataTableDto, sql, MysqlColumnEntity.class);
+    }
+
+    @Override
+    public List<IDataTableColumnEntity> getTableColumn(DataSourceDto dataSourceDto, String schemaName, List<DataTableEntity> tableNames) {
+        List<String> tableNameList = tableNames.stream().map(DataTableEntity::getTabName).collect(Collectors.toList());
+        String[] tableNameArray = tableNameList.toArray(new String[tableNameList.size()]);
+        List<IDataTableColumnEntity> dataTableColumnEntities = this.getTableColumn(dataSourceDto,schemaName,tableNameArray);
+
+        List<IDataTableColumnEntity> dataTableColumnEntityList = Lists.newArrayList();
+        dataTableColumnEntities.stream().forEach(iDataTableColumnEntity -> {
+            DataTableColumnEntity dataTableColumnEntity = new DataTableColumnEntity();
+            BeanUtils.copyProperties(iDataTableColumnEntity, dataTableColumnEntity);
+
+            DataTableEntity localDataTableEntity =
+            tableNames.stream()
+                    .filter(tableEntity -> tableEntity.getTabName().equals(dataTableColumnEntity.getTabName()))
+                    .findFirst()
+                    .orElse(null);
+
+            dataTableColumnEntity.setTabId(localDataTableEntity.getId());
+            dataTableColumnEntityList.add(dataTableColumnEntity);
+        });
+        return dataTableColumnEntityList;
     }
 }

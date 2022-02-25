@@ -93,7 +93,10 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
     </dependency>
-
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-pool2</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-devtools</artifactId>
@@ -105,11 +108,11 @@
       <artifactId>ojdbc8</artifactId>
       <scope>runtime</scope>
     </dependency>
-    <!--        <dependency>-->
-    <!--            <groupId>com.taobao.arthas</groupId>-->
-    <!--            <artifactId>arthas-spring-boot-starter</artifactId>-->
-    <!--            <scope>runtime</scope>-->
-    <!--        </dependency>-->
+    <dependency>
+      <groupId>com.taobao.arthas</groupId>
+      <artifactId>arthas-spring-boot-starter</artifactId>
+      <scope>runtime</scope>
+    </dependency>
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
@@ -164,12 +167,31 @@
 
     <dependency>
       <groupId>cn.hutool</groupId>
-      <artifactId>hutool-core</artifactId>
+      <artifactId>hutool-all</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.googlecode.log4jdbc/log4jdbc -->
+    <dependency>
+      <groupId>com.googlecode.log4jdbc</groupId>
+      <artifactId>log4jdbc</artifactId>
+    </dependency>
+
+
+    <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
+    <dependency>
+      <groupId>redis.clients</groupId>
+      <artifactId>jedis</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+    </dependency>
+
 
 
     <!-- swagger -->

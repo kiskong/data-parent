@@ -2,7 +2,6 @@ package com.cingk.datameta.controller;
 
 import com.google.common.collect.Lists;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,7 @@ import com.cingk.datameta.model.dto.ResponseDto;
 import com.cingk.datameta.model.entity.DataTableColumnEntity;
 import com.cingk.datameta.model.entity.DataTableEntity;
 import com.cingk.datameta.service.impl.DataTableService;
-import com.cingk.datameta.service.intf.IDataSource;
+import com.cingk.datameta.service.intf.IDataSourceService;
 import com.cingk.datameta.service.intf.IDataTable;
 import com.cingk.datameta.service.intf.IDataTableColumn;
 import com.cingk.datameta.utils.DataTableColumnUtil;
@@ -49,7 +48,7 @@ public class DataTableColumnController extends BaseRequestController {
 
 	private DataTableColumnUtil dataTableColumnUtil;
 	private DataTableUtil dataTableUtil;
-	private IDataSource dataSourceService;
+	private IDataSourceService dataSourceService;
 	private DataTableService dataTableService;
 	private IDataTableColumn dataTableColumnService;
 
@@ -63,7 +62,7 @@ public class DataTableColumnController extends BaseRequestController {
 		if (!responseDto.successed()) {
 			return responseDto;
 		}
-		DataSourceDto dataSourceDto = (DataSourceDto) responseDto.getData().get(0);
+		DataSourceDto dataSourceDto = (DataSourceDto) responseDto.getData();
 		IDataTableColumn columnService = dataTableColumnUtil.getDataTableColumnService(dataSourceDto);
 		try {
 			List<IDataTableColumnEntity> dataTableColumnEntityList = columnService.getTableColumn(dataSourceDto, schema, tableName);
@@ -84,7 +83,7 @@ public class DataTableColumnController extends BaseRequestController {
 		if (!responseDto.successed()) {
 			return responseDto;
 		}
-		DataSourceDto dataSourceDto = (DataSourceDto) responseDto.getData().get(0);
+		DataSourceDto dataSourceDto = (DataSourceDto) responseDto.getData();
 		IDataTableColumn columnService = dataTableColumnUtil.getDataTableColumnService(dataSourceDto);
 		try {
 			List<IDataTableColumnEntity> dataTableColumnEntityList = columnService.getTableColumn(dataSourceDto, schema, tableNames);
@@ -147,7 +146,7 @@ public class DataTableColumnController extends BaseRequestController {
 		if (!responseDto.successed()) {
 			return responseDto;
 		}
-		DataSourceDto dataSourceDto = (DataSourceDto) responseDto.getData().get(0);
+		DataSourceDto dataSourceDto = (DataSourceDto) responseDto.getData();
 		// 3. 找到对应数据源的Service实现
 		IDataTableColumn columnService = dataTableColumnUtil.getDataTableColumnService(dataSourceDto);
 		// 5. 提取并保存数据表及数据表字段
@@ -165,7 +164,7 @@ public class DataTableColumnController extends BaseRequestController {
 		if (!responseDto.successed()) {
 			return responseDto;
 		}
-		DataSourceDto dataSourceDto = (DataSourceDto) responseDto.getData().get(0);
+		DataSourceDto dataSourceDto = (DataSourceDto) responseDto.getData();
 		IDataTable tableService = dataTableUtil.getDataTableService(dataSourceDto);
 		List<DataTableEntity> dataTableEntityList = tableService.getSrcAllTablesWithSchema(dataSourceDto, schemaName);
 		List<DataTableEntity> dataTableEntities = dataTableService.saveAllTablesNotExists(dataSourceId, schemaName, dataTableEntityList);
@@ -195,7 +194,7 @@ public class DataTableColumnController extends BaseRequestController {
 		}
 		String[] tableNames = dataTableColumnAo.getTableNames();
 		String schemaName = dataTableColumnAo.getSchemaName();
-		DataSourceDto dataSourceDto = (DataSourceDto) responseDto.getData().get(0);
+		DataSourceDto dataSourceDto = (DataSourceDto) responseDto.getData();
 		IDataTableColumn columnService = dataTableColumnUtil.getDataTableColumnService(dataSourceDto);
 		//目标源数据表字段
 		List<IDataTableColumnEntity> dataTableColumnEntityList = columnService.getTableColumn(dataSourceDto, schemaName, tableNames);
@@ -261,20 +260,27 @@ public class DataTableColumnController extends BaseRequestController {
 	 */
 	private ResponseDto fetchAndSaveTabColumnByTableName(DataSourceDto dataSourceDto, DataTableColumnAo dataTableColumnAo,
 		IDataTableColumn columnService) {
+
+		Integer dataSourceId = dataTableColumnAo.getDataSourceId();
 		String schemaName = dataTableColumnAo.getSchemaName();
 		String[] tableNames = dataTableColumnAo.getTableNames();
-		Arrays.asList(tableNames).forEach(tableName -> {
-			List<IDataTableColumnEntity> dataTableColumnEntityList = columnService.getTableColumn(dataSourceDto, schemaName, tableName);
 
-			List<DataTableColumnEntity> dataTableColumnEntities = Lists.newArrayList();
-			dataTableColumnEntityList.forEach(iDataTableColumnEntity -> {
-				DataTableColumnEntity dataTableColumnEntity = copyProperties(iDataTableColumnEntity);
-				dataTableColumnEntity.setTabId(iDataTableColumnEntity.getTabId());
-				dataTableColumnEntities.add(dataTableColumnEntity);
-			});
+		IDataTable tableService = dataTableUtil.getDataTableService(dataSourceDto);
+		//目标数据库的表对象
+		List<DataTableEntity> dataTableEntityList = tableService.getSrcAllTablesWithSchema(dataSourceDto, schemaName,tableNames);
+		//排除已在本地存在的表对象，并保存新的表对象
+		List<DataTableEntity> dataTableEntities = dataTableService.saveAllTablesNotExists(dataSourceId, schemaName, dataTableEntityList);
 
-			dataTableColumnService.saveAllTableColumn(dataTableColumnEntities);
+		//查询表的字段信息
+		List<IDataTableColumnEntity> dataTableColumnEntityList = columnService.getTableColumn(dataSourceDto, schemaName,dataTableEntities);
+
+		List<DataTableColumnEntity> dataTableColumnEntities = Lists.newArrayList();
+		dataTableColumnEntityList.forEach(iDataTableColumnEntity -> {
+			DataTableColumnEntity dataTableColumnEntity = copyProperties(iDataTableColumnEntity);
+			dataTableColumnEntities.add(dataTableColumnEntity);
 		});
+
+		dataTableColumnService.saveAllTableColumn(dataTableColumnEntities);
 		return responseUtil.success("采集数据库表字段成功");
 	}
 
@@ -293,6 +299,8 @@ public class DataTableColumnController extends BaseRequestController {
 		dataTableColumnEntity.setColName(iDataTableColumnEntity.getColName());
 		dataTableColumnEntity.setColType(iDataTableColumnEntity.getColType());
 		dataTableColumnEntity.setColLength(iDataTableColumnEntity.getColLength());
+		dataTableColumnEntity.setTabName(iDataTableColumnEntity.getTabName());
+		dataTableColumnEntity.setTabId(iDataTableColumnEntity.getTabId());
 		return dataTableColumnEntity;
 	}
 
@@ -327,7 +335,7 @@ public class DataTableColumnController extends BaseRequestController {
 	}
 
 	@Autowired
-	public void setDataSourceService(IDataSource dataSourceService) {
+	public void setDataSourceService(IDataSourceService dataSourceService) {
 		this.dataSourceService = dataSourceService;
 	}
 

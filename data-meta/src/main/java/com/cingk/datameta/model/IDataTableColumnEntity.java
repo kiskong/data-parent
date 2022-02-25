@@ -16,4 +16,6 @@ public interface IDataTableColumnEntity {
 
 	Integer getColDecimal();
 
+	String getTabName();
+
 }

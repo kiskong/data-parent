@@ -8,7 +8,7 @@ import com.cingk.datameta.model.dto.DataSourceDto;
 import com.cingk.datameta.model.dto.ResponseDto;
 import com.cingk.datameta.model.entity.DataSourceEntity;
 
-public interface IDataSource extends IBaseService {
+public interface IDataSourceService extends IBaseService {
 
 	void deleteByName(String name);
 

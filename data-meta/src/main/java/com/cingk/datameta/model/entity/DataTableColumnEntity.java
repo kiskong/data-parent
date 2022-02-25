@@ -37,6 +37,9 @@ public class DataTableColumnEntity implements IDataTableColumnEntity {
     @Column(name = "col_decimal")
     private Integer colDecimal;
 
+    @Column(name = "tab_name")
+    private String tabName;
+
     public Integer getColDecimal() {
         return colDecimal;
     }
@@ -91,5 +94,12 @@ public class DataTableColumnEntity implements IDataTableColumnEntity {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getTabName() {
+        return this.tabName;
+    }
+    public void setTabName(String tabName) {
+        this.tabName=tabName;
     }
 }

@@ -175,10 +175,10 @@ public class DataTableService implements IDataTable {
 	 *
 	 * @param dataSourceDto 数据源信息
 	 * @param schema 模式名
+	 * @return List<DataTableEntity>
 	 */
 	@Override
 	public List<DataTableEntity> getSrcAllTablesWithSchema(DataSourceDto dataSourceDto, String schema) {
-
 		return null;
 	}
 
@@ -200,6 +200,18 @@ public class DataTableService implements IDataTable {
 			| InstantiationException | ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	/**
+	 * 子类实现
+	 * @param dataSourceDto 数据源信息
+	 * @param schema 模式名
+	 * @param tableName 表清单
+	 * @return List<DataTableEntity>
+	 */
+	@Override
+	public List<DataTableEntity> getSrcAllTablesWithSchema(DataSourceDto dataSourceDto, String schema, String[] tableName) {
+		return null;
 	}
 
 	/**

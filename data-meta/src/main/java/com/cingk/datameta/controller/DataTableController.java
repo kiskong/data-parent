@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cingk.datameta.model.dto.DataSourceDto;
 import com.cingk.datameta.model.dto.ResponseDto;
 import com.cingk.datameta.model.entity.DataTableEntity;
-import com.cingk.datameta.service.intf.IDataSource;
+import com.cingk.datameta.service.intf.IDataSourceService;
 import com.cingk.datameta.service.intf.IDataTable;
 import com.cingk.datameta.utils.DataTableUtil;
 import com.cingk.datameta.utils.SpringUtil;
@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 public class DataTableController extends BaseRequestController {
     private static final Logger LOGGER = LoggerFactory.getLogger(DataTableController.class);
     private DataTableUtil dataTableUtil;
-    private IDataSource dataSourceService;
+    private IDataSourceService dataSourceService;
     private IDataTable dataTableService;
 
     @Operation(summary = "提取指定数据源的所有表")
@@ -40,7 +40,7 @@ public class DataTableController extends BaseRequestController {
             return responseDto;
         }
 
-        DataSourceDto dataSourceDto = (DataSourceDto)responseDto.getData().get(0);
+        DataSourceDto dataSourceDto = (DataSourceDto)responseDto.getData();
 
         //根据Url获取对应数据源的服务名
         String tableServiceName = dataTableUtil.getServiceNameByUrl(dataSourceDto);
@@ -61,7 +61,7 @@ public class DataTableController extends BaseRequestController {
         ResponseDto responseDto = this.getAllTables(id);
         if (!responseDto.successed()) return responseDto;
 
-        List<DataTableEntity> dataTableEntityList = responseDto.getData();
+        List<DataTableEntity> dataTableEntityList = (List<DataTableEntity>)responseDto.getData();
         dataTableService.saveAllTables(dataTableEntityList);
         ResponseDto saveResponseDto = responseUtil.success("保存数据成功");
         saveResponseDto.setDataSize(dataTableEntityList.size());
@@ -74,7 +74,7 @@ public class DataTableController extends BaseRequestController {
     }
 
     @Autowired
-    public void setDataSourceService(IDataSource dataSourceService) {
+    public void setDataSourceService(IDataSourceService dataSourceService) {
         this.dataSourceService = dataSourceService;
     }
 

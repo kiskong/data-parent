@@ -37,6 +37,8 @@ public interface IDataTable {
 
 	List<DataTableEntity> getSrcAllTablesWithSchema(DataSourceDto dataSourceDto, String schema, String sql, String resultClassName);
 
+	List<DataTableEntity> getSrcAllTablesWithSchema(DataSourceDto dataSourceDto, String schema,String[] tableName);
+
 	Integer getSrcTotalDataTableCount(DataSourceDto dataSourceDto, String schema);
 
 

@@ -19,13 +19,13 @@ import com.cingk.datameta.model.ao.DataSourceAo;
 import com.cingk.datameta.model.dto.DataSourceDto;
 import com.cingk.datameta.model.dto.ResponseDto;
 import com.cingk.datameta.model.entity.DataSourceEntity;
-import com.cingk.datameta.service.intf.IDataSource;
+import com.cingk.datameta.service.intf.IDataSourceService;
 import com.cingk.datameta.utils.DatabaseUtil;
 import com.cingk.datameta.utils.ResponseUtil;
 import java.time.Instant;
 
 @Service
-public class DataSourceService implements IDataSource {
+public class DataSourceServiceService implements IDataSourceService {
 
     private DatabaseUtil databaseUtil;
     private IDataSourceRepository iDataSourceRepository;

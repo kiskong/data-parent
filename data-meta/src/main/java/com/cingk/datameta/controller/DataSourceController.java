@@ -18,7 +18,7 @@ import com.cingk.datameta.model.InterfaceEntity;
 import com.cingk.datameta.model.ao.DataSourceAo;
 import com.cingk.datameta.model.dto.DataSourceDto;
 import com.cingk.datameta.model.dto.ResponseDto;
-import com.cingk.datameta.service.impl.DataSourceService;
+import com.cingk.datameta.service.impl.DataSourceServiceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import javax.validation.constraints.NotNull;
@@ -28,14 +28,14 @@ import javax.validation.constraints.NotNull;
 @RequestMapping("/api")
 public class DataSourceController extends BaseRequestController {
 
-    private DataSourceService dataSourceService;
+    private DataSourceServiceService dataSourceService;
 
     @Operation(summary ="通过数据源名称获取数据源")
     @GetMapping("getDatabaseSourceByName")
     public ResponseDto getDatabaseSourceByName(@Parameter(description = "数据源名称")String databaseName) {
         ResponseDto responseDto = dataSourceService.getDataSourceByName(databaseName);
         if (!responseDto.successed()) return responseDto;
-        DataSourceDto dataSourceDto =  (DataSourceDto)responseDto.getData().get(0);
+        DataSourceDto dataSourceDto =  (DataSourceDto)responseDto.getData();
         return responseUtil.success(dataSourceDto);
     }
 
@@ -45,7 +45,7 @@ public class DataSourceController extends BaseRequestController {
 
         ResponseDto responseDto = dataSourceService.getDataSourceById(id);
         if (!responseDto.successed()) return responseDto;
-        DataSourceDto dataSourceDto =  (DataSourceDto)responseDto.getData().get(0);
+        DataSourceDto dataSourceDto =  (DataSourceDto)responseDto.getData();
         return responseUtil.success(dataSourceDto);
     }
 
@@ -99,7 +99,7 @@ public class DataSourceController extends BaseRequestController {
     }
 
     @Autowired
-    public void setDataSourceService(DataSourceService dataSourceService) {
+    public void setDataSourceService(DataSourceServiceService dataSourceService) {
         this.dataSourceService = dataSourceService;
     }
 }

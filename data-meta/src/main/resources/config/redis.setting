@@ -1,0 +1,9 @@
+
+#----- 默认（公有）配置
+# 地址，默认localhost
+host = 10.60.69.20
+# 端口，默认6379
+port = 6379
+
+password = grkj_regtech
+

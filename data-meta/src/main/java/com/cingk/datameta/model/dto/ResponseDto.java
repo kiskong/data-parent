@@ -19,7 +19,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * @date 2022/02/10
  */
 @Schema(description = "响应dto")
-public class ResponseDto implements Serializable {
+public class ResponseDto<T> implements Serializable {
 
     /**
      * 具体数据
@@ -27,7 +27,7 @@ public class ResponseDto implements Serializable {
      */
     @Schema(description = "业务响应的具体数据")
     @SuppressWarnings("unchecked")
-    private List<Object> data;
+    private T data;
 
     /**
      * 响应信息,响应编码对应的描述,通过枚举自动映射
@@ -52,27 +52,15 @@ public class ResponseDto implements Serializable {
     private Integer dataSize;
 
     @SuppressWarnings("unchecked")
-    public List getData() {return data;}
+    public T getData() {return data;}
 
     @SuppressWarnings("unchecked")
-    public void setData(List<Object> data) {
+    public void setData(T data) {
         this.data = data;
     }
 
     public String getResMessage() {
         return resMessage;
-    }
-
-    @SuppressWarnings("unchecked")
-    public void setData(Map<String,Object> data) {
-        this.data = Lists.newArrayList();
-        this.data.add(data);
-    }
-
-    @SuppressWarnings("unchecked")
-    public void setData(InterfaceEntity data) {
-        this.data = Lists.newArrayList();
-        this.data.add(data);
     }
 
     public String getResCode() {
@@ -85,12 +73,6 @@ public class ResponseDto implements Serializable {
     }
 
     public Integer getDataSize() {
-        if (dataSize != null) {
-            return dataSize;
-        }
-        if (data != null) {
-            return data.size();
-        }
         return dataSize;
     }
 

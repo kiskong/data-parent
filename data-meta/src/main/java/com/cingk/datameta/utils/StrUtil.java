@@ -12,4 +12,6 @@ public class StrUtil extends cn.hutool.core.util.StrUtil {
 	 */
 	public static final String SINGLE_QUOTE = "'";
 
+	public static final String SQL_COL_QUOTE = "','";
+
 }

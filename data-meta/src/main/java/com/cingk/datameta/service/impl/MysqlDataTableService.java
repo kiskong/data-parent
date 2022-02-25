@@ -1,6 +1,7 @@
 package com.cingk.datameta.service.impl;
 
 import java.util.List;
+import java.util.Spliterators;
 
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,9 @@ public class MysqlDataTableService extends DataTableService {
 	private static final String QUERY_ALL_TAB_UNSYS = QUERY_ALL_TABLES + " where table_schema not in (%s)";
 	//查询指定schema下的表
 	private static final String QUERY_TABLES_WITH_SCHEMA = QUERY_ALL_TABLES + " where table_schema='%s'";
+
+	private static final String QUERY_TABLES_WITH_SCHEMA_TABELNAME = QUERY_TABLES_WITH_SCHEMA + " and table_name in ('%s') ";
+
 	//查询Sql结果存储对象
 	private static final String JDBC_RESULT_CLASS_NAME = MysqlTableEntity.class.getName();
 
@@ -37,6 +41,12 @@ public class MysqlDataTableService extends DataTableService {
 	@Override
 	public List<DataTableEntity> getSrcAllTablesWithSchema(DataSourceDto dataSourceDto, String schema) {
 		String sql = String.format(QUERY_TABLES_WITH_SCHEMA, schema);
+		return super.getSrcAllTablesWithSchema(dataSourceDto, schema, sql, JDBC_RESULT_CLASS_NAME);
+	}
+
+	@Override
+	public List<DataTableEntity> getSrcAllTablesWithSchema(DataSourceDto dataSourceDto, String schema,String[] tableName) {
+		String sql = String.format(QUERY_TABLES_WITH_SCHEMA_TABELNAME, schema, String.join(StrUtil.SQL_COL_QUOTE,tableName));
 		return super.getSrcAllTablesWithSchema(dataSourceDto, schema, sql, JDBC_RESULT_CLASS_NAME);
 	}
 

@@ -24,6 +24,8 @@ public class OracleDataTableService extends DataTableService {
     private static final String QUERY_ALL_TAB_UNSYS = QUERY_ALL_TABLES + " where OWNER not in (%s)";
     //查询指定schema下的表
     private static final String QUERY_TABLES_WITH_SCHEMA = QUERY_ALL_TABLES + " where owner='%s'";
+
+    private static final String QUERY_TABLES_WITH_SCHEMA_TABELNAME = QUERY_TABLES_WITH_SCHEMA + " and table_name in ('%s')";
     //查询Sql结果存储对象
     private static final String JDBC_RESULT_CLASS_NAME = OracleTableEntity.class.getName();
 
@@ -36,6 +38,12 @@ public class OracleDataTableService extends DataTableService {
     @Override
     public List<DataTableEntity> getSrcAllTablesWithSchema(DataSourceDto dataSourceDto, String schema) {
         String sql = String.format(QUERY_TABLES_WITH_SCHEMA, schema);
+        return super.getSrcAllTablesWithSchema(dataSourceDto,schema,sql,JDBC_RESULT_CLASS_NAME);
+    }
+
+    @Override
+    public List<DataTableEntity> getSrcAllTablesWithSchema(DataSourceDto dataSourceDto, String schema,String[] tableNames) {
+        String sql = String.format(QUERY_TABLES_WITH_SCHEMA_TABELNAME, schema,String.join(StrUtil.SQL_COL_QUOTE,tableNames));
         return super.getSrcAllTablesWithSchema(dataSourceDto,schema,sql,JDBC_RESULT_CLASS_NAME);
     }
 
