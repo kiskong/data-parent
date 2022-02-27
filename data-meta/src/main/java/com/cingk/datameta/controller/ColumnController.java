@@ -39,8 +39,8 @@ public class ColumnController {
 	}
 
 	@Operation(summary = "采集目标数据源指定模式名下的所有表字段信息")
-	@GetMapping("getAndSaveTagDBColumnBySchema")
-	public ResponseDto getAndSaveTagDBColumnBySchema(
+	@GetMapping("getAndSaveColumnFromTagDBBySchema")
+	public ResponseDto getAndSaveColumnFromTagDBBySchema(
 		@Parameter(description = "数据源标识", required = true) @NotNull Integer dataSourceId,
 		@Parameter(description = "模式名称", required = true) @NotNull String schemaName) {
 		ResponseDto responseDto = dataSourceService.getDataSourceById(dataSourceId);
@@ -48,13 +48,13 @@ public class ColumnController {
 			return responseDto;
 		}
 		DataSourceDto dataSourceDto = (DataSourceDto) responseDto.getData();
-		columnService.getAndSaveTagDBColumnBySchema(dataSourceDto, schemaName);
+		columnService.getAndSaveColumnFromTagDBBySchema(dataSourceDto, schemaName);
 		return responseUtil.success("采集表字段成功");
 	}
 
 	@Operation(summary = "采集目标数据源指定模式名下的单个表字段信息")
-	@GetMapping("getAndSaveTagDBColumnByTableName")
-	public ResponseDto getAndSaveTagDBColumnByTableName(
+	@GetMapping("getAndSaveColumnFromTagDBByTableName")
+	public ResponseDto getAndSaveColumnFromTagDBByTableName(
 		@Parameter(description = "数据源标识", required = true) @NotNull Integer dataSourceId,
 		@Parameter(description = "模式名称", required = true) @NotNull String schemaName,
 		@Parameter(description = "表名称", required = true) @NotNull String tableName) {
@@ -64,13 +64,13 @@ public class ColumnController {
 			return responseDto;
 		}
 		DataSourceDto dataSourceDto = (DataSourceDto) responseDto.getData();
-		columnService.getAndSaveTagDBColumnByTableName(dataSourceDto, schemaName,tableName);
+		columnService.getAndSaveColumnFromTagDBByTableName(dataSourceDto, schemaName,tableName);
 		return responseUtil.success("采集表字段成功");
 	}
 
 	@Operation(summary = "采集目标数据源指定模式名下的多个表字段信息")
-	@GetMapping("getAndSaveTagDBColumnByTableNames")
-	public ResponseDto getAndSaveTagDBColumnByTableNames(
+	@GetMapping("getAndSaveColumnFromTagDBByTableNames")
+	public ResponseDto getAndSaveColumnFromTagDBByTableNames(
 		@Parameter(description = "数据源标识", required = true) @NotNull Integer dataSourceId,
 		@Parameter(description = "模式名称", required = true) @NotNull String schemaName,
 		@Parameter(description = "表名称列表", required = true) @NotNull String[] tableNames) {
@@ -80,7 +80,38 @@ public class ColumnController {
 			return responseDto;
 		}
 		DataSourceDto dataSourceDto = (DataSourceDto) responseDto.getData();
-		columnService.getAndSaveTagDBColumnByTableName(dataSourceDto, schemaName,tableNames);
+		columnService.getAndSaveColumnFromTagDBByTableName(dataSourceDto, schemaName,tableNames);
 		return responseUtil.success("采集表字段成功");
+	}
+
+	//todo
+	public ResponseDto getColumnListByTableName(
+		@Parameter(description = "数据源标识", required = true) @NotNull Integer dataSourceId,
+		@Parameter(description = "模式名称", required = true) @NotNull String schemaName,
+		@Parameter(description = "表名称", required = true) @NotNull String tableName){
+		return null;
+	}
+
+	//todo
+	public ResponseDto getColumnListByTableId(
+		@Parameter(description = "数据源标识", required = true) @NotNull Integer dataSourceId,
+		@Parameter(description = "模式名称", required = true) @NotNull String schemaName,
+		@Parameter(description = "表标识", required = true) @NotNull Integer tabId){
+		return null;
+	}
+
+	//todo
+	public ResponseDto getColumnListByTableNames(
+		@Parameter(description = "数据源标识", required = true) @NotNull Integer dataSourceId,
+		@Parameter(description = "模式名称", required = true) @NotNull String schemaName,
+		@Parameter(description = "表名称列表", required = true) @NotNull String[] tableNames){
+		return null;
+	}
+	//todo
+	public ResponseDto getColumnListByTableIds(
+		@Parameter(description = "数据源标识", required = true) @NotNull Integer dataSourceId,
+		@Parameter(description = "模式名称", required = true) @NotNull String schemaName,
+		@Parameter(description = "表标识列表", required = true) @NotNull Integer[] tabIds){
+		return null;
 	}
 }

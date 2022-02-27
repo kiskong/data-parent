@@ -137,7 +137,7 @@ public class ColumnService {
 	}
 
 
-	public void getAndSaveTagDBColumnBySchema(DataSourceDto dataSourceDto, String schemaName) {
+	public void getAndSaveColumnFromTagDBBySchema(DataSourceDto dataSourceDto, String schemaName) {
 		//新增的表
 		List<DataTableEntity> newTables = getNewTables(dataSourceDto, schemaName);
 		//保存新增表信息
@@ -147,7 +147,7 @@ public class ColumnService {
 	}
 
 
-	public void getAndSaveTagDBColumnByTableName(DataSourceDto dataSourceDto, String schemaName, String tableName) {
+	public void getAndSaveColumnFromTagDBByTableName(DataSourceDto dataSourceDto, String schemaName, String tableName) {
 
 		//新增的表
 		List<DataTableEntity> newTables = getNewTables(dataSourceDto, schemaName, tableName);
@@ -157,7 +157,7 @@ public class ColumnService {
 		saveColumns(dataSourceDto, schemaName, dbTables, newTables);
 	}
 
-	public void getAndSaveTagDBColumnByTableName(DataSourceDto dataSourceDto, String schemaName, String[] tableNames) {
+	public void getAndSaveColumnFromTagDBByTableName(DataSourceDto dataSourceDto, String schemaName, String[] tableNames) {
 
 		//新增的表
 		List<DataTableEntity> newTables = getNewTables(dataSourceDto, schemaName, tableNames);
