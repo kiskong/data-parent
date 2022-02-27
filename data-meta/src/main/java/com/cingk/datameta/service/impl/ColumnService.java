@@ -49,6 +49,13 @@ public class ColumnService {
 		this.columnRepository = columnRepository;
 	}
 
+	/**
+	 * 找出新增的表
+	 *
+	 * @param dataSourceDto 数据源信息
+	 * @param schemaName 模式名
+	 * @return List<TableEntity>
+	 */
 	private List<TableEntity> getNewTables(DataSourceDto dataSourceDto, String schemaName) {
 
 		Integer dataSourceId = dataSourceDto.getId();
@@ -58,21 +65,25 @@ public class ColumnService {
 		List<String> tableName = tables.stream().map(TableEntity::getTabName).collect(Collectors.toList());
 
 		//查询已存在的表
-		List<TableEntity> existsTable = tableService.getTables(dataSourceId, schemaName,
-			tableName.toArray(new String[tableName.size()]));
+		List<TableEntity> existsTable = tableService.getTables(dataSourceId, schemaName, tableName.toArray(new String[tableName.size()]));
 		if (existsTable.isEmpty()) {
 			return tables;
 		}
 
 		//新增的表
-		List<TableEntity> newTables = existsTable
-			.stream()
-			.filter(d ->
-				!tables.stream().anyMatch(t -> t.getTabName().equals(d.getTabName())))
-			.collect(Collectors.toList());
+		List<TableEntity> newTables = tables.stream()
+			.filter(d -> !existsTable.stream().anyMatch(t -> t.getTabName().equals(d.getTabName()))).collect(Collectors.toList());
 		return newTables;
 	}
 
+	/**
+	 * 找出新增的表
+	 *
+	 * @param dataSourceDto 数据源信息
+	 * @param schemaName 模式名
+	 * @param tableName 表名称
+	 * @return List<TableEntity>
+	 */
 	private List<TableEntity> getNewTables(DataSourceDto dataSourceDto, String schemaName, String tableName) {
 		Integer dataSourceId = dataSourceDto.getId();
 		ITableService tagTableService = tableUtil.getTableService(dataSourceDto);
@@ -82,15 +93,17 @@ public class ColumnService {
 		if (existsTable.isEmpty()) {
 			return Lists.newArrayList(tableEntity);
 		}
-
-		//新增的表
-		List<TableEntity> newTables = existsTable
-			.stream()
-			.filter(d -> !tableEntity.getTabName().equals(d.getTabName()))
-			.collect(Collectors.toList());
-		return newTables;
+		return Lists.newArrayList();
 	}
 
+	/**
+	 * 找出新增的表
+	 *
+	 * @param dataSourceDto 数据源信息
+	 * @param schemaName 模式名
+	 * @param tableName 表名称列表
+	 * @return List<TableEntity>
+	 */
 	private List<TableEntity> getNewTables(DataSourceDto dataSourceDto, String schemaName, String[] tableName) {
 
 		Integer dataSourceId = dataSourceDto.getId();
@@ -104,24 +117,32 @@ public class ColumnService {
 		}
 		//忽略已存在的表
 		//新增的表
-		List<TableEntity> newTables = existsTable
-			.stream()
-			.filter(d ->
-				!tables.stream().anyMatch(t -> t.getTabName().equals(d.getTabName())))
-			.collect(Collectors.toList());
+		List<TableEntity> newTables = tables.stream()
+			.filter(d -> !existsTable.stream().anyMatch(t -> t.getTabName().equals(d.getTabName()))).collect(Collectors.toList());
 		return newTables;
 	}
 
-
-	private List<IColumnEntity> getColumns(DataSourceDto dataSourceDto, String schemaName,
-		List<TableEntity> newTables) {
+	/**
+	 * 获取目标表字段信息
+	 *
+	 * @param dataSourceDto 数据源信息
+	 * @param schemaName 模式名
+	 * @param newTables 新增的表
+	 * @return List<IColumnEntity>
+	 */
+	private List<IColumnEntity> getColumns(DataSourceDto dataSourceDto, String schemaName, List<TableEntity> newTables) {
 		IColumnService tagColumnService = columnUtil.getColumnService(dataSourceDto);
-		//查询所有表字段信息
 		List<String> tableNames = newTables.stream().map(TableEntity::getTabName).collect(Collectors.toList());
 		return tagColumnService.getTableColumn(dataSourceDto, schemaName, tableNames);
 
 	}
 
+	/**
+	 * 封装字段对象，用于保存到数据库
+	 *
+	 * @param columns 字段列表
+	 * @param dbTables 已保存的表
+	 */
 	private List<ColumnEntity> getDataTableColumnEntityList(List<IColumnEntity> columns, List<TableEntity> dbTables) {
 		List<ColumnEntity> columnEntityList = Lists.newArrayList();
 		columns.stream().forEach(columnEntity -> {
@@ -134,10 +155,8 @@ public class ColumnService {
 			dataTableColumnEntity.setColName(columnEntity.getColName());
 
 			//已保存的tabId标识
-			TableEntity datatableEntity =
-				dbTables.stream().filter(d -> d.getTabName().equals(columnEntity.getTabName()))
-					.findFirst()
-					.orElse(null);
+			TableEntity datatableEntity = dbTables.stream().filter(d -> d.getTabName().equals(columnEntity.getTabName())).findFirst()
+				.orElse(null);
 
 			dataTableColumnEntity.setTabId(datatableEntity.getId());
 			columnEntityList.add(dataTableColumnEntity);
@@ -145,8 +164,15 @@ public class ColumnService {
 		return columnEntityList;
 	}
 
-	private void saveColumns(DataSourceDto dataSourceDto, String schemaName, List<TableEntity> newTables,
-		List<TableEntity> dbTables) {
+	/**
+	 * 保存字段信息
+	 *
+	 * @param dataSourceDto 数据源信息
+	 * @param schemaName 模式名
+	 * @param newTables 新增的表
+	 * @param dbTables 已保存的表
+	 */
+	private void saveColumns(DataSourceDto dataSourceDto, String schemaName, List<TableEntity> newTables, List<TableEntity> dbTables) {
 		List<IColumnEntity> columns = getColumns(dataSourceDto, schemaName, newTables);
 		List<ColumnEntity> columnEntityList = getDataTableColumnEntityList(columns, dbTables);
 		//保存所有字段信息
@@ -184,5 +210,20 @@ public class ColumnService {
 		List<TableEntity> dbTables = tableService.saveTables(newTables);
 		//保存字段信息
 		saveColumns(dataSourceDto, schemaName, dbTables, newTables);
+	}
+
+	//todo
+	public void modifiedColumnFromTagDBByTableName() {
+
+	}
+
+	//todo
+	public void modifiedColumnFromTagDBByTableId() {
+
+	}
+
+	//todo
+	public void modifiedColumnFromTagDBBySchema() {
+
 	}
 }
