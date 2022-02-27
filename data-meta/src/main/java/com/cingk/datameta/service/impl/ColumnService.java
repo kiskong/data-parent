@@ -1,81 +1,169 @@
 package com.cingk.datameta.service.impl;
 
-import com.cingk.datameta.model.IDataTableColumnEntity;
-import com.cingk.datameta.model.dto.DataSourceDto;
-import com.cingk.datameta.model.dto.DataTableDto;
-import com.cingk.datameta.model.entity.DataTableColumnEntity;
-import com.cingk.datameta.service.intf.IColumnService;
+import com.google.common.collect.Lists;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class ColumnService implements IColumnService{
-    @Override
-    public List<IDataTableColumnEntity> getTableColumn(DataSourceDto dataSourceDto, String sql, Class resultClass) {
-        return null;
-    }
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-    @Override
-    public List<IDataTableColumnEntity> getTableColumn(DataTableDto dataTableDto, String sql, Class resultClass) {
-        return null;
-    }
+import cn.hutool.core.util.NumberUtil;
+import com.cingk.datameta.model.IDataTableColumnEntity;
+import com.cingk.datameta.model.dto.DataSourceDto;
+import com.cingk.datameta.model.entity.DataTableColumnEntity;
+import com.cingk.datameta.model.entity.DataTableEntity;
+import com.cingk.datameta.service.intf.IColumnService;
+import com.cingk.datameta.service.intf.ITableService;
+import com.cingk.datameta.utils.ColumnUtil;
+import com.cingk.datameta.utils.TableUtil;
 
-    @Override
-    public List<IDataTableColumnEntity> getSrcTableColumn(DataSourceDto dataSourceDto,String schemaName, String tableName) {
-        return null;
-    }
+@Service
+public class ColumnService {
 
-    @Override
-    public List<IDataTableColumnEntity> getSrcTableColumn(DataSourceDto dataSourceDto, String schemaName) {
-        return null;
-    }
+	private TableUtil tableUtil;
+	private ColumnUtil columnUtil;
+	//本地数据源的数据表服务实现
+	private TableService tableService;
 
-    @Override
-    public List<IDataTableColumnEntity> getSrcTableColumn(DataSourceDto dataSourceDto,String schemaName, List<String> tableName) {
-        return null;
-    }
+	@Autowired
+	public void setDataTableUtil(TableUtil tableUtil) {
+		this.tableUtil = tableUtil;
+	}
 
-    @Override
-    public List<IDataTableColumnEntity> getTableColumn(DataSourceDto dataSourceDto,String schemaName, String tableName) {
-        return null;
-    }
+	@Autowired
+	public void setDataTableColumnUtil(ColumnUtil columnUtil) {
+		this.columnUtil = columnUtil;
+	}
 
-    @Override
-    public List<IDataTableColumnEntity> getTableColumn(DataSourceDto dataSourceDto, String schemaName) {
-        return null;
-    }
+	@Autowired
+	public void setTableService(TableService tableService) {
+		this.tableService = tableService;
+	}
 
-    @Override
-    public List<IDataTableColumnEntity> getTableColumn(DataSourceDto dataSourceDto,String schemaName, List<String> tableName) {
-        return null;
-    }
+	private List<DataTableEntity> getNewTables(DataSourceDto dataSourceDto, String schemaName) {
 
-    @Override
-    public void updateTableColumn(DataTableColumnEntity dataTableColumnEntity) {
+		Integer dataSourceId = dataSourceDto.getId();
+		ITableService tagTableService = tableUtil.getTableService(dataSourceDto);
+		List<DataTableEntity> tables = tagTableService.getTables(dataSourceId, schemaName);
 
-    }
+		List<String> tableName = tables.stream().map(DataTableEntity::getTabName).collect(Collectors.toList());
 
-    @Override
-    public void updateTableColumn(List<DataTableColumnEntity> dataTableColumnEntityList) {
+		//查询已存在的表
+		List<DataTableEntity> existsTable = tableService.getTables(dataSourceId, schemaName,
+			tableName.toArray(new String[tableName.size()]));
 
-    }
+		//新增的表
+		List<DataTableEntity> newTables = existsTable
+			.stream()
+			.filter(d ->
+				!tables.stream().anyMatch(t -> NumberUtil.equals(t.getId(), d.getId())))
+			.collect(Collectors.toList());
+		return newTables;
+	}
 
-    @Override
-    public void saveTableColumn(List<DataTableColumnEntity> dataTableColumnEntityList) {
+	private List<DataTableEntity> getNewTables(DataSourceDto dataSourceDto, String schemaName, String tableName) {
+		Integer dataSourceId = dataSourceDto.getId();
+		ITableService tagTableService = tableUtil.getTableService(dataSourceDto);
+		DataTableEntity tableEntity = tagTableService.getTable(dataSourceId, schemaName, tableName);
+		//查询已存在的表
+		List<DataTableEntity> existsTable = tableService.getTables(dataSourceId, schemaName, new String[]{tableName});
+		//新增的表
+		List<DataTableEntity> newTables = existsTable
+			.stream()
+			.filter(d -> !NumberUtil.equals(d.getId(), tableEntity.getId()))
+			.collect(Collectors.toList());
+		return newTables;
+	}
 
-    }
+	private List<DataTableEntity> getNewTables(DataSourceDto dataSourceDto, String schemaName, String[] tableName) {
 
-    @Override
-    public void deleteTableColumn(Integer tabId) {
+		Integer dataSourceId = dataSourceDto.getId();
+		ITableService tagTableService = tableUtil.getTableService(dataSourceDto);
+		List<DataTableEntity> tables = tagTableService.getTables(dataSourceId, schemaName, tableName);
 
-    }
+		//查询已存在的表
+		List<DataTableEntity> existsTable = tableService.getTables(dataSourceId, schemaName, tableName);
 
-    @Override
-    public void deleteTableColumn(DataTableColumnEntity dataTableColumnEntity) {
+		//忽略已存在的表
+		//新增的表
+		List<DataTableEntity> newTables = existsTable
+			.stream()
+			.filter(d ->
+				!tables.stream().anyMatch(t -> NumberUtil.equals(t.getId(), d.getId())))
+			.collect(Collectors.toList());
+		return newTables;
+	}
 
-    }
 
-    @Override
-    public void deleteTableColumn(List<DataTableColumnEntity> dataTableColumnEntityList) {
+	private List<IDataTableColumnEntity> getColumns(IColumnService columnService, DataSourceDto dataSourceDto, String schemaName,
+		List<DataTableEntity> newTables) {
+		//查询所有表字段信息
+		List<String> tableNames = newTables.stream().map(DataTableEntity::getTabName).collect(Collectors.toList());
+		return columnService.getTableColumn(dataSourceDto, schemaName, tableNames);
 
-    }
+	}
+
+	private List<DataTableColumnEntity> getDataTableColumnEntityList(List<IDataTableColumnEntity> columns, List<DataTableEntity> dbTables) {
+		List<DataTableColumnEntity> columnEntityList = Lists.newArrayList();
+		columns.stream().forEach(columnEntity -> {
+			DataTableColumnEntity dataTableColumnEntity = new DataTableColumnEntity();
+			dataTableColumnEntity.setTabName(columnEntity.getTabName());
+			dataTableColumnEntity.setColDecimal(columnEntity.getColDecimal());
+			dataTableColumnEntity.setColType(columnEntity.getColType());
+			dataTableColumnEntity.setColLength(columnEntity.getColLength());
+			dataTableColumnEntity.setColId(columnEntity.getColId());
+			dataTableColumnEntity.setColName(columnEntity.getColName());
+
+			//已保存的tabId标识
+			DataTableEntity datatableEntity =
+				dbTables.stream().filter(d -> d.getTabName().equals(columnEntity.getTabName()))
+					.findFirst()
+					.orElse(null);
+
+			dataTableColumnEntity.setTabId(datatableEntity.getId());
+			columnEntityList.add(dataTableColumnEntity);
+		});
+		return columnEntityList;
+	}
+
+	private void saveColumns(DataSourceDto dataSourceDto, String schemaName, List<DataTableEntity> newTables,
+		List<DataTableEntity> dbTables) {
+		IColumnService columnService = columnUtil.getColumnService(dataSourceDto);
+		List<IDataTableColumnEntity> columns = getColumns(columnService, dataSourceDto, schemaName, newTables);
+		List<DataTableColumnEntity> columnEntityList = getDataTableColumnEntityList(columns, dbTables);
+		//保存所有字段信息
+		columnService.saveTableColumn(columnEntityList);
+	}
+
+
+	public void getAndSaveTagDBColumnBySchema(DataSourceDto dataSourceDto, String schemaName) {
+		//新增的表
+		List<DataTableEntity> newTables = getNewTables(dataSourceDto, schemaName);
+		//保存新增表信息
+		List<DataTableEntity> dbTables = tableService.saveTables(newTables);
+		//保存字段信息
+		saveColumns(dataSourceDto, schemaName, dbTables, newTables);
+	}
+
+
+	public void getAndSaveTagDBColumnByTableName(DataSourceDto dataSourceDto, String schemaName, String tableName) {
+
+		//新增的表
+		List<DataTableEntity> newTables = getNewTables(dataSourceDto, schemaName, tableName);
+		//保存新增表信息
+		List<DataTableEntity> dbTables = tableService.saveTables(newTables);
+		//保存字段信息
+		saveColumns(dataSourceDto, schemaName, dbTables, newTables);
+	}
+
+	public void getAndSaveTagDBColumnByTableName(DataSourceDto dataSourceDto, String schemaName, String[] tableNames) {
+
+		//新增的表
+		List<DataTableEntity> newTables = getNewTables(dataSourceDto, schemaName, tableNames);
+		//保存新增表信息
+		List<DataTableEntity> dbTables = tableService.saveTables(newTables);
+		//保存字段信息
+		saveColumns(dataSourceDto, schemaName, dbTables, newTables);
+	}
 }

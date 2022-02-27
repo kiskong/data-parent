@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cingk.datameta.model.dto.ResponseDto;
 import com.cingk.datameta.service.DruidService;
+import com.cingk.datameta.utils.ResponseUtil;
 import io.swagger.v3.oas.annotations.Operation;
 
 /**
@@ -15,19 +16,24 @@ import io.swagger.v3.oas.annotations.Operation;
  * @date:2022-02-15
  */
 @RestController("/")
-public class DruidController extends BaseRequestController{
-	public DruidService druidService;
+public class DruidController {
+	private DruidService druidService;
+	private ResponseUtil responseUtil;
 
+	@Autowired
+	public void setResponseUtil(ResponseUtil responseUtil) {
+		this.responseUtil = responseUtil;
+	}
+
+	@Autowired
+	public void setDruidService(DruidService druidService) {
+		this.druidService = druidService;
+	}
 
 	@Operation(description = "druid new transaction test")
 	@GetMapping("/getDruidTest")
 	public ResponseDto getData(){
 		druidService.getData();
 		return responseUtil.success("成功");
-	}
-
-	@Autowired
-	public void setDruidService(DruidService druidService) {
-		this.druidService = druidService;
 	}
 }

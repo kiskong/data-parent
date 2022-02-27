@@ -1,6 +1,5 @@
 package com.cingk.datameta.utils;
 
-import com.cingk.datameta.service.intf.IColumnService;
 import com.google.common.collect.Lists;
 
 import java.util.List;
@@ -14,11 +13,8 @@ import com.cingk.datameta.model.dto.DataSourceDto;
 import com.cingk.datameta.model.dto.DataTableColumnDto;
 import com.cingk.datameta.model.dto.DataTableDto;
 import com.cingk.datameta.model.dto.ResponseDto;
-import com.cingk.datameta.service.impl.MysqlTableColumnService;
-import com.cingk.datameta.service.intf.IDataTableColumn;
-
-import java.lang.reflect.InvocationTargetException;
-import java.sql.SQLException;
+import com.cingk.datameta.service.impl.MysqlColumnService;
+import com.cingk.datameta.service.intf.IColumnService;
 
 /**
  * @author: create by lvkc
@@ -27,7 +23,7 @@ import java.sql.SQLException;
  * @date:2022-01-30
  */
 @Component
-public class DataTableColumnUtil extends DatabaseUtil {
+public class ColumnUtil extends DatabaseUtil {
 
 
     /**
@@ -39,7 +35,7 @@ public class DataTableColumnUtil extends DatabaseUtil {
     public String getServiceNameByUrl(String url) {
         boolean isMysql = url.toLowerCase().contains(DB_TYPE_MYSQL);
         if (isMysql) {
-            return MysqlTableColumnService.class.getName();
+            return MysqlColumnService.class.getName();
         }
         boolean isOracle = url.toLowerCase().contains(DB_TYPE_ORACLE);
 //        if (isOracle) return OracleTableColumnService.class.getName();
@@ -150,15 +146,12 @@ public class DataTableColumnUtil extends DatabaseUtil {
         }
     }
 
-    public IDataTableColumn getDataTableColumnService(ResponseDto responseDto) {
-        return getDataTableColumnService((DataSourceDto) responseDto.getData());
-    }
 
-    public IDataTableColumn getDataTableColumnService(DataSourceDto dataSourceDto) {
-        return SpringUtil.getBean(getServiceNameByUrl(dataSourceDto));
-    }
     public IColumnService getColumnService(DataSourceDto dataSourceDto) {
         return SpringUtil.getBean(getServiceNameByUrl(dataSourceDto));
+    }
+    public IColumnService getColumnService(ResponseDto responseDto) {
+        return getColumnService((DataSourceDto) responseDto.getData());
     }
 
 }

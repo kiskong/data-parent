@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.cingk.datameta.model.entity.DataTableEntity;
 
-public interface IDataTableRepository extends IBaseCrudRepository<DataTableEntity, Integer> {
+public interface ITableRepository extends IBaseCrudRepository<DataTableEntity, Integer> {
 
 	@Query(value = "from DataTableEntity where databaseSourceId = ?1 and tabName in (?2)")
 	List<DataTableEntity> queryAll(Integer dataSourceId, String[] tableNames);

@@ -1,41 +1,14 @@
 package com.cingk.datameta.service.intf;
 
+import java.util.List;
+
 import com.cingk.datameta.model.IDataTableColumnEntity;
 import com.cingk.datameta.model.dto.DataSourceDto;
 import com.cingk.datameta.model.entity.DataTableColumnEntity;
 
-import java.util.List;
+public interface IColumnService {
 
-public interface IColumnService extends IBaseColumnService {
 
-    /**
-     * 获取目标数据源单个表的字段信息
-     *
-     * @param dataSourceDto 数据源
-     * @param schemaName    模式名
-     * @param tableName     表名称
-     * @return List<IDataTableColumnEntity>
-     */
-    List<IDataTableColumnEntity> getSrcTableColumn(DataSourceDto dataSourceDto, String schemaName, String tableName);
-
-    /**
-     * 获取目标数据源模式名下所有表的字段信息
-     *
-     * @param dataSourceDto 数据源
-     * @param schemaName    模式名
-     * @return List<IDataTableColumnEntity>
-     */
-    List<IDataTableColumnEntity> getSrcTableColumn(DataSourceDto dataSourceDto, String schemaName);
-
-    /**
-     * 获取目标数据源多个表的字段信息
-     *
-     * @param dataSourceDto 数据源
-     * @param schemaName    模式名
-     * @param tableName     表名称
-     * @return List<IDataTableColumnEntity>
-     */
-    List<IDataTableColumnEntity> getSrcTableColumn(DataSourceDto dataSourceDto, String schemaName, List<String> tableName);
 
     /**
      * 获取本地连接数据源多个表的字段信息

@@ -25,7 +25,7 @@ import com.cingk.datameta.utils.ResponseUtil;
 import java.time.Instant;
 
 @Service
-public class DataSourceServiceService implements IDataSourceService {
+public class DataSourceService implements IDataSourceService {
 
     private DatabaseUtil databaseUtil;
     private IDataSourceRepository iDataSourceRepository;
@@ -158,6 +158,7 @@ public class DataSourceServiceService implements IDataSourceService {
     public void setDatabaseUtil(DatabaseUtil databaseUtil) {
         this.databaseUtil = databaseUtil;
     }
+
     @Autowired
     public void setiDataSourceRepository(IDataSourceRepository iDataSourceRepository) {
         this.iDataSourceRepository = iDataSourceRepository;

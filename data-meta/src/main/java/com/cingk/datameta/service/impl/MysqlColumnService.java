@@ -1,22 +1,25 @@
 package com.cingk.datameta.service.impl;
 
-import com.cingk.datameta.model.IDataTableColumnEntity;
-import com.cingk.datameta.model.dto.DataSourceDto;
-import com.cingk.datameta.model.entity.MysqlColumnEntity;
-import com.cingk.datameta.utils.DataTableColumnUtil;
-import com.cingk.datameta.utils.StrUtil;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.cingk.datameta.model.IDataTableColumnEntity;
+import com.cingk.datameta.model.dto.DataSourceDto;
+import com.cingk.datameta.model.entity.DataTableColumnEntity;
+import com.cingk.datameta.model.entity.MysqlColumnEntity;
+import com.cingk.datameta.service.intf.IColumnService;
+import com.cingk.datameta.utils.ColumnUtil;
+import com.cingk.datameta.utils.StrUtil;
 
 @Service
-public class MysqlColumnService extends ColumnService {
+public class MysqlColumnService implements IColumnService {
 
-    public DataTableColumnUtil columnUtil;
+    public ColumnUtil columnUtil;
 
     @Autowired
-    public void setDataTableColumnUtil(DataTableColumnUtil columnUtil) {
+    public void setDataTableColumnUtil(ColumnUtil columnUtil) {
         this.columnUtil = columnUtil;
     }
 
@@ -31,6 +34,7 @@ public class MysqlColumnService extends ColumnService {
         return columnUtil.getTableColumnEntityList(dataSourceDto, sql, MysqlColumnEntity.class);
     }
 
+
     @Override
     public List<IDataTableColumnEntity> getTableColumn(DataSourceDto dataSourceDto, String schemaName, String tableName) {
         String sql = String.format(QUERY_COLUMN_BY_TABLE_NAME, schemaName, tableName);
@@ -43,4 +47,35 @@ public class MysqlColumnService extends ColumnService {
         String sql = String.format(QUERY_COLUMN_BY_TABLE_NAMES, condition);
         return columnUtil.getTableColumnEntityList(dataSourceDto, sql, MysqlColumnEntity.class);
     }
+
+    @Override
+    public void updateTableColumn(DataTableColumnEntity dataTableColumnEntity) {
+
+    }
+
+    @Override
+    public void updateTableColumn(List<DataTableColumnEntity> dataTableColumnEntityList) {
+
+    }
+
+    @Override
+    public void saveTableColumn(List<DataTableColumnEntity> dataTableColumnEntityList) {
+
+    }
+
+    @Override
+    public void deleteTableColumn(Integer tabId) {
+
+    }
+
+    @Override
+    public void deleteTableColumn(DataTableColumnEntity dataTableColumnEntity) {
+
+    }
+
+    @Override
+    public void deleteTableColumn(List<DataTableColumnEntity> dataTableColumnEntityList) {
+
+    }
+
 }
