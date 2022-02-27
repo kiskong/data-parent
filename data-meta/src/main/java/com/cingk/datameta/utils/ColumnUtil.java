@@ -8,10 +8,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
-import com.cingk.datameta.model.IDataTableColumnEntity;
+import com.cingk.datameta.model.IColumnEntity;
 import com.cingk.datameta.model.dto.DataSourceDto;
-import com.cingk.datameta.model.dto.DataTableColumnDto;
-import com.cingk.datameta.model.dto.DataTableDto;
+import com.cingk.datameta.model.dto.ColumnDto;
+import com.cingk.datameta.model.dto.TableDto;
 import com.cingk.datameta.model.dto.ResponseDto;
 import com.cingk.datameta.service.impl.MysqlColumnService;
 import com.cingk.datameta.service.intf.IColumnService;
@@ -55,11 +55,11 @@ public class ColumnUtil extends DatabaseUtil {
     /**
      * 根据数据源信息获取不同数据库对应的服务
      *
-     * @param dataTableDto 数据表源对象
+     * @param tableDto 数据表源对象
      * @return database classic
      */
-    public String getServiceNameByUrl(DataTableDto dataTableDto) {
-        return getServiceNameByUrl(dataTableDto.getDatabaseSourceDto());
+    public String getServiceNameByUrl(TableDto tableDto) {
+        return getServiceNameByUrl(tableDto.getDatabaseSourceDto());
     }
 
     /**
@@ -71,25 +71,25 @@ public class ColumnUtil extends DatabaseUtil {
      * @return database classic
      */
     public String getServiceNameByUrl(DataSourceDto dataSourceDto, String schemaName, String tableName) {
-        DataTableDto dataTableDto = new DataTableDto();
-        dataTableDto.setSchemaName(schemaName);
-        dataTableDto.setTabName(tableName);
-        dataTableDto.setDatabaseSourceDto(dataSourceDto);
-        return getServiceNameByUrl(dataTableDto.getDatabaseSourceDto());
+        TableDto tableDto = new TableDto();
+        tableDto.setSchemaName(schemaName);
+        tableDto.setTabName(tableName);
+        tableDto.setDatabaseSourceDto(dataSourceDto);
+        return getServiceNameByUrl(tableDto.getDatabaseSourceDto());
     }
 
 
     /**
      * 依据目标数据源获取数据库中表信息
      *
-     * @param dataTableDto 目标数据表信息
+     * @param tableDto 目标数据表信息
      * @param sql          查询SQL
      * @param className    sql查询结果存储对象类名
-     * @return List<IDataTableColumnEntity> {@link com.cingk.datameta.model.IDataTableColumnEntity}
+     * @return List<IDataTableColumnEntity> {@link IColumnEntity}
      */
-    public List<IDataTableColumnEntity> getTableColumnEntityList(DataTableDto dataTableDto, String sql, String className) {
+    public List<IColumnEntity> getTableColumnEntityList(TableDto tableDto, String sql, String className) {
         try {
-            return getTableColumnEntityList(dataTableDto, sql, Class.forName(className));
+            return getTableColumnEntityList(tableDto, sql, Class.forName(className));
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -98,20 +98,20 @@ public class ColumnUtil extends DatabaseUtil {
     /**
      * 依据目标数据源获取数据库中表信息
      *
-     * @param dataTableDto 目标数据表信息
+     * @param tableDto 目标数据表信息
      * @param sql          查询SQL
      * @param classzz      sql查询结果存储对象类描述
-     * @return List<IDataTableColumnEntity> {@link com.cingk.datameta.model.IDataTableColumnEntity}
+     * @return List<IDataTableColumnEntity> {@link IColumnEntity}
      */
-    public List<IDataTableColumnEntity> getTableColumnEntityList(DataTableDto dataTableDto, String sql, Class classzz) {
-        DataSourceDto dataSourceDto = dataTableDto.getDatabaseSourceDto();
-        List<IDataTableColumnEntity> targetDataTableColumnEntityList = getTableColumnEntityList(dataSourceDto, sql, classzz);
-        List<IDataTableColumnEntity> localDataTableColumnEntityList = Lists.newArrayList();
-        for (IDataTableColumnEntity iDatabaseTableEntity : targetDataTableColumnEntityList) {
-            DataTableColumnDto dataTableColumnDto = new DataTableColumnDto();
-            BeanUtils.copyProperties(iDatabaseTableEntity, dataTableColumnDto);
-            dataTableColumnDto.setDatabaseTableDto(dataTableDto);
-            localDataTableColumnEntityList.add(dataTableColumnDto);
+    public List<IColumnEntity> getTableColumnEntityList(TableDto tableDto, String sql, Class classzz) {
+        DataSourceDto dataSourceDto = tableDto.getDatabaseSourceDto();
+        List<IColumnEntity> targetDataTableColumnEntityList = getTableColumnEntityList(dataSourceDto, sql, classzz);
+        List<IColumnEntity> localDataTableColumnEntityList = Lists.newArrayList();
+        for (IColumnEntity iDatabaseTableEntity : targetDataTableColumnEntityList) {
+            ColumnDto columnDto = new ColumnDto();
+            BeanUtils.copyProperties(iDatabaseTableEntity, columnDto);
+            columnDto.setDatabaseTableDto(tableDto);
+            localDataTableColumnEntityList.add(columnDto);
         }
         return localDataTableColumnEntityList;
     }
@@ -122,12 +122,12 @@ public class ColumnUtil extends DatabaseUtil {
      * @param dataSourceDto 目标数据源信息
      * @param sql           查询SQL
      * @param clazz         sql查询结果存储对象描述
-     * @return List<IDataTableColumnEntity> {@link com.cingk.datameta.model.IDataTableColumnEntity}
+     * @return List<IDataTableColumnEntity> {@link IColumnEntity}
      */
-    public List<IDataTableColumnEntity> getTableColumnEntityList(DataSourceDto dataSourceDto, String sql, Class clazz) {
+    public List<IColumnEntity> getTableColumnEntityList(DataSourceDto dataSourceDto, String sql, Class clazz) {
         List<Object> resultList = super.getResultSet(dataSourceDto, sql, clazz);
         if (resultList == null) return Lists.newArrayList();
-        return resultList.stream().map(object -> (IDataTableColumnEntity) object).collect(Collectors.toList());
+        return resultList.stream().map(object -> (IColumnEntity) object).collect(Collectors.toList());
     }
 
     /**
@@ -136,9 +136,9 @@ public class ColumnUtil extends DatabaseUtil {
      * @param dataSourceDto 目标数据源信息
      * @param sql           查询SQL
      * @param className     sql查询结果存储对象类名
-     * @return List<IDataTableColumnEntity> {@link com.cingk.datameta.model.IDataTableColumnEntity}
+     * @return List<IDataTableColumnEntity> {@link IColumnEntity}
      */
-    public List<IDataTableColumnEntity> getTableColumnEntityList(DataSourceDto dataSourceDto, String sql, String className) {
+    public List<IColumnEntity> getTableColumnEntityList(DataSourceDto dataSourceDto, String sql, String className) {
         try {
             return getTableColumnEntityList(dataSourceDto, sql, Class.forName(className));
         } catch (ClassNotFoundException e) {

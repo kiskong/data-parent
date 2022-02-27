@@ -2,32 +2,32 @@ package com.cingk.datameta.service.intf;
 
 import java.util.List;
 
-import com.cingk.datameta.model.entity.DataTableEntity;
+import com.cingk.datameta.model.entity.TableEntity;
 
 public interface ITableService {
 
-	List<DataTableEntity> saveTables(List<DataTableEntity> dataTableEntityList);
+	List<TableEntity> saveTables(List<TableEntity> tableEntityList);
 
 	void deleteTable(Integer dataSourceId, String schemaName, String tableName);
 
 	void deleteTable(Integer dataSourceId, String schemaName, Integer tabId);
 
-	void deleteTable(DataTableEntity dataTableEntity);
+	void deleteTable(TableEntity tableEntity);
 
-	void updateTable(DataTableEntity dataTableEntity);
+	void updateTable(TableEntity tableEntity);
 
 
-	List<DataTableEntity> getTables(Integer dataSourceId, String schemaName);
+	List<TableEntity> getTables(Integer dataSourceId, String schemaName);
 
-	List<DataTableEntity> getTables(Integer dataSourceId, String[] schemaName);
+	List<TableEntity> getTables(Integer dataSourceId, String[] schemaName);
 
-	List<DataTableEntity> getTables(Integer dataSourceId, String schemaName, String[] tableName);
+	List<TableEntity> getTables(Integer dataSourceId, String schemaName, String[] tableName);
 
-	List<DataTableEntity> getTables(Integer dataSourceId, String schemaName, Integer[] tabId);
+	List<TableEntity> getTables(Integer dataSourceId, String schemaName, Integer[] tabId);
 
-	DataTableEntity getTable(Integer dataSourceId, String schemaName, String tableName);
+	TableEntity getTable(Integer dataSourceId, String schemaName, String tableName);
 
-	DataTableEntity getTable(Integer dataSourceId, String schemaName, Integer tabId);
+	TableEntity getTable(Integer dataSourceId, String schemaName, Integer tabId);
 
 //	//取其他数据源
 //

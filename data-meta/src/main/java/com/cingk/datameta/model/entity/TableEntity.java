@@ -7,18 +7,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "database_table")
-public class DataTableEntity implements InterfaceEntity {
+public class TableEntity implements InterfaceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tab_id", nullable = false)
     private Integer id;
 
-    @Lob
     @Column(name = "tab_name")
     private String tabName;
 
@@ -28,17 +26,14 @@ public class DataTableEntity implements InterfaceEntity {
     @Column(name= "schemaName")
     private String schemaName;
 
-    @Lob
     @Column(name = "instruction")
     private String instruction;
 
-    @Lob
     @Column(name = "alias_name")
     private String aliasName;
 
-    @Lob
     @Column(name = "version")
-    private String version;
+    private Integer version;
 
     @Column(name = "creat_time")
     private Instant creatTime;
@@ -54,11 +49,11 @@ public class DataTableEntity implements InterfaceEntity {
         this.creatTime = creatTime;
     }
 
-    public String getVersion() {
+    public Integer getVersion() {
         return version;
     }
 
-    public void setVersion(String version) {
+    public void setVersion(Integer version) {
         this.version = version;
     }
 

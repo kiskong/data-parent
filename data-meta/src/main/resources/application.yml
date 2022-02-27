@@ -17,12 +17,12 @@ spring:
   application:
     name: data-meta
   datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-    driver-class-name: net.sf.log4jdbc.DriverSpy
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#    driver-class-name: net.sf.log4jdbc.DriverSpy
     name: localhost_mysql
-    password: 123456
-    url: jdbc:log4jdbc:mysql://localhost:3306/db_example?serverTimezone=UTC
-    username: lvkc
+    password: Lv123qwe!
+    url: jdbc:mysql://localhost:3306/cingk_schema?serverTimezone=UTC
+    username: cingk_mysql
     #druid连接池配置，see:https://github.com/alibaba/druid/wiki/DruidDataSource%E9%85%8D%E7%BD%AE%E5%B1%9E%E6%80%A7%E5%88%97%E8%A1%A8
     druid:
       #初始物理连接个数（物理连接个数）
@@ -63,6 +63,8 @@ spring:
           statement-prepare-after-log-enabled: false
           statement-close-after-log-enabled: false
           statement-create-after-log-enabled: false
+      #默认不自动提交
+      default-auto-commit: off
 
   jpa:
     properties:

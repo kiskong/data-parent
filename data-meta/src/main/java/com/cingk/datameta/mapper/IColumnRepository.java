@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 
-import com.cingk.datameta.model.entity.DataTableColumnEntity;
+import com.cingk.datameta.model.entity.ColumnEntity;
 
-public interface IColumnRepository extends IBaseCrudRepository<DataTableColumnEntity, Integer> {
+public interface IColumnRepository extends IBaseCrudRepository<ColumnEntity, Integer> {
 
-	@Query(value = "from DataTableColumnEntity where tabId in (?1)")
-	List<DataTableColumnEntity> getLocalTableColumn(List<Integer> tabId);
+	@Query(value = "from ColumnEntity where tabId in (?1)")
+	List<ColumnEntity> getLocalTableColumn(List<Integer> tabId);
 }

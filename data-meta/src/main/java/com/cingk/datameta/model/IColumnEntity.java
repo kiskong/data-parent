@@ -1,6 +1,6 @@
 package com.cingk.datameta.model;
 
-public interface IDataTableColumnEntity {
+public interface IColumnEntity {
 
 	Integer getId();
 
@@ -10,7 +10,7 @@ public interface IDataTableColumnEntity {
 
 	String getColName();
 
-	String getColType();
+	String getDataType();
 
 	Integer getColLength();
 

@@ -4,7 +4,7 @@ import com.cingk.datameta.model.InterfaceEntity;
 
 import java.time.Instant;
 
-public class DataTableDto implements InterfaceEntity {
+public class TableDto implements InterfaceEntity {
     private Integer id;
 
     private String tabName;

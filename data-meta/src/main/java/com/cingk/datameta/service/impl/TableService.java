@@ -7,9 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.cingk.datameta.mapper.ITableRepository;
 import com.cingk.datameta.model.dto.DataSourceDto;
-import com.cingk.datameta.model.entity.DataTableEntity;
+import com.cingk.datameta.model.entity.TableEntity;
 import com.cingk.datameta.service.intf.ITableService;
 import com.cingk.datameta.utils.TableUtil;
+import java.time.Instant;
 
 /**
  * @author: create by lvkc
@@ -20,6 +21,8 @@ import com.cingk.datameta.utils.TableUtil;
 @Service
 public class TableService implements ITableService {
 
+	private static final int INIT_VERSION = 1;
+
 	private ITableRepository dataTableRepository;
 
 	@Autowired
@@ -28,8 +31,12 @@ public class TableService implements ITableService {
 	}
 
 	@Override
-	public List<DataTableEntity> saveTables(List<DataTableEntity> dataTableEntityList) {
-		return (List<DataTableEntity>)dataTableRepository.saveAll(dataTableEntityList);
+	public List<TableEntity> saveTables(List<TableEntity> tableEntityList) {
+		Instant creatTime = Instant.now();
+		tableEntityList.stream().forEach(tableEntity -> {
+				tableEntity.setCreatTime(creatTime);
+				tableEntity.setVersion(INIT_VERSION);});
+		return (List<TableEntity>)dataTableRepository.saveAll(tableEntityList);
 	}
 
 	@Override
@@ -43,43 +50,43 @@ public class TableService implements ITableService {
 	}
 
 	@Override
-	public void deleteTable(DataTableEntity dataTableEntity) {
+	public void deleteTable(TableEntity tableEntity) {
 
 	}
 
 	@Override
-	public void updateTable(DataTableEntity dataTableEntity) {
+	public void updateTable(TableEntity tableEntity) {
 
 	}
 
 	@Override
-	public List<DataTableEntity> getTables(Integer dataSourceId, String schemaName) {
-		return null;
+	public List<TableEntity> getTables(Integer dataSourceId, String schemaName) {
+		return dataTableRepository.queryAll(dataSourceId,schemaName);
 	}
 
 	@Override
-	public List<DataTableEntity> getTables(Integer dataSourceId, String[] schemaName) {
-		return null;
+	public List<TableEntity> getTables(Integer dataSourceId, String[] schemaName) {
+		return dataTableRepository.queryAll(dataSourceId,schemaName);
 	}
 
 	@Override
-	public List<DataTableEntity> getTables(Integer dataSourceId, String schemaName, String[] tableName) {
-		return null;
+	public List<TableEntity> getTables(Integer dataSourceId, String schemaName, String[] tableName) {
+		return dataTableRepository.queryAll(dataSourceId,schemaName,tableName);
 	}
 
 	@Override
-	public List<DataTableEntity> getTables(Integer dataSourceId, String schemaName, Integer[] tabId) {
-		return null;
+	public List<TableEntity> getTables(Integer dataSourceId, String schemaName, Integer[] tabId) {
+		return dataTableRepository.queryAll(dataSourceId,schemaName,tabId);
 	}
 
 	@Override
-	public DataTableEntity getTable(Integer dataSourceId, String schemaName, String tableName) {
-		return null;
+	public TableEntity getTable(Integer dataSourceId, String schemaName, String tableName) {
+		return dataTableRepository.findByName(dataSourceId,schemaName,tableName);
 	}
 
 	@Override
-	public DataTableEntity getTable(Integer dataSourceId, String schemaName, Integer tabId) {
-		return null;
+	public TableEntity getTable(Integer dataSourceId, String schemaName, Integer tabId) {
+		return dataTableRepository.findById(dataSourceId,schemaName,tabId);
 	}
 
 

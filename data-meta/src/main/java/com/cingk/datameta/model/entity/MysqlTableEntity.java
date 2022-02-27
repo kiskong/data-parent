@@ -1,10 +1,10 @@
 package com.cingk.datameta.model.entity;
 
-import com.cingk.datameta.model.IDataTableEntity;
+import com.cingk.datameta.model.ITableEntity;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
-public class MysqlTableEntity implements IDataTableEntity {
+public class MysqlTableEntity implements ITableEntity {
 
     public MysqlTableEntity(){
 

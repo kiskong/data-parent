@@ -1,10 +1,10 @@
 package com.cingk.datameta.model.entity;
 
-import com.cingk.datameta.model.IDataTableEntity;
+import com.cingk.datameta.model.ITableEntity;
 
 import java.sql.Timestamp;
 
-public class OracleTableEntity  implements IDataTableEntity {
+public class OracleTableEntity  implements ITableEntity {
 
     private String owner;
     private String tableName;

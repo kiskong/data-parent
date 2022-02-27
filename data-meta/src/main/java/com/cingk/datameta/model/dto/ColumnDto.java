@@ -1,43 +1,27 @@
-package com.cingk.datameta.model.entity;
+package com.cingk.datameta.model.dto;
 
-import com.cingk.datameta.model.IDataTableColumnEntity;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.Table;
+import com.cingk.datameta.model.IColumnEntity;
 
-@Entity
-@Table(name = "database_table_column")
-public class DataTableColumnEntity implements IDataTableColumnEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+
+public class ColumnDto implements IColumnEntity {
     private Integer id;
 
-    @Column(name = "tab_id")
     private Integer tabId;
 
-    @Column(name = "col_id")
     private Integer colId;
 
-    @Lob
-    @Column(name = "col_name")
     private String colName;
 
-    @Lob
-    @Column(name = "col_type")
-    private String colType;
+    private String dataType;
 
-    @Column(name = "col_length")
     private Integer colLength;
 
-    @Column(name = "col_decimal")
     private Integer colDecimal;
 
-    @Column(name = "tab_name")
+    private DataSourceDto dataSourceDto;
+
+    private TableDto tableDto;
+
     private String tabName;
 
     public Integer getColDecimal() {
@@ -56,12 +40,12 @@ public class DataTableColumnEntity implements IDataTableColumnEntity {
         this.colLength = colLength;
     }
 
-    public String getColType() {
-        return colType;
+    public String getDataType() {
+        return dataType;
     }
 
-    public void setColType(String colType) {
-        this.colType = colType;
+    public void setDataType(String dataType) {
+        this.dataType = dataType;
     }
 
     public String getColName() {
@@ -96,10 +80,28 @@ public class DataTableColumnEntity implements IDataTableColumnEntity {
         this.id = id;
     }
 
-    public String getTabName() {
-        return this.tabName;
+    public DataSourceDto getDatabaseSourceDto() {
+        return dataSourceDto;
     }
+
+    public void setDatabaseSourceDto(DataSourceDto dataSourceDto) {
+        this.dataSourceDto = dataSourceDto;
+    }
+
+    public TableDto getDatabaseTableDto() {
+        return tableDto;
+    }
+
+    public void setDatabaseTableDto(TableDto tableDto) {
+        this.tableDto = tableDto;
+    }
+
+    @Override
+    public String getTabName() {
+        return tabName;
+    }
+
     public void setTabName(String tabName) {
-        this.tabName=tabName;
+        this.tabName = tabName;
     }
 }

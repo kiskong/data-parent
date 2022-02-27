@@ -6,9 +6,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.cingk.datameta.model.IDataTableEntity;
+import com.cingk.datameta.model.ITableEntity;
 import com.cingk.datameta.model.dto.DataSourceDto;
-import com.cingk.datameta.model.entity.DataTableEntity;
+import com.cingk.datameta.model.entity.TableEntity;
 import com.cingk.datameta.service.impl.MysqlTableService;
 import com.cingk.datameta.service.intf.ITableService;
 import java.sql.SQLException;
@@ -57,27 +57,27 @@ public class TableUtil extends DatabaseUtil {
 	 * @param dataSourceDto 目标数据源信息
 	 * @param sql 查询SQL
 	 * @param className sql查询结果存储对象类名
-	 * @return List<DatabaseTableEntity> {@link DataTableEntity}
+	 * @return List<DatabaseTableEntity> {@link TableEntity}
 	 */
-	public List<DataTableEntity> getDataTableEntityList(DataSourceDto dataSourceDto, String sql, String className) {
+	public List<TableEntity> getDataTableEntityList(DataSourceDto dataSourceDto, String sql, String className) {
 
 		try {
 			Integer databaseSourceId = dataSourceDto.getId();
 			List<Object> resultList = super.getResultSet(dataSourceDto, sql, Class.forName(className));
 			if (resultList == null)  return Lists.newArrayList();
 
-			List<DataTableEntity> dataTableEntityList = Lists.newArrayList();
+			List<TableEntity> tableEntityList = Lists.newArrayList();
 			resultList.forEach(object -> {
-				IDataTableEntity dataTableEntity = (IDataTableEntity) object;
-				DataTableEntity databaseTableEntity = new DataTableEntity();
+				ITableEntity dataTableEntity = (ITableEntity) object;
+				TableEntity databaseTableEntity = new TableEntity();
 				databaseTableEntity.setTabName(dataTableEntity.getTabName());
 				databaseTableEntity.setSchemaName(dataTableEntity.getSchema());
 				databaseTableEntity.setDatabaseSourceId(databaseSourceId);
 				databaseTableEntity.setTabType(dataTableEntity.getTabType());
-				dataTableEntityList.add(databaseTableEntity);
+				tableEntityList.add(databaseTableEntity);
 			});
 
-			return dataTableEntityList;
+			return tableEntityList;
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cingk.datameta.model.dto.DataSourceDto;
-import com.cingk.datameta.model.entity.DataTableEntity;
+import com.cingk.datameta.model.entity.TableEntity;
 import com.cingk.datameta.model.entity.MysqlTableEntity;
 import com.cingk.datameta.utils.TableUtil;
 import com.cingk.datameta.utils.StrUtil;
@@ -53,29 +53,29 @@ public class MysqlTableService extends TableService {
 	}
 
 	@Override
-	public DataTableEntity getTable(Integer dataSourceId, String schemaName, String tableName) {
+	public TableEntity getTable(Integer dataSourceId, String schemaName, String tableName) {
 		String sql = String.format(QUERY_BY_SCHEMA_TABLE_NAME, schemaName, tableName);
 		DataSourceDto dataSourceDto = super.makeDataSourceDto(dataSourceId);
-		List<DataTableEntity> dataTableEntityList = tableUtil.getDataTableEntityList(dataSourceDto, sql, JDBC_RESULT_CLASS_NAME);
-		return dataTableEntityList.get(0);
+		List<TableEntity> tableEntityList = tableUtil.getDataTableEntityList(dataSourceDto, sql, JDBC_RESULT_CLASS_NAME);
+		return tableEntityList.get(0);
 	}
 
 	@Override
-	public List<DataTableEntity> getTables(Integer dataSourceId, String schemaName) {
+	public List<TableEntity> getTables(Integer dataSourceId, String schemaName) {
 		String sql = String.format(QUERY_BY_SCHEMA, schemaName);
 		DataSourceDto dataSourceDto = super.makeDataSourceDto(dataSourceId);
 		return tableUtil.getDataTableEntityList(dataSourceDto, sql, JDBC_RESULT_CLASS_NAME);
 	}
 
 	@Override
-	public List<DataTableEntity> getTables(Integer dataSourceId, String[] schemaName) {
+	public List<TableEntity> getTables(Integer dataSourceId, String[] schemaName) {
 		String sql = String.format(QUERY_BY_SCHEMAS, String.join(StrUtil.SQL_COL_QUOTE, schemaName));
 		DataSourceDto dataSourceDto = super.makeDataSourceDto(dataSourceId);
 		return tableUtil.getDataTableEntityList(dataSourceDto, sql, JDBC_RESULT_CLASS_NAME);
 	}
 
 	@Override
-	public List<DataTableEntity> getTables(Integer dataSourceId, String schemaName, String[] tableName) {
+	public List<TableEntity> getTables(Integer dataSourceId, String schemaName, String[] tableName) {
 		String sql = String.format(QUERY_BY_SCHEMA_TABLE_NAMES, schemaName, String.join(StrUtil.SQL_COL_QUOTE, tableName));
 		DataSourceDto dataSourceDto = super.makeDataSourceDto(dataSourceId);
 		return tableUtil.getDataTableEntityList(dataSourceDto, sql, JDBC_RESULT_CLASS_NAME);

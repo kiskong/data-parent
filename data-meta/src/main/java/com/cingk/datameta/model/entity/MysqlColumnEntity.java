@@ -1,6 +1,6 @@
 package com.cingk.datameta.model.entity;
 
-import com.cingk.datameta.model.IDataTableColumnEntity;
+import com.cingk.datameta.model.IColumnEntity;
 
 /**
  * (mysql columns )表实体类
@@ -9,7 +9,7 @@ import com.cingk.datameta.model.IDataTableColumnEntity;
  * @since 2022-01-30 20:15:36
  */
 @SuppressWarnings("serial")
-public class MysqlColumnEntity implements IDataTableColumnEntity {
+public class MysqlColumnEntity implements IColumnEntity {
 
 	private String tableCatalog;
 
@@ -150,6 +150,7 @@ public class MysqlColumnEntity implements IDataTableColumnEntity {
 		this.isNullable = isNullable;
 	}
 
+	@Override
 	public String getDataType() {
 		return dataType;
 	}
@@ -249,11 +250,6 @@ public class MysqlColumnEntity implements IDataTableColumnEntity {
 	@Override
 	public String getColName() {
 		return getColumnName();
-	}
-
-	@Override
-	public String getColType() {
-		return getDataType();
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package com.cingk.datameta.model;
 
-public interface IDataTableEntity {
+public interface ITableEntity {
 
     public String getSchema();
     public String getTabName();
