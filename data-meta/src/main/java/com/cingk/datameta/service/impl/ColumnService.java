@@ -15,12 +15,11 @@ import com.cingk.datameta.model.dto.DataSourceDto;
 import com.cingk.datameta.model.entity.ColumnEntity;
 import com.cingk.datameta.model.entity.TableEntity;
 import com.cingk.datameta.service.intf.IColumnService;
-import com.cingk.datameta.service.intf.ITableService;
 import com.cingk.datameta.utils.ColumnUtil;
 import com.cingk.datameta.utils.TableUtil;
 
 @Service
-public class ColumnService {
+public class ColumnService  {
 
 	private TableUtil tableUtil;
 	private ColumnUtil columnUtil;
@@ -28,6 +27,8 @@ public class ColumnService {
 	private TableService tableService;
 
 	private IColumnRepository columnRepository;
+
+	private TargetTableService targetTableService;
 
 	@Autowired
 	public void setTableUtil(TableUtil tableUtil) {
@@ -49,6 +50,11 @@ public class ColumnService {
 		this.columnRepository = columnRepository;
 	}
 
+	@Autowired
+	public void setTargetTableService(TargetTableService targetTableService) {
+		this.targetTableService = targetTableService;
+	}
+
 	/**
 	 * 找出新增的表
 	 *
@@ -58,14 +64,12 @@ public class ColumnService {
 	 */
 	private List<TableEntity> getNewTables(DataSourceDto dataSourceDto, String schemaName) {
 
-		Integer dataSourceId = dataSourceDto.getId();
-		ITableService tagTableService = tableUtil.getTableService(dataSourceDto);
-		List<TableEntity> tables = tagTableService.getTables(dataSourceId, schemaName);
-
+		List<TableEntity> tables = targetTableService.getTable(dataSourceDto, schemaName);
 		List<String> tableName = tables.stream().map(TableEntity::getTabName).collect(Collectors.toList());
 
 		//查询已存在的表
-		List<TableEntity> existsTable = tableService.getTables(dataSourceId, schemaName, tableName.toArray(new String[tableName.size()]));
+		List<TableEntity> existsTable = tableService.getTables(dataSourceDto.getId(), schemaName,
+			tableName.toArray(new String[tableName.size()]));
 		if (existsTable.isEmpty()) {
 			return tables;
 		}
@@ -76,6 +80,7 @@ public class ColumnService {
 		return newTables;
 	}
 
+
 	/**
 	 * 找出新增的表
 	 *
@@ -85,11 +90,9 @@ public class ColumnService {
 	 * @return List<TableEntity>
 	 */
 	private List<TableEntity> getNewTables(DataSourceDto dataSourceDto, String schemaName, String tableName) {
-		Integer dataSourceId = dataSourceDto.getId();
-		ITableService tagTableService = tableUtil.getTableService(dataSourceDto);
-		TableEntity tableEntity = tagTableService.getTable(dataSourceId, schemaName, tableName);
+		TableEntity tableEntity = targetTableService.getTable(dataSourceDto, schemaName, tableName);
 		//查询已存在的表
-		List<TableEntity> existsTable = tableService.getTables(dataSourceId, schemaName, new String[]{tableName});
+		List<TableEntity> existsTable = tableService.getTables(dataSourceDto.getId(), schemaName, new String[]{tableName});
 		if (existsTable.isEmpty()) {
 			return Lists.newArrayList(tableEntity);
 		}
@@ -106,12 +109,9 @@ public class ColumnService {
 	 */
 	private List<TableEntity> getNewTables(DataSourceDto dataSourceDto, String schemaName, String[] tableName) {
 
-		Integer dataSourceId = dataSourceDto.getId();
-		ITableService tagTableService = tableUtil.getTableService(dataSourceDto);
-		List<TableEntity> tables = tagTableService.getTables(dataSourceId, schemaName, tableName);
-
+		List<TableEntity> tables = targetTableService.getTable(dataSourceDto, schemaName, tableName);
 		//查询已存在的表
-		List<TableEntity> existsTable = tableService.getTables(dataSourceId, schemaName, tableName);
+		List<TableEntity> existsTable = tableService.getTables(dataSourceDto.getId(), schemaName, tableName);
 		if (existsTable.isEmpty()) {
 			return tables;
 		}
@@ -213,8 +213,12 @@ public class ColumnService {
 	}
 
 	//todo
-	public void modifiedColumnFromTagDBByTableName() {
+	public void modifiedColumnFromTagDBByTableName(DataSourceDto dataSourceDto, String schemaName, String tableName) {
 
+		TableEntity tableEntity = tableService.getTable(dataSourceDto.getId(),schemaName,tableName);
+		List<IColumnEntity> columnEntityList = getColumns(dataSourceDto,schemaName,Lists.newArrayList(tableEntity));
+
+		TableEntity tagTableEntity = targetTableService.getTable(dataSourceDto, schemaName, tableName);
 	}
 
 	//todo

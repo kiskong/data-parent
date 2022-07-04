@@ -2,11 +2,14 @@ package com.cingk.datameta.mapper;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 
 import com.cingk.datameta.model.entity.TableEntity;
 
-public interface ITableRepository extends IBaseCrudRepository<TableEntity, Integer> {
+public interface ITableRepository extends  CrudRepository<TableEntity, Integer> {
 
 	@Query(value = "from TableEntity where databaseSourceId = ?1 and schemaName in (?2)")
 	List<TableEntity> queryAll(Integer dataSourceId, String[] schemaName);
@@ -25,5 +28,6 @@ public interface ITableRepository extends IBaseCrudRepository<TableEntity, Integ
 
 	@Query(value = "from TableEntity where  databaseSourceId = ?1 and schemaName=?2 and id = ?3")
 	TableEntity findById(Integer dataSourceId,String schemaName,Integer id);
+	Page<TableEntity> findAll(Pageable pageable);
 
 }

@@ -1,5 +1,10 @@
 package com.cingk.datameta.constant.enums;
 
+import java.util.Arrays;
+
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
+
 public enum DatabaseDriverEnum {
 
 	MYSQL("mysql", "com.mysql.cj.jdbc.Driver"),
@@ -16,12 +21,14 @@ public enum DatabaseDriverEnum {
 	}
 
 	public String getValue(String key) {
-		for (DatabaseDriverEnum driver : DatabaseDriverEnum.values()) {
-            if (driver.key.equals(key)) {
-                return driver.value;
-            }
-		}
-		return "";
+		DatabaseDriverEnum driverEnum = databaseDriverEnum(key);
+		return ObjectUtil.isNull(driverEnum) ? StrUtil.EMPTY : driverEnum.value;
+	}
+
+	private DatabaseDriverEnum databaseDriverEnum(String key) {
+		return Arrays.stream(DatabaseDriverEnum.values())
+			.filter(driver -> driver.key.equals(key))
+			.findFirst().orElse(null);
 	}
 
 }
